@@ -5,6 +5,8 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    margin-top: 30px;
+    margin-bottom: 30px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -21,4 +23,29 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+#copyright{
+    margin:15px 20px;
+    float: right;
+    color:#555
+}
+.m-barborder {
+    padding:3px;
+    background:#ce2015;
+}
+
+.navbar {
+    background:#242424
+}
+
+.navbar-inverse .navbar-brand {
+    color:#fff;
+    padding-top:8px;
+    padding-bottom:8px;
+    line-height:60px;
+}
+
+.navbar-header > li > a {
+    margin-top: 14px;
 }
