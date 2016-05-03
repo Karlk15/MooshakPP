@@ -10,14 +10,11 @@ namespace MooshakPP.Controllers
     {
         public ActionResult Index()
         {
-            //krissi er IT master
             return View();
         }
 
         public ActionResult About()
         {
-            //fuck off
-            //heyoheyjooeoeoeoe
             ViewBag.Message = "Your application description page.";
 
             return View();
