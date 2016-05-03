@@ -16,6 +16,7 @@ namespace MooshakPP.Controllers
 
         public ActionResult About()
         {
+            //fuck off
             ViewBag.Message = "Your application description page.";
 
             return View();
