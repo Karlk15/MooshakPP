@@ -10,6 +10,7 @@ namespace MooshakPP.Controllers
     {
         public ActionResult Index()
         {
+            //krissi er IT master
             return View();
         }
 
