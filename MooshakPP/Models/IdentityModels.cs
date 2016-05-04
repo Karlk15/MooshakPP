@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using MooshakPP.Models.Entities;
 
 namespace MooshakPP.Models
 {
@@ -20,6 +21,13 @@ namespace MooshakPP.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Assignment> assignments { get; set; }
+        public DbSet<Course> courses { get; set; }
+        public DbSet<Milestone> milestones { get; set; }
+        public DbSet<Submission> submissions { get; set; }
+        public DbSet<TestCase> testcases { get; set; }
+        public DbSet<User> users { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

@@ -37,7 +37,7 @@ namespace MooshakPP.Controllers
                 _signInManager = value; 
             }
         }
-
+ 
         public ApplicationUserManager UserManager
         {
             get
