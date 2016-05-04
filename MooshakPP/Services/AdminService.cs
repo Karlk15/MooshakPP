@@ -57,9 +57,9 @@ namespace MooshakPP.Services
 
             List<Course> tempCourses = new List<Course>();
 
-            tempCourses[0] = tc1;
-            tempCourses[1] = tc2;
-            tempCourses[2] = tc3;
+            tempCourses.Add(tc1);
+            tempCourses.Add(tc2);
+            tempCourses.Add(tc3);
             return tempCourses;
         }
 
@@ -87,9 +87,9 @@ namespace MooshakPP.Services
 
             List<User> tempUsers = new List<User>();
 
-            tempUsers[0] = tu1;
-            tempUsers[1] = tu2;
-            tempUsers[2] = tu3;
+            tempUsers.Add(tu1);
+            tempUsers.Add(tu2);
+            tempUsers.Add(tu3);
             return tempUsers;
         }
 
@@ -117,9 +117,9 @@ namespace MooshakPP.Services
 
             List<User> tempUsers = new List<User>();
 
-            tempUsers[0] = tu1;
-            tempUsers[1] = tu2;
-            tempUsers[2] = tu3;
+            tempUsers.Add(tu1);
+            tempUsers.Add(tu2);
+            tempUsers.Add(tu3);
             return tempUsers;
         }
     }
