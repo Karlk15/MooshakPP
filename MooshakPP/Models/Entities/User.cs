@@ -5,11 +5,11 @@ using System.Web;
 
 namespace MooshakPP.Models.Entities
 {
-    public class Assignment
+    public class User
     {
         public int ID { get; set; }
-        public int courseID { get; set; }
-        public string title { get; set; }
-        public DateTime dueDate { get; set; }
+        public string email { get; set; }
+        public string passwordhash { get; set; }
+        public string securitystamp { get; set; }
     }
 }

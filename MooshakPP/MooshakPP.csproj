@@ -204,6 +204,10 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Assignment.cs" />
     <Compile Include="Models\Entities\Course.cs" />
+    <Compile Include="Models\Entities\Milestone.cs" />
+    <Compile Include="Models\Entities\Submission.cs" />
+    <Compile Include="Models\Entities\TestCase.cs" />
+    <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
