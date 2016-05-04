@@ -11,11 +11,14 @@ namespace MooshakPP.Controllers
     public class AdminController : BaseController
     {
         private AdminService service = new AdminService();
+
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult CreateCourse()
         {
             CreateCourseViewModel model = service.CreateCourse();
@@ -28,6 +31,7 @@ namespace MooshakPP.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult CreateUser()
         {
             return View();
@@ -39,6 +43,7 @@ namespace MooshakPP.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult ConnectUser()
         {
             AddConnectionsViewModel model = service.AddConnections();
