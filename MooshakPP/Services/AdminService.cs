@@ -43,17 +43,84 @@ namespace MooshakPP.Services
 
         private List<Course> GetAllCourses()
         {
-            return null;
+            Course tc1 = new Course();
+            Course tc2 = new Course();
+            Course tc3 = new Course();
+
+            tc1.ID = 1;
+            tc2.ID = 2;
+            tc3.ID = 3;
+
+            tc1.name = "Forritun";
+            tc2.name = "Gagnaskipan";
+            tc2.name = "Vefforritun";
+
+            List<Course> tempCourses = new List<Course>();
+
+            tempCourses[0] = tc1;
+            tempCourses[1] = tc2;
+            tempCourses[2] = tc2;
+            return tempCourses;
         }
 
         private List<User> GetConnectedUsers(int courseID)
         {
-            return null;
+            User tu1 = new User();
+            User tu2 = new User();
+            User tu3 = new User();
+
+            tu1.ID = 1;
+            tu2.ID = 2;
+            tu3.ID = 3;
+
+            tu1.email = "jon15@ru.is";
+            tu2.email = "dickbutt13@ru.is";
+            tu2.email = "stalin<3@ru.is";
+
+            tu1.passwordhash = "thisisapassword";
+            tu2.passwordhash = "thisisalsoapassword";
+            tu2.passwordhash = "thisisnotapassword";
+
+            tu1.securitystamp = "dumdum";
+            tu2.securitystamp = "canttuchthis";
+            tu2.securitystamp = "racecarisapalindrome";
+
+            List<User> tempUsers = new List<User>();
+
+            tempUsers[0] = tu1;
+            tempUsers[1] = tu2;
+            tempUsers[2] = tu2;
+            return tempUsers;
         }
 
         private List<User> GetNotConnected(int courseID)
         {
-            return null;
+            User tu1 = new User();
+            User tu2 = new User();
+            User tu3 = new User();
+
+            tu1.ID = 1;
+            tu2.ID = 2;
+            tu3.ID = 3;
+
+            tu1.email = "NCjon15@ru.is";
+            tu2.email = "NCdickbutt13@ru.is";
+            tu2.email = "NCstalin<3@ru.is";
+
+            tu1.passwordhash = "thisisapassword";
+            tu2.passwordhash = "thisisalsoapassword";
+            tu2.passwordhash = "thisisnotapassword";
+
+            tu1.securitystamp = "dumdum";
+            tu2.securitystamp = "canttuchthis";
+            tu2.securitystamp = "racecarisapalindrome";
+
+            List<User> tempUsers = new List<User>();
+
+            tempUsers[0] = tu1;
+            tempUsers[1] = tu2;
+            tempUsers[2] = tu2;
+            return tempUsers;
         }
     }
 }
