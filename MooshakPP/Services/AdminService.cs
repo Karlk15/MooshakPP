@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models.Entities;
+﻿using MooshakPP.Models;
+using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,13 @@ namespace MooshakPP.Services
 {
     public class AdminService
     {
+        private ApplicationDbContext db;
+
+        public AdminService()
+        {
+            db = new ApplicationDbContext();
+        }
+
         public CreateCourseViewModel CreateCourse()
         {
             CreateCourseViewModel allCourses = new CreateCourseViewModel();
