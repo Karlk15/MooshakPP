@@ -53,13 +53,13 @@ namespace MooshakPP.Services
 
             tc1.name = "Forritun";
             tc2.name = "Gagnaskipan";
-            tc2.name = "Vefforritun";
+            tc3.name = "Vefforritun";
 
             List<Course> tempCourses = new List<Course>();
 
             tempCourses[0] = tc1;
             tempCourses[1] = tc2;
-            tempCourses[2] = tc2;
+            tempCourses[2] = tc3;
             return tempCourses;
         }
 
@@ -75,21 +75,21 @@ namespace MooshakPP.Services
 
             tu1.email = "jon15@ru.is";
             tu2.email = "dickbutt13@ru.is";
-            tu2.email = "stalin<3@ru.is";
+            tu3.email = "stalin<3@ru.is";
 
             tu1.passwordhash = "thisisapassword";
             tu2.passwordhash = "thisisalsoapassword";
-            tu2.passwordhash = "thisisnotapassword";
+            tu3.passwordhash = "thisisnotapassword";
 
             tu1.securitystamp = "dumdum";
             tu2.securitystamp = "canttuchthis";
-            tu2.securitystamp = "racecarisapalindrome";
+            tu3.securitystamp = "racecarisapalindrome";
 
             List<User> tempUsers = new List<User>();
 
             tempUsers[0] = tu1;
             tempUsers[1] = tu2;
-            tempUsers[2] = tu2;
+            tempUsers[2] = tu3;
             return tempUsers;
         }
 
@@ -105,21 +105,21 @@ namespace MooshakPP.Services
 
             tu1.email = "NCjon15@ru.is";
             tu2.email = "NCdickbutt13@ru.is";
-            tu2.email = "NCstalin<3@ru.is";
+            tu3.email = "NCstalin<3@ru.is";
 
             tu1.passwordhash = "thisisapassword";
             tu2.passwordhash = "thisisalsoapassword";
-            tu2.passwordhash = "thisisnotapassword";
+            tu3.passwordhash = "thisisnotapassword";
 
             tu1.securitystamp = "dumdum";
             tu2.securitystamp = "canttuchthis";
-            tu2.securitystamp = "racecarisapalindrome";
+            tu3.securitystamp = "racecarisapalindrome";
 
             List<User> tempUsers = new List<User>();
 
             tempUsers[0] = tu1;
             tempUsers[1] = tu2;
-            tempUsers[2] = tu2;
+            tempUsers[2] = tu3;
             return tempUsers;
         }
     }
