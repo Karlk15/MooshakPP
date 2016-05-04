@@ -39,7 +39,7 @@ textarea {
     background:#242424
 }
 
-.navbar-inverse .navbar-brand {
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav {
     padding-top:8px;
     padding-bottom:8px;
     line-height:60px;
