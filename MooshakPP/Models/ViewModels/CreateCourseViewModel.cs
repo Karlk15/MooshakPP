@@ -9,5 +9,6 @@ namespace MooshakPP.Models.ViewModels
     public class CreateCourseViewModel
     {
         public List<Course> courses{ get; set; }
+        public Course newCourse { get; set; }
     }
 }
