@@ -18,4 +18,4 @@
     </div>
 }
 
-@Html.ListBoxFor(x => x.courses, Model.courses.Select(f => new SelectListItem { Text = f.name, Value = f.ID.ToString() }), new { Multiple = "multiple" }) 
+@Html.ListBoxFor(x => x.courses, Model.courses.Select(f => new SelectListItem { Text = f.name, Value = f.ID.ToString() })) 

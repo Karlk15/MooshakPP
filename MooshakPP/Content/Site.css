@@ -5,7 +5,7 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    margin-top: 30px;
+    margin-top: 50px;
     margin-bottom: 30px;
     padding-left: 15px;
     padding-right: 15px;
@@ -39,7 +39,7 @@ textarea {
     background:#242424
 }
 
-.navbar-inverse .navbar-brand {
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav {
     padding-top:8px;
     padding-bottom:8px;
     line-height:60px;
@@ -49,11 +49,11 @@ textarea {
     margin-top: 14px;
 }
 
-#courselist{
-    margin: 0 auto;
+
+.listbox {
+    width: 400px;
 }
 
-.listbox{
-    float: left;
-    width: 400px;
+#connectlistR {
+    float: right;
 }

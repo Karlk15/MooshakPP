@@ -212,6 +212,7 @@
     <Compile Include="Models\Entities\Submission.cs" />
     <Compile Include="Models\Entities\TestCase.cs" />
     <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\IdentityManager.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\AddConnectionsViewModel.cs" />
@@ -291,9 +292,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="DAL\" />
-    <Folder Include="Services\" />
-    <Folder Include="DAL\" />
-    <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
