@@ -48,3 +48,12 @@ textarea {
 .navbar-header > li > a {
     margin-top: 14px;
 }
+
+#courselist{
+    margin: 0 auto;
+}
+
+.listbox{
+    float: left;
+    width: 400px;
+}
