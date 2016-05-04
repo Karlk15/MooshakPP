@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MooshakPP.Models.ViewModels;
+using MooshakPP.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +10,7 @@ namespace MooshakPP.Controllers
 {
     public class AdminController : BaseController
     {
+        private AdminService service = new AdminService();
         public ActionResult Index()
         {
             return View();
@@ -15,7 +18,8 @@ namespace MooshakPP.Controllers
 
         public ActionResult CreateCourse()
         {
-            return View();
+            CreateCourseViewModel model = service.CreateCourse();
+            return View(model);
         }
 
         [HttpPost]
@@ -37,7 +41,8 @@ namespace MooshakPP.Controllers
 
         public ActionResult ConnectUser()
         {
-            return View();
+            AddConnectionsViewModel model = service.AddConnections();
+            return View(model);
         }
 
         [HttpPost]

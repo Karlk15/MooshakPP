@@ -11,7 +11,13 @@ namespace MooshakPP.Services
     {
         public CreateCourseViewModel CreateCourse()
         {
-            return null;
+            CreateCourseViewModel allCourses = new CreateCourseViewModel();
+            /*foreach(Course c in GetAllCourses())
+            {
+                allCourses.courses.Add(c);
+            }*/
+            allCourses.courses = new List<Course>(GetAllCourses());
+            return allCourses;
         }
 
         public bool CreateCourse(string name)
@@ -26,7 +32,13 @@ namespace MooshakPP.Services
 
         public AddConnectionsViewModel AddConnections()
         {
-            return null;
+            AddConnectionsViewModel connections = new AddConnectionsViewModel();
+
+            connections.courses = new List<Course>(GetAllCourses());
+            connections.connectedUser = new List<User>(GetConnectedUsers(0));
+            connections.connectedUser = new List<User>(GetNotConnected(0));
+
+            return connections;
         }
 
         private List<Course> GetAllCourses()
