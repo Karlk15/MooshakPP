@@ -1,7 +1,22 @@
-﻿
+﻿@model MooshakPP.Models.ViewModels.CreateCourseViewModel
 @{
     ViewBag.Title = "CreateCourse";
 }
 
-<h2>CreateCourse</h2>
+
+@using (Html.BeginForm("CreateCourse", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h3>Create course</h3>
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.TextBoxFor(m => m.courses, new { @class = "form-control"})
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Create course" />
+    </div>
+}
+
+
 
