@@ -27,7 +27,7 @@ namespace MooshakPP.Models
         public DbSet<Submission> submissions { get; set; }
         public DbSet<TestCase> testcases { get; set; }
         public DbSet<User> users { get; set; }
-
+        
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
