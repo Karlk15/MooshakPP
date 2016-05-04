@@ -35,7 +35,7 @@ namespace MooshakPP.Controllers
             return View();
         }
 
-        public ActionResult ConnectUser(int courseID)
+        public ActionResult ConnectUser()
         {
             return View();
         }
