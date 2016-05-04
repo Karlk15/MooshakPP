@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@using Microsoft.AspNet.Identity
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,6 +22,9 @@
                 </a>
                 <!-- Main title -->
                 @Html.ActionLink("Mooshak++", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @if (Request.IsAuthenticated){
+                    <div class="navbar-brand">@User.Identity.GetUserName()</div>
+                }
             </div>
         </div>
         <div class="m-barborder"></div>
