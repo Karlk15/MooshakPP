@@ -8,7 +8,6 @@ namespace MooshakPP.Controllers
 {
     public class AdminController : BaseController
     {
-        
         public ActionResult Index()
         {
             return View();
