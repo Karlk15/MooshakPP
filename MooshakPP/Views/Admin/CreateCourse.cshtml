@@ -10,7 +10,7 @@
     <h3>Create course</h3>
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.TextBoxFor(m => m.courses, new { @class = "form-control"})
+        @Html.EditorFor(m => m.courses , new { @class = "form-control"})
     </div>
 
     <div class="form-group">
@@ -18,4 +18,4 @@
     </div>
 }
 
-@Html.ListBoxFor(x => x.courses, Model.courses.Select(f => new SelectListItem{ Text = f.name, Value = f.ID.ToString() })) 
+@Html.ListBoxFor(x => x.courses, Model.courses.Select(f => new SelectListItem { Text = f.name, Value = f.ID.ToString() })) 

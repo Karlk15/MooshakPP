@@ -21,7 +21,7 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult CreateCourse()
         {
-            CreateCourseViewModel model = service.CreateCourse();
+           CreateCourseViewModel model = service.CreateCourse();
             return View(model);
         }
 
