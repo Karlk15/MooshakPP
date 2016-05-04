@@ -8,7 +8,6 @@ namespace MooshakPP.Controllers
 {
     public class AdminController : BaseController
     {
-        
         public ActionResult Index()
         {
             return View();
@@ -36,7 +35,7 @@ namespace MooshakPP.Controllers
             return View();
         }
 
-        public ActionResult ConnectUser(int courseID)
+        public ActionResult ConnectUser()
         {
             return View();
         }
