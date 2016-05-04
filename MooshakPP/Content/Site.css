@@ -5,7 +5,7 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    margin-top: 30px;
+    margin-top: 50px;
     margin-bottom: 30px;
     padding-left: 15px;
     padding-right: 15px;
@@ -47,4 +47,13 @@ textarea {
 
 .navbar-header > li > a {
     margin-top: 14px;
+}
+
+
+.listbox {
+    width: 400px;
+}
+
+#connectlistR {
+    float: right;
 }
