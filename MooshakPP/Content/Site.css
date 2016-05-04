@@ -54,6 +54,11 @@ textarea {
     width: 400px;
 }
 
-#connectlistR {
+#connectSubmit {
+    margin-right: 80px;
+    float: right;
+}
+
+.backbutton {
     float: right;
 }
