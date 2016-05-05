@@ -1,4 +1,4 @@
-﻿@model MooshakPP.Models.Entities.User
+﻿@model MooshakPP.Models.ViewModels.CreateUserViewModel
 @{
     ViewBag.Title = "CreateUser";
 }
@@ -8,11 +8,12 @@
     @Html.AntiForgeryToken()
     <h3>Create User</h3>
     @Html.ValidationSummary("", new { @class = "text-danger" })
-
+    <h5>Is Teacher</h5>
     for (int i = 1; i <= 10; i++)
     {
-        @Html.Label(i.ToString())
-        @Html.TextBoxFor(x => x.email, new { @placeholder = "Email", @class = "createusertext"})<br/>
+        @Html.Label(i.ToString() + ":")
+        @Html.TextBoxFor(x => x.newUser.email, new { @placeholder = "Email", @class = "createusertext", @name = "username"})
+        @Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher"})<br/>
     }
 
     <div class="form-group">

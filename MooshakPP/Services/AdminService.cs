@@ -26,12 +26,15 @@ namespace MooshakPP.Services
             return allCourses;
         }
 
-        public bool CreateCourse(string name)
+        public void CreateCourse(string newName)
         {
-            return true;
+            Course newCourse = new Course();
+            newCourse.name = newName;
+            db.Courses.Add(newCourse);
+            db.SaveChanges();
         }
 
-        public bool CreateUsers()
+        public bool CreateUsers(List<User> newUsers)
         {
             return true;
         }

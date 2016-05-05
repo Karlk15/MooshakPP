@@ -62,7 +62,7 @@ namespace MooshakPP.Controllers
 
         [HttpPost]
         public ActionResult AddMilestone(FormCollection collection)
-        {
+    {
             return View();
         }
     }
