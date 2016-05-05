@@ -12,6 +12,12 @@ namespace MooshakPP.Services
     {
         private ApplicationDbContext db;
 
-        
+        public TeacherService()
+        {
+            db = new ApplicationDbContext();
+        }
+
+
+
     }
 }
