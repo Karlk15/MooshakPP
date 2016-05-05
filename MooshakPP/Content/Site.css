@@ -62,3 +62,19 @@ textarea {
 .backbutton {
     float: right;
 }
+
+.courselist {
+    font-size: 20px;
+    height: 300px;
+    overflow: auto;
+}
+
+
+.selected{
+  color:#ce2015;
+}
+
+.selected:hover {
+    color:#ce2015;
+    text-decoration:none;
+}

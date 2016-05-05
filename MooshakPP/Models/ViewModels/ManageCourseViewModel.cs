@@ -6,7 +6,7 @@ using System.Web;
 
 namespace MooshakPP.Models.ViewModels
 {
-    public class CreateCourseViewModel
+    public class ManageCourseViewModel
     {
         public List<Course> courses{ get; set; }
         public Course newCourse { get; set; }

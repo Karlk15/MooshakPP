@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models.ViewModels;
+﻿using MooshakPP.Models.Entities;
+using MooshakPP.Models.ViewModels;
 using MooshakPP.Services;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,18 @@ namespace MooshakPP.Controllers
             return View();
         }
 
+        //int? id <--- vantar sem parameter í Create
         [HttpGet]
-        public ActionResult Create(int? id)
+        public ActionResult Create()
         {
-            return View();
+            //if (id.HasValue)
+            //{
+            //int courseID = id.Value;
+            int courseID = 1;
+            CreateAssignmentViewModel model = service.AddAssignment(courseID);
+            return View(model);
+            //}
+            //return View("Error");
         }
 
         [HttpPost]
