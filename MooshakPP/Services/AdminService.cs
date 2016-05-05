@@ -17,16 +17,16 @@ namespace MooshakPP.Services
             db = new ApplicationDbContext();
         }
 
-        public CreateCourseViewModel CreateCourse()
+        public ManageCourseViewModel ManageCourse()
         {
-            CreateCourseViewModel allCourses = new CreateCourseViewModel();
+            ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
             allCourses.courses = new List<Course>(GetAllCourses());
 
             return allCourses;
         }
 
-        public void CreateCourse(string newName)
+        public void ManageCourse(string newName)
         {
             Course newCourse = new Course();
             newCourse.name = newName;
