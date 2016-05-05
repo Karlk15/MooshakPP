@@ -26,12 +26,15 @@ namespace MooshakPP.Services
             return allCourses;
         }
 
-        public bool CreateCourse(string name)
+        public void CreateCourse(string newName)
         {
-            return true;
+            Course newCourse = new Course();
+            newCourse.name = newName;
+            db.Courses.Add(newCourse);
+            db.SaveChanges();
         }
 
-        public bool CreateUsers()
+        public bool CreateUsers(List<User> newUsers)
         {
             return true;
         }
@@ -49,24 +52,9 @@ namespace MooshakPP.Services
 
         private List<Course> GetAllCourses()
         {
-            Course tc1 = new Course();
-            Course tc2 = new Course();
-            Course tc3 = new Course();
-
-            tc1.ID = 1;
-            tc2.ID = 2;
-            tc3.ID = 3;
-
-            tc1.name = "Forritun";
-            tc2.name = "Gagnaskipan";
-            tc3.name = "Vefforritun";
-
-            List<Course> tempCourses = new List<Course>();
-
-            tempCourses.Add(tc1);
-            tempCourses.Add(tc2);
-            tempCourses.Add(tc3);
-            return tempCourses;
+            var courses = (from course in db.Courses
+                           select course).ToList();
+            return courses;
         }
 
         private List<User> GetConnectedUsers(int courseID)
