@@ -26,7 +26,14 @@
                 @foreach (var course in Model.courses)
                 {
                     <tr>
-                        <td>@Html.ActionLink(@course.name, "ManageCourse", "admin", new { id = @course.ID }, null)</td>
+                        @if (course.ID == @ViewBag.selectedCourse)
+                        {
+                            <td>@Html.ActionLink(@course.name, "manageCourse", "admin", new { id = @course.ID }, new { @class = "selected" })</td>
+                        }
+                        else
+                        {
+                            <td>@Html.ActionLink(@course.name, "ManageCourse", "admin", new { id = @course.ID }, null)</td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -35,6 +42,7 @@
 </div>
 <div class="row">
     <div class="col-md-offset-6">
+        <!-- TO DO: Bæta við actionlink fyrir remove -->
         @Html.ActionLink("Connect users", "ConnectUser", "admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
     </div>
 </div>
