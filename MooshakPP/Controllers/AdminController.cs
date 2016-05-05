@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models.ViewModels;
+﻿using MooshakPP.Models.Entities;
+using MooshakPP.Models.ViewModels;
 using MooshakPP.Services;
 using System;
 using System.Collections.Generic;
@@ -26,12 +27,12 @@ namespace MooshakPP.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateCourse(string input)
+        public ActionResult CreateCourse(Course newCourse)
         {
             CreateCourseViewModel model = service.CreateCourse();
             if (ModelState.IsValid)
             {
-                service.CreateCourse(input);
+                service.CreateCourse(newCourse.name);
                 return RedirectToAction("CreateCourse", model);
             }
             return View(model);
@@ -46,6 +47,14 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult CreateUser(FormCollection collection)
         {
+            User newUser = new User();
+            List<User> newUsers = new List<User>();
+            foreach(string name in collection)
+            {
+                newUser.email = collection["username"];
+                newUsers.Add(newUser);
+            }
+            service.CreateUsers(newUsers);
             return View();
         }
 
