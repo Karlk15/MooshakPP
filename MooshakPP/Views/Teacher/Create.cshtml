@@ -1,0 +1,42 @@
+﻿@model MooshakPP.Models.ViewModels.CreateAssignmentViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Create assignment</h3>
+        @using (Html.BeginForm("Create", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", placeholder = "Enter assignment name" })
+                    @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control", placeholder = "Enter due date" })
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default" value="Create assignment" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="courselist">
+        <h3>Existing assignments</h3>
+        <table>
+            <tbody>
+                @if (Model != null)
+            {
+                foreach (var assign in Model.assignments)
+                {
+                        <tr>
+                            <td>@Html.ActionLink(@assign.title, "Create", "teacher", new { id = @assign.ID }, null)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@Html.ActionLink("Connect users", "ConnectUser", "teacher", new { id = @ViewBag.selectedCourse }, null)

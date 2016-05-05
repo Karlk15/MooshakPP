@@ -9,5 +9,6 @@ namespace MooshakPP.Models.ViewModels
     public class CreateAssignmentViewModel
     {
         public List<Assignment> assignments { get; set; }
+        public Assignment newAssignment { get; set; }
     }
 }

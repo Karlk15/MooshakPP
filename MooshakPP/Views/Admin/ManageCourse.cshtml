@@ -1,0 +1,48 @@
+﻿@model MooshakPP.Models.ViewModels.ManageCourseViewModel
+@{
+    ViewBag.Title = "Manage Course";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Create a course</h3>
+        @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.newCourse.name, new { @class = "form-control", placeholder = "Enter course name" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Create course" />
+            </div>
+        }
+    </div>
+    <h3>Select existing courses</h3>
+    <div class="courselist">
+        <table>
+            <tbody>
+                @foreach (var course in Model.courses)
+                {
+                    <tr>
+                        @if (course.ID == @ViewBag.selectedCourse)
+                        {
+                            <td>@Html.ActionLink(@course.name, "manageCourse", "admin", new { id = @course.ID }, new { @class = "selected" })<span class="glyphicon glyphicon-ok:before"></span></td>
+                        }
+                        else
+                        {
+                            <td>@Html.ActionLink(@course.name, "ManageCourse", "admin", new { id = @course.ID }, new { @class = "navbar-link" })</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-6">
+        <!-- TO DO: Bæta við actionlink fyrir remove -->
+        @Html.ActionLink("Connect users", "ConnectUser", "admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
+    </div>
+</div>

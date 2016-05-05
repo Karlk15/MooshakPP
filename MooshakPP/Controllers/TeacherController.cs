@@ -19,17 +19,18 @@ namespace MooshakPP.Controllers
             return View();
         }
 
+        //int? id <--- vantar sem parameter í Create
         [HttpGet]
-        public ActionResult Create(int? id)
+        public ActionResult Create()
         {
-            if (id.HasValue)
-            {
-                int realID = id.Value;
-                Course model = new Course();
-                model.ID = realID;
-
-            }
-            return View("Error");
+            //if (id.HasValue)
+            //{
+            //int courseID = id.Value;
+            int courseID = 1;
+            CreateAssignmentViewModel model = service.AddAssignment(courseID);
+            return View(model);
+            //}
+            //return View("Error");
         }
 
         [HttpPost]
