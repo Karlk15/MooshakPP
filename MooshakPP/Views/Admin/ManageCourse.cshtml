@@ -6,6 +6,7 @@
 <div class="row">
     <div class="col-md-6">
         <h3>Create a course</h3>
+        <div class="col-md-6">
         @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
@@ -22,28 +23,30 @@
     @Html.ActionLink("Back", "Index", "Admin", new { @class = "btn btn-default backbutton" })
     <h3>Select existing courses</h3>
     <div class="courselist">
-        <table>
+        <table id="managecoursetable">
             <tbody>
                 @foreach (var course in Model.courses)
                 {
                     <tr>
                         @if (course.ID == @ViewBag.selectedCourse)
                         {
-                            <td>@Html.ActionLink(@course.name, "manageCourse", "admin", new { id = @course.ID }, new { @class = "selected" })<span class="glyphicon glyphicon-ok:before"></span></td>
+                            <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { ID = @course.ID }, new { @class = "selected" })</td>
                         }
                         else
                         {
-                            <td>@Html.ActionLink(@course.name, "ManageCourse", "admin", new { id = @course.ID }, new { @class = "navbar-link" })</td>
+                            <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { ID = @course.ID }, null)</td>
                         }
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+    <hr class="col-md-6 col-md-offset-6"/>
 </div>
 <div class="row">
     <div class="col-md-offset-6">
-        <!-- TO DO: Bæta við actionlink fyrir remove -->
-        @Html.ActionLink("Connect users", "ConnectUser", "admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
+        @Ajax.ActionLink("Delete course", "DeleteCourse", new AjaxOptions { UpdateTargetId = "managecoursetable", InsertionMode = InsertionMode.Replace, HttpMethod = "POST" })
+        @Html.ActionLink("Delete course", "DeleteCourse", "Admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default"})
+        @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
     </div>
 </div>
