@@ -8,11 +8,11 @@
         <h3>Create assignment</h3>
         @using (Html.BeginForm("Create", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
-            @Html.AntiForgeryToken()
+           @Html.AntiForgeryToken()
 
             <div class="row">
                 <div class="form-group">
-                    <input type="hidden" name="course" value="@Model.newAssignment.courseID" />
+                    <input type="hidden" name="courseID" value="@Model.newAssignment.courseID" />
                     @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", placeholder = "Enter assignment name" })
                     @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control", placeholder = "Enter due date" })
                 </div>
