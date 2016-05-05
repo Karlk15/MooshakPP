@@ -28,6 +28,29 @@ namespace MooshakPP.Controllers
             SignInManager = signInManager;
         }
 
+        public ActionResult Index()
+        {
+            DAL.IdentityManager manager = new DAL.IdentityManager();
+
+            if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "admin"))
+            {
+                return RedirectToAction("index", "admin");
+            }
+            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "teacher"))
+            {
+                return RedirectToAction("index", "teacher");
+            }
+            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "student"))
+            {
+                return RedirectToAction("index", "student");
+            }
+            else
+            {
+                //ToDo throw exception, should not go into this view under normal circumstances
+                return View();
+            }
+        }
+
         public ApplicationSignInManager SignInManager
         {
             get

@@ -44,7 +44,7 @@ namespace MooshakPP.Controllers
                 ApplicationUser newAdmin = new ApplicationUser();
                 newAdmin.UserName = "admin@admin.com";
                 newAdmin.Email = "admin@admin.com";
-                manager.CreateUser(newAdmin, "123456");
+                manager.CreateUser(newAdmin, "ArnarErBestur123");
             }
 
             if (!manager.UserExists("teacher@teacher.com"))
