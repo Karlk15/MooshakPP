@@ -11,13 +11,11 @@
         @Html.ActionLink("Back", "Index", "Admin", new { @class = "btn btn-default backbutton" })
     </div><br />
     <div class="row">
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-4">
-                @Html.ListBoxFor(x => x.connectedUser, Model.connectedUser.Select(f => new SelectListItem { Text = f.email, Value = f.ID.ToString() }), new { @class = "listbox" })
-            </div>
-            <div class="col-md-4">
-                @Html.ListBoxFor(x => x.notConnectedUser, Model.notConnectedUser.Select(f => new SelectListItem { Text = f.email, Value = f.ID.ToString() }), new { @class = "listbox" })
-            </div>
+        <div class="col-md-offset-2 col-md-4">
+            @Html.ListBoxFor(x => x.connectedUser, Model.connectedUser.Select(f => new SelectListItem { Text = f.email, Value = f.ID.ToString() }), new { @class = "listbox", size = 20 })
+        </div>
+        <div class="col-md-4">
+            @Html.ListBoxFor(x => x.notConnectedUser, Model.notConnectedUser.Select(f => new SelectListItem { Text = f.email, Value = f.ID.ToString() }), new { @class = "listbox", size = 20 })
         </div>
     </div><br />
     <div class="row">
