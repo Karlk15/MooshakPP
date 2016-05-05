@@ -46,6 +46,7 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult CreateUser(FormCollection collection)
         {
+
             return View();
         }
 
