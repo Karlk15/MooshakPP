@@ -202,6 +202,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="DAL\IdentityManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,7 +213,6 @@
     <Compile Include="Models\Entities\Submission.cs" />
     <Compile Include="Models\Entities\TestCase.cs" />
     <Compile Include="Models\Entities\User.cs" />
-    <Compile Include="Models\IdentityManager.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\AddConnectionsViewModel.cs" />
@@ -291,7 +291,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DAL\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>

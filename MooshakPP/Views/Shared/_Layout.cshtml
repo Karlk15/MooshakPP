@@ -23,6 +23,8 @@
                 <!-- Main title -->
                 @Html.ActionLink("Mooshak++", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
+            <!-- login name and logout button -->
             @if (Request.IsAuthenticated)
             {
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
