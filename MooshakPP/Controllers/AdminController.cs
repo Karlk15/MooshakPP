@@ -28,8 +28,12 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult CreateCourse(FormCollection collection)
         {
-            string name = collection[1].ToString();
-            service.CreateCourse(name);
+            if (ModelState.IsValid)
+            {
+                string name = collection[1].ToString();
+                service.CreateCourse(name);
+                return RedirectToAction("CreateCourse");
+            }
             return View();
         }
 
