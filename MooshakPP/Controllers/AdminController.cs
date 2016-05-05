@@ -26,7 +26,7 @@ namespace MooshakPP.Controllers
         {
             ManageCourseViewModel model = service.ManageCourse();
             ViewBag.selectedCourse = ID;
-            return View(model);
+           return View(model);
         }
 
         [HttpPost]
