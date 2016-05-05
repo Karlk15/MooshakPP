@@ -9,10 +9,12 @@ using System.Web.Mvc;
 
 namespace MooshakPP.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : BaseController
     {
         private AdminService service = new AdminService();
 
+        
         [HttpGet]
         public ActionResult Index()
         {
@@ -24,7 +26,7 @@ namespace MooshakPP.Controllers
         {
             ManageCourseViewModel model = service.ManageCourse();
             ViewBag.selectedCourse = ID;
-            return View(model);
+           return View(model);
         }
 
         [HttpPost]
@@ -33,7 +35,7 @@ namespace MooshakPP.Controllers
             ManageCourseViewModel model = service.ManageCourse();
             if (ModelState.IsValid)
             {
-                service.ManageCourse(newCourse.name);
+                service.ManageCourse(newCourse);
                 return RedirectToAction("ManageCourse", model);
             }
             return View(model);
@@ -50,19 +52,16 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult CreateUser(FormCollection collection)
         {
-            User newUser = new User();
-            List<User> newUsers = new List<User>();
-            for(int i = 0; i < collection.Count; i++)
+            for(int i = 0; i < 10; i++)
             {
-                newUser.email = collection["username"];
-                newUsers.Add(newUser);
+                var result = Request.Form["newUser.email"][i];          
             }
-            service.CreateUsers(newUsers);
             return View();
         }
 
         /** Connects users to courses
          *  ID is course ID
+            nullable since no course is selected automatically
          **/
         [HttpGet]
         public ActionResult ConnectUser(int? ID)

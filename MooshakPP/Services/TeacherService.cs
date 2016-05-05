@@ -8,9 +8,14 @@ using System.Web;
 
 namespace MooshakPP.Services
 {
-    public class TeacherService
+    public class TeacherService : StudentService
     {
         private ApplicationDbContext db;
+
+        public TeacherService()
+        {
+            db = new ApplicationDbContext();
+        }
 
         /// <summary>
         /// NEEDS TO BE MOVED.
@@ -39,11 +44,6 @@ namespace MooshakPP.Services
             return assignments;
         }
 
-        public TeacherService()
-        {
-            db = new ApplicationDbContext();
-        }
-
         public CreateAssignmentViewModel AddAssignment(int courseID)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
@@ -53,6 +53,11 @@ namespace MooshakPP.Services
             return allAssignments;
         }
         
+        public void CreateAssignment(Assignment newAssignment)
+        {
+            db.Assignments.Add(newAssignment);
+            db.SaveChanges();
+        }
 
     }
 }

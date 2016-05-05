@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MooshakPP.Controllers
 {
+    [Authorize(Roles = "teacher")]
     public class TeacherController : BaseController
     {
         private TeacherService service = new TeacherService();
@@ -19,7 +20,7 @@ namespace MooshakPP.Controllers
             return View();
         }
 
-        //int? id <--- vantar sem parameter í Create
+        //int? id <--- vantar sem parameter í Create frá dropdown lista í Index view
         [HttpGet]
         public ActionResult Create()
         {
@@ -36,7 +37,29 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
-            return View();
+            CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
+
+            if (ModelState.IsValid)
+            {
+                Assignment model = new Assignment();
+                
+                string tempCourseID = collection["courseID"];
+                model.courseID = Int32.Parse(tempCourseID);
+
+                allAssignments = service.AddAssignment(model.courseID);
+
+                model.title = collection["title"];
+
+                string tempDueDate = collection["dueDate"];
+                tempDueDate = tempDueDate + " 23:59:59.42";
+                model.dueDate = Convert.ToDateTime(tempDueDate);
+
+                service.CreateAssignment(model);
+
+                RedirectToAction("Create", allAssignments);
+            }
+
+            return View(allAssignments);
         }
 
         [HttpPost]
