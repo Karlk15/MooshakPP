@@ -33,7 +33,7 @@ namespace MooshakPP.Controllers
             ManageCourseViewModel model = service.ManageCourse();
             if (ModelState.IsValid)
             {
-                service.ManageCourse(newCourse.name);
+                service.ManageCourse(newCourse);
                 return RedirectToAction("ManageCourse", model);
             }
             return View(model);

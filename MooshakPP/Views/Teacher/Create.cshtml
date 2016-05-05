@@ -12,6 +12,7 @@
 
             <div class="row">
                 <div class="form-group">
+                    <input type="hidden" name="course" value="@Model.newAssignment.courseID" />
                     @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", placeholder = "Enter assignment name" })
                     @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control", placeholder = "Enter due date" })
                 </div>
