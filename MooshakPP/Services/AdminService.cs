@@ -30,7 +30,7 @@ namespace MooshakPP.Services
         {
             Course newCourse = new Course();
             newCourse.name = newName;
-            db.Course.Add(newCourse);
+            db.Courses.Add(newCourse);
             db.SaveChanges();
         }
 
