@@ -49,6 +49,7 @@ namespace MooshakPP.Controllers
         {
             User newUser = new User();
             List<User> newUsers = new List<User>();
+            
             for(int i = 0; i < collection.Count; i++)
             {
                 newUser.email = collection["username"];
