@@ -311,11 +311,11 @@
     <Content Include="Views\Admin\ConnectUser.cshtml" />
     <Content Include="Views\Teacher\Create.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
-    <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Student\Submit.cshtml" />
     <Content Include="Views\Student\ViewDetails.cshtml" />
     <Content Include="Views\Student\ViewSubmission.cshtml" />
     <Content Include="Views\Student\ViewDescription.cshtml" />
+    <Content Include="Views\Student\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

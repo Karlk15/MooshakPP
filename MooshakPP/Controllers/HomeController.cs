@@ -99,9 +99,15 @@ namespace MooshakPP.Controllers
             {
                 return RedirectToAction("index", "teacher");
             }
-            
-
-            return View();
+            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "student"))
+            {
+                return RedirectToAction("index", "student");
+            }
+            else
+            {
+                //ToDo throw exception, should not go into this view normally
+                return View();
+            }
         }
 
         public ActionResult About()
