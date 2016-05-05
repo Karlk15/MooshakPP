@@ -232,6 +232,7 @@
     <Compile Include="Models\ViewModels\AddConnectionsViewModel.cs" />
     <Compile Include="Models\ViewModels\AllSubmissionsViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
+    <Compile Include="Models\ViewModels\IndexViewModel.cs" />
     <Compile Include="Models\ViewModels\ManageCourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateUserViewModel.cs" />
