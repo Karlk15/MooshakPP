@@ -16,15 +16,12 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                 </button>
-                <!-- Logo -->
-                <a id="logolink" class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <a id="logolink" class="navbar-brand" href="@Url.Action("Index", "Home")">
                     <img id="logo" src=@Url.Content("~/Content/Photos/TheLogo.png") />
                 </a>
-                <!-- Main title -->
                 @Html.ActionLink("Mooshak++", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
 
-            <!-- login name and logout button -->
             @if (Request.IsAuthenticated)
             {
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -63,5 +60,4 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
-
 </html>

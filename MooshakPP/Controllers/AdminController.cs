@@ -67,10 +67,6 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ConnectUser(int? ID)
         {
-            if(ID == null)
-            {   //Connect requires course ID, if none is provided in the url, redirect to ManageCourse
-                return RedirectToAction("ManageCourse");
-            }
             AddConnectionsViewModel model = service.AddConnections();
             return View(model);
         }

@@ -19,7 +19,7 @@
             </div>
         }
     </div>
-    <h3>Existing courses</h3>
+    <h3>Select existing courses</h3>
     <div class="courselist">
         <table>
             <tbody>
@@ -28,11 +28,11 @@
                     <tr>
                         @if (course.ID == @ViewBag.selectedCourse)
                         {
-                            <td>@Html.ActionLink(@course.name, "manageCourse", "admin", new { id = @course.ID }, new { @class = "selected" })</td>
+                            <td>@Html.ActionLink(@course.name, "manageCourse", "admin", new { id = @course.ID }, new { @class = "selected" })<span class="glyphicon glyphicon-ok:before"></span></td>
                         }
                         else
                         {
-                            <td>@Html.ActionLink(@course.name, "ManageCourse", "admin", new { id = @course.ID }, null)</td>
+                            <td>@Html.ActionLink(@course.name, "ManageCourse", "admin", new { id = @course.ID }, new { @class = "navbar-link" })</td>
                         }
                     </tr>
                 }
