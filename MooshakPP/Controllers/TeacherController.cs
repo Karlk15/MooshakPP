@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MooshakPP.Controllers
 {
+    [Authorize(Roles = "teacher")]
     public class TeacherController : BaseController
     {
         private TeacherService service = new TeacherService();

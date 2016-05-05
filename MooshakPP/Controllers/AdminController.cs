@@ -9,10 +9,12 @@ using System.Web.Mvc;
 
 namespace MooshakPP.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : BaseController
     {
         private AdminService service = new AdminService();
 
+        
         [HttpGet]
         public ActionResult Index()
         {
@@ -24,7 +26,7 @@ namespace MooshakPP.Controllers
         {
             ManageCourseViewModel model = service.ManageCourse();
             ViewBag.selectedCourse = ID;
-            return View(model);
+           return View(model);
         }
 
         [HttpPost]
@@ -59,6 +61,7 @@ namespace MooshakPP.Controllers
 
         /** Connects users to courses
          *  ID is course ID
+            nullable since no course is selected automatically
          **/
         [HttpGet]
         public ActionResult ConnectUser(int? ID)

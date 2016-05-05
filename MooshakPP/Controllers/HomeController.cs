@@ -1,4 +1,5 @@
-﻿using MooshakPP.DAL;
+﻿using Microsoft.AspNet.Identity;
+using MooshakPP.DAL;
 using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using System;
@@ -14,13 +15,14 @@ namespace MooshakPP.Controllers
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        private static IdentityManager manager = new IdentityManager();
+
         /// <summary>
         /// This function will use the IdentityManager class to initilize the database with a few test cases.
         /// The acions in this fucntion should only run once because of the "singleton pattern" used.
         /// </summary>
         private static void IdentityInitilizer()
         {
-            IdentityManager manager = new IdentityManager();
 
             if(!manager.RoleExists("admin"))
             {
@@ -84,9 +86,20 @@ namespace MooshakPP.Controllers
 
         }
 
+        [Authorize]
         public ActionResult Index()
         {
             IdentityInitilizer();
+
+            if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "admin"))
+            {
+                return RedirectToAction("index", "admin");
+            }
+            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "teacher"))
+            {
+                return RedirectToAction("index", "teacher");
+            }
+            
 
             return View();
         }
