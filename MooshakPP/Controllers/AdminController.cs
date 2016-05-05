@@ -20,10 +20,11 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateCourse()
+        public ActionResult CreateCourse(int? ID)
         {
-           CreateCourseViewModel model = service.CreateCourse();
-           return View(model);
+            CreateCourseViewModel model = service.CreateCourse();
+            ViewBag.selectedCourse = ID;
+            return View(model);
         }
 
         [HttpPost]
@@ -37,6 +38,8 @@ namespace MooshakPP.Controllers
             }
             return View(model);
         }
+
+        
 
         [HttpGet]
         public ActionResult CreateUser()
@@ -59,7 +62,7 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult ConnectUser()
+        public ActionResult ConnectUser(int ID)
         {
             AddConnectionsViewModel model = service.AddConnections();
             return View(model);

@@ -20,5 +20,19 @@
             </div>
         </div>
     }
-</div>  
-@Html.ListBoxFor(x => x.courses, Model.courses.Select(f => new SelectListItem { Text = f.name, Value = f.ID.ToString() }), new { @class = "courselist"})
+</div>
+<div class="courselist">
+    <h5>Existing courses</h5>
+    <table>
+        <tbody>
+            @foreach(var course in Model.courses)
+            {
+                <tr>
+                    <td>@Html.ActionLink(@course.name, "createCourse", "admin", new { id = @course.ID }, null)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@Html.ActionLink("Connect users", "ConnectUser", "admin", new { id = @ViewBag.selectedCourse }, null)
