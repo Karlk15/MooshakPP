@@ -16,10 +16,10 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                 </button>
-                    <a id="logolink" class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <a id="logolink" class="navbar-brand" href="@Url.Action("Index")">
                     <img id="logo" src=@Url.Content("~/Content/Photos/TheLogo.png") />
                 </a>
-                @Html.ActionLink("Mooshak++", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Mooshak++", "Index", new { area = "" }, new { @class = "navbar-brand" })
             </div>
 
             @if (Request.IsAuthenticated)
