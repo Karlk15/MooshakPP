@@ -8,8 +8,8 @@ namespace MooshakPP.Models.ViewModels
 {
     public class AllSubmissionsViewModel
     {
-        List<User> users { get; set; }
-        List<Submission> submissions { get; set; }
-        IndexViewModel viewModels;
+        public List<User> users { get; set; }
+        public List<Submission> submissions { get; set; }
+        public IndexViewModel viewModels;
     }
 }

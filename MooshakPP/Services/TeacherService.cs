@@ -8,7 +8,7 @@ using System.Web;
 
 namespace MooshakPP.Services
 {
-    public class TeacherService
+    public class TeacherService : StudentService
     {
         private ApplicationDbContext db;
 
