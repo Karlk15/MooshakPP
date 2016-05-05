@@ -50,14 +50,10 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult CreateUser(FormCollection collection)
         {
-            User newUser = new User();
-            List<User> newUsers = new List<User>();
-            for(int i = 0; i < collection.Count; i++)
+            for(int i = 0; i < 10; i++)
             {
-                newUser.email = collection["username"];
-                newUsers.Add(newUser);
+                var result = Request.Form["newUser.email"][i];          
             }
-            service.CreateUsers(newUsers);
             return View();
         }
 
@@ -67,10 +63,6 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ConnectUser(int? ID)
         {
-            if(ID == null)
-            {   //Connect requires course ID, if none is provided in the url, redirect to ManageCourse
-                return RedirectToAction("ManageCourse");
-            }
             AddConnectionsViewModel model = service.AddConnections();
             return View(model);
         }

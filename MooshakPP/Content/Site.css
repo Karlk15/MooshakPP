@@ -64,16 +64,17 @@ textarea {
 }
 
 .courselist {
-    font-size: 16px;
+    font-size: 20px;
     height: 300px;
     overflow: auto;
 }
 
-.selected {
-  color:red;
+
+.selected{
+  color:#ce2015;
 }
 
 .selected:hover {
-    color:red;
+    color:#ce2015;
     text-decoration:none;
 }
