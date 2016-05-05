@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MooshakPP.Models.Entities;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace MooshakPP.Models
 {
@@ -21,13 +22,18 @@ namespace MooshakPP.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Assignment> assignments { get; set; }
-        public DbSet<Course> courses { get; set; }
-        public DbSet<Milestone> milestones { get; set; }
-        public DbSet<Submission> submissions { get; set; }
-        public DbSet<TestCase> testcases { get; set; }
+        public DbSet<Assignment> Assignment { get; set; }
+        public DbSet<Course> Course { get; set; }
+        public DbSet<Milestone> Milestone { get; set; }
+        public DbSet<Submission> Submission { get; set; }
+        public DbSet<TestCase> Testcase { get; set; }
         //public DbSet<User> users { get; set; }
-        
+
+        /*protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }*/
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -37,5 +43,6 @@ namespace MooshakPP.Models
         {
             return new ApplicationDbContext();
         }
+
     }
 }

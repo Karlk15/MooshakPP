@@ -1,4 +1,6 @@
-﻿using MooshakPP.Models;
+﻿using MooshakPP.DAL;
+using MooshakPP.Models;
+using MooshakPP.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,14 @@ namespace MooshakPP.Controllers
 {
     public class HomeController : Controller
     {
+
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         /// <summary>
         /// This function will use the IdentityManager class to initilize the database with a few test cases.
         /// The acions in this fucntion should only run once because of the "singleton pattern" used.
         /// </summary>
-        private static void DatabaseInitilizer()
+        private static void IdentityInitilizer()
         {
             IdentityManager manager = new IdentityManager();
 
@@ -40,7 +45,13 @@ namespace MooshakPP.Controllers
 
         public ActionResult Index()
         {
-            DatabaseInitilizer();
+            IdentityInitilizer();
+
+            /*Course newCourse = new Course();
+            newCourse.name = "Gagnaskipan";
+            db.Course.Add(newCourse);
+            db.SaveChanges();*/
+
 
             return View();
         }
