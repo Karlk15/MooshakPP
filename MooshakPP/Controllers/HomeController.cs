@@ -47,12 +47,6 @@ namespace MooshakPP.Controllers
         {
             IdentityInitilizer();
 
-            /*Course newCourse = new Course();
-            newCourse.name = "Gagnaskipan";
-            db.Course.Add(newCourse);
-            db.SaveChanges();*/
-
-
             return View();
         }
 

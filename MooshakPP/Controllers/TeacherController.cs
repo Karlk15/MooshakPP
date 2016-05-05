@@ -19,7 +19,7 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             return View();
         }
@@ -62,7 +62,7 @@ namespace MooshakPP.Controllers
 
         [HttpPost]
         public ActionResult AddMilestone(FormCollection collection)
-        {
+    {
             return View();
         }
     }

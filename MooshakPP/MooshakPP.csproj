@@ -207,6 +207,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605051329454_Initial.cs" />
+    <Compile Include="Migrations\201605051329454_Initial.Designer.cs">
+      <DependentUpon>201605051329454_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605051335246_AddedDescriptionToCourses.cs" />
+    <Compile Include="Migrations\201605051335246_AddedDescriptionToCourses.Designer.cs">
+      <DependentUpon>201605051335246_AddedDescriptionToCourses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605051337441_RemovedDescriptionFromCourse.cs" />
+    <Compile Include="Migrations\201605051337441_RemovedDescriptionFromCourse.Designer.cs">
+      <DependentUpon>201605051337441_RemovedDescriptionFromCourse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Assignment.cs" />
     <Compile Include="Models\Entities\Course.cs" />
@@ -217,7 +230,10 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\AddConnectionsViewModel.cs" />
+    <Compile Include="Models\ViewModels\AllSubmissionsViewModel.cs" />
+    <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateCourseViewModel.cs" />
+    <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\TeacherService.cs" />
@@ -302,6 +318,17 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605051329454_Initial.resx">
+      <DependentUpon>201605051329454_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605051335246_AddedDescriptionToCourses.resx">
+      <DependentUpon>201605051335246_AddedDescriptionToCourses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605051337441_RemovedDescriptionFromCourse.resx">
+      <DependentUpon>201605051337441_RemovedDescriptionFromCourse.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
