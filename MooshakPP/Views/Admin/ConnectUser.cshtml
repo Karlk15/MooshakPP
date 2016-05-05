@@ -3,10 +3,11 @@
     ViewBag.Title = "Connect users";
 }
 
-<form>
+@using (Html.BeginForm("ConnectUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
     <div class="row">
         <div class="col-md-offset-2 col-md-4">
-            @Html.DropDownListFor(x => x.courses, Model.courses.Select(f => new SelectListItem { Text = f.name, Value = f.ID.ToString() }), new { @id = "courselist"})
+            @Html.DropDownListFor(x => x.courses, Model.courses.Select(f => new SelectListItem { Text = f.name, Value = f.ID.ToString() }), new { @id = "courselist" })
         </div>
         @Html.ActionLink("Back", "Index", "Admin", new { @class = "btn btn-default backbutton" })
     </div><br />
@@ -24,4 +25,4 @@
             <input type="submit" class="btn btn-default" id="connectSubmit" value="Connect" />
         </div>
     </div>
-</form>
+}
