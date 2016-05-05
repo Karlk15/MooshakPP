@@ -17,10 +17,26 @@ namespace MooshakPP.Services
         /// This function should be a protected function in "StudentService" which this class inherites from.
         /// So basically a temporary function for testing.
         /// </summary>
-        protected List<Assignment> GetAllAssignments(int courseID)
+        protected List<Assignment> GetAllAssignments(int courseId)
         {
+            Assignment a1 = new Assignment
+            {
+                title = "Lab1",
+                courseID = courseId,
+                dueDate = new DateTime(2016,5,5)
+            };
+            Assignment a2 = new Assignment
+            {
+                title = "Lab2",
+                courseID = courseId,
+                dueDate = new DateTime(2016, 5, 5)
+            };
+            List<Assignment> assignments = new List<Assignment>();
 
-            return null;
+            assignments.Add(a1);
+            assignments.Add(a2);
+
+            return assignments;
         }
 
         public TeacherService()
