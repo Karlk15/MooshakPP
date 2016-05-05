@@ -69,6 +69,11 @@ textarea {
     overflow: auto;
 }
 
-.courselist-row:hover {
-    background-color:#aaaaaa;
+.selected {
+  color:red;
+}
+
+.selected:hover {
+    color:red;
+    text-decoration:none;
 }
