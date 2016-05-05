@@ -23,7 +23,7 @@ namespace MooshakPP.Controllers
         public ActionResult CreateCourse()
         {
            CreateCourseViewModel model = service.CreateCourse();
-            return View(model);
+           return View(model);
         }
 
         [HttpPost]
@@ -49,7 +49,7 @@ namespace MooshakPP.Controllers
         {
             User newUser = new User();
             List<User> newUsers = new List<User>();
-            foreach(string name in collection)
+            for(int i = 0; i < collection.Count; i++)
             {
                 newUser.email = collection["username"];
                 newUsers.Add(newUser);
