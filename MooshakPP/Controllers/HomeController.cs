@@ -105,9 +105,9 @@ namespace MooshakPP.Controllers
             }
             else
             {
-                //ToDo throw exception, should not go into this view normally
+                //ToDo throw exception, should not go into this view under normal circumstances
                 return View();
-            }
+            } 
         }
 
         public ActionResult About()
