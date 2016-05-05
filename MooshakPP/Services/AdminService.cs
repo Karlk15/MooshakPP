@@ -26,10 +26,8 @@ namespace MooshakPP.Services
             return allCourses;
         }
 
-        public void ManageCourse(string newName)
+        public void ManageCourse(Course newCourse)
         {
-            Course newCourse = new Course();
-            newCourse.name = newName;
             db.Courses.Add(newCourse);
             db.SaveChanges();
         }
