@@ -17,7 +17,12 @@ namespace MooshakPP.Services
             db = new ApplicationDbContext();
         }
 
+        public CreateAssignmentViewModel AddAssignment(Course model)
+        {
 
+
+            return null;
+        }
 
     }
 }
