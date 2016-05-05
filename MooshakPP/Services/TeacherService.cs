@@ -12,6 +12,5 @@ namespace MooshakPP.Services
     {
         private ApplicationDbContext db;
 
-        
     }
 }
