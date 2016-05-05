@@ -20,21 +20,21 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateCourse(int? ID)
+        public ActionResult ManageCourse(int? ID)
         {
-            CreateCourseViewModel model = service.CreateCourse();
+            ManageCourseViewModel model = service.ManageCourse();
             ViewBag.selectedCourse = ID;
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult CreateCourse(Course newCourse)
+        public ActionResult ManageCourse(Course newCourse)
         {
-            CreateCourseViewModel model = service.CreateCourse();
+            ManageCourseViewModel model = service.ManageCourse();
             if (ModelState.IsValid)
             {
-                service.CreateCourse(newCourse.name);
-                return RedirectToAction("CreateCourse", model);
+                service.ManageCourse(newCourse.name);
+                return RedirectToAction("ManageCourse", model);
             }
             return View(model);
         }
@@ -61,9 +61,16 @@ namespace MooshakPP.Controllers
             return View();
         }
 
+        /** Connects users to courses
+         *  ID is course ID
+         **/
         [HttpGet]
-        public ActionResult ConnectUser(int ID)
+        public ActionResult ConnectUser(int? ID)
         {
+            if(ID == null)
+            {   //Connect requires course ID, if none is provided in the url, redirect to ManageCourse
+                return RedirectToAction("ManageCourse");
+            }
             AddConnectionsViewModel model = service.AddConnections();
             return View(model);
         }
