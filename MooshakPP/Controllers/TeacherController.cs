@@ -19,7 +19,7 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             return View();
         }

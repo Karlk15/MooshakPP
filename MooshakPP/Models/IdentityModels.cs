@@ -22,17 +22,12 @@ namespace MooshakPP.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Assignment> Assignment { get; set; }
-        public DbSet<Course> Course { get; set; }
-        public DbSet<Milestone> Milestone { get; set; }
-        public DbSet<Submission> Submission { get; set; }
-        public DbSet<TestCase> Testcase { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Milestone> Milestones { get; set; }
+        public DbSet<Submission> Submissions { get; set; }
+        public DbSet<TestCase> Testcases { get; set; }
         //public DbSet<User> users { get; set; }
-
-        /*protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        }*/
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
