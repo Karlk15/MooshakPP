@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models.ViewModels;
+﻿using MooshakPP.Models.Entities;
+using MooshakPP.Models.ViewModels;
 using MooshakPP.Services;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,14 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult Create(int? id)
         {
-            return View();
+            if (id.HasValue)
+            {
+                int realID = id.Value;
+                Course model = new Course();
+                model.ID = realID;
+
+            }
+            return View("Error");
         }
 
         [HttpPost]
