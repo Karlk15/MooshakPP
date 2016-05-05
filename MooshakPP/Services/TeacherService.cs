@@ -24,31 +24,24 @@ namespace MooshakPP.Services
         /// </summary>
         protected List<Assignment> GetAllAssignments(int courseId)
         {
-            Assignment a1 = new Assignment
-            {
-                title = "Lab1",
-                courseID = courseId,
-                dueDate = new DateTime(2016,5,5)
-            };
-            Assignment a2 = new Assignment
-            {
-                title = "Lab2",
-                courseID = courseId,
-                dueDate = new DateTime(2016, 5, 5)
-            };
-            List<Assignment> assignments = new List<Assignment>();
-
-            assignments.Add(a1);
-            assignments.Add(a2);
+        
+            var assignments = (from a in db.Assignments
+                               where a.courseID == courseId
+                               select a).ToList();
 
             return assignments;
         }
 
-        public CreateAssignmentViewModel AddAssignment(int courseID)
+        public CreateAssignmentViewModel AddAssignment(int courseId)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
 
-            allAssignments.assignments = new List<Assignment>(GetAllAssignments(courseID));
+            allAssignments.assignments = new List<Assignment>(GetAllAssignments(courseId));
+
+            //created a single assignment for the Post request in the Teacher controller
+            //so now we have a courseID for our new assignment
+            allAssignments.newAssignment = new Assignment();
+            allAssignments.newAssignment.courseID = courseId;
 
             return allAssignments;
         }
