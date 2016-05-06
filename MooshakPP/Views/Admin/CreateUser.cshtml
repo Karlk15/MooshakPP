@@ -6,31 +6,63 @@
 @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h3>Create User</h3>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <table>
-        <thead>
-            <tr>
-                <td>#</td>
-                <td>Name:</td>
-                <td id="teachercheckheader">Is a teacher:</td>
-            </tr>
-        </thead>
-        <tbody>
-            @for(int i = 1; i <= 10; i++)
-            {
+    <div class="col-md-6">
+        <h3>Create User</h3>
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <table>
+            <thead>
                 <tr>
-                    <td>@Html.LabelFor(x => x.newUser.email, i + ":")</td>
-                    <td><input type="text" name="email" /></td>
-                    <td id="teachercheck">@Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher" })</td>
+                    <td>#</td>
+                    <td>Name:</td>
+                    <td id="teachercheckheader">Is a teacher:</td>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <td>@Html.LabelFor(x => x.newUser.email, i + ":")</td>
+                        <td><input type="text" name="email" /></td>
+                        <td id="teachercheck">@Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher" })</td>
+                    </tr>
+                }
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        <div class="form-group">
+            <br /><input type="submit" class="btn btn-default" value="Create user" />
+        </div>
+    </div>
+}
+    <div class="col-md-6">
+        <h3>Select existing courses</h3>
+        
+        
+            <div class="courselist">
+                <table>
+                    <tbody>
+                        @foreach (var user in Model.allUsers)
+                        {
+                            <tr>
+                                @if (user.Id == @ViewBag.selectedUser)
+                                {
+                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { ID = @user.Id }, new { @class = "selected" })</td>
+                                }
+                                else
+                                {
+                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { ID = @user.Id }, null)</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        <hr />
+        <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected user</button>
+        
+    </div>
 
     @Html.ActionLink("Back", "Index", "Admin", new { @class = "btn btn-default backbutton" })
-    <div class="form-group">
-        <br/><input type="submit" class="btn btn-default" value="Create user" />
-    </div>
+    
 }

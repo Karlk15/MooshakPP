@@ -64,7 +64,8 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult CreateUser()
         {
-            return View();
+            CreateUserViewModel allUsers = service.GetUserViewModel();
+            return View(allUsers);
         }
         /// <summary>
         /// collection[1] seeks 

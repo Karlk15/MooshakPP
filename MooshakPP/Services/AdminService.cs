@@ -1,4 +1,6 @@
-﻿using MooshakPP.DAL;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using MooshakPP.DAL;
 using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
@@ -6,13 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
 namespace MooshakPP.Services
 {
     public class AdminService
     {
         private ApplicationDbContext db;
-        private IdentityManager im;
+        private static IdentityManager manager = new IdentityManager();
 
         public AdminService()
         {
@@ -41,14 +44,42 @@ namespace MooshakPP.Services
             db.SaveChanges();
         }
 
+        public CreateUserViewModel GetUserViewModel()
+        {
+            CreateUserViewModel newUserView = new CreateUserViewModel();
+            newUserView.allUsers = GetAllUsers();
+            return newUserView;
+        }
+
         public bool CreateUser(string name, bool isTeacher)
         {
-            ApplicationUser newUser = new ApplicationUser();
-            newUser.Email = name;
-            int index = name.IndexOf("@");
-            newUser.UserName = name.Substring(0, index);
-            im.CreateUser(newUser, "");
-            
+
+            if (!manager.UserExists(name))
+            {
+                ApplicationUser nUser = new ApplicationUser();
+
+                nUser.Email = name;
+                string password = Membership.GeneratePassword(8, 0);
+                nUser.UserName = name;
+                manager.CreateUser(nUser, password);
+
+                if(isTeacher == true)
+                {
+                    var teacher = manager.GetUser(nUser.UserName);
+                    if (!manager.UserIsInRole(teacher.Id, "teacher"))
+                    {
+                        manager.AddUserToRole(teacher.Id, "teacher");
+                    }
+                }
+                else
+                {
+                    var student = manager.GetUser(nUser.UserName);
+                    if (!manager.UserIsInRole(student.Id, "student"))
+                    {
+                        manager.AddUserToRole(student.Id, "student");
+                    }
+                }
+            }
             return true;
         }
 
@@ -129,5 +160,12 @@ namespace MooshakPP.Services
             tempUsers.Add(tu3);
             return tempUsers;
         }
+
+        private List<ApplicationUser> GetAllUsers()
+        {
+            List<ApplicationUser> result = manager.GetAllUsers();
+            return result;
+        }
+
     }
 }
