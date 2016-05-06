@@ -20,9 +20,9 @@ namespace MooshakPP.Controllers
             return View();
         }
 
-        //int? id <--- vantar sem parameter í Create frá dropdown lista í Index view
+        //int? id <--- vantar sem parameter í Create, kemur frá dropdown lista í Index view fyrir courseID í assigment
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int? ID)
         {
             //if (id.HasValue)
             //{
@@ -33,6 +33,10 @@ namespace MooshakPP.Controllers
 
             //getting the selected course name so we can display it in the Create View
             Course usingThisCourse = service.GetCourseByID(courseID);
+
+            //this line is temporary and will be removed when jquery is added
+            ViewBag.selectedAssignment = ID;
+
             ViewBag.selectedCourseName = usingThisCourse.name;
 
             CreateAssignmentViewModel model = service.AddAssignment(courseID);
@@ -96,7 +100,7 @@ namespace MooshakPP.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult AddMilestones(int assignmentID)
         {
             return View();
