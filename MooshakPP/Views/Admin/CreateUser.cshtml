@@ -8,13 +8,27 @@
     @Html.AntiForgeryToken()
     <h3>Create User</h3>
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <h5>Is Teacher</h5>
-    for (int i = 1; i <= 10; i++)
-    {
-        @Html.Label(i + ":")
-        @Html.TextBoxFor(x => x.newUser.email, new { @placeholder = "Email", @class = "createusertext", @name = "email" })
-        @Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher" })<br/>
-    }
+    <table>
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>Name:</td>
+                <td id="teachercheckheader">Is a teacher:</td>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int i = 1; i <= 10; i++)
+            {
+                <tr>
+                    <td>@Html.LabelFor(x => x.newUser.email, i + ":")</td>
+                    <td><input type="text" name="email" /></td>
+                    <td id="teachercheck">@Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher" })</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
     @Html.ActionLink("Back", "Index", "Admin", new { @class = "btn btn-default backbutton" })
     <div class="form-group">
         <br/><input type="submit" class="btn btn-default" value="Create user" />

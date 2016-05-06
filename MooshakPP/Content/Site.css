@@ -83,3 +83,11 @@ textarea {
     color:#ce2015;
     text-decoration:none;
 }
+
+#teachercheck {
+    padding-left: 50px;
+}
+
+#teachercheckheader {
+    padding-left: 20px;
+}

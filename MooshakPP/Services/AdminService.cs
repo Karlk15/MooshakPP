@@ -20,7 +20,8 @@ namespace MooshakPP.Services
             db = new ApplicationDbContext();
         }
 
-        public ManageCourseViewModel ManageCourse()
+        //GetCourses is a public function, GetAllCourses is private, both provide a list of all courses
+        public ManageCourseViewModel GetCourses()
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
@@ -29,14 +30,17 @@ namespace MooshakPP.Services
             return allCourses;
         }
 
-        public void ManageCourse(Course newCourse)
+        public void CreateCourse(Course newCourse)
         {
             db.Courses.Add(newCourse);
             db.SaveChanges();
         }
 
-
-
+        public void RemoveCourse(Course course)
+        {   //could be converted to return bool
+            db.Courses.Remove(course);
+            db.SaveChanges();
+        }
 
         public bool CreateUser(string name, bool isTeacher)
         {

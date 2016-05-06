@@ -24,27 +24,36 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ManageCourse(int? ID)
         {
-            ManageCourseViewModel model = service.ManageCourse();
+            ManageCourseViewModel model = service.GetCourses();
             ViewBag.selectedCourse = ID;
             return View(model);
         }
 
 
-        
+
         //The action variable is passed by the button pressed in the view to determine what action was requested 
         //Currently the delete button is the only one who can pass a value, others use actionlinks
         [HttpPost]
-        public ActionResult ManageCourse(Course newCourse, int ID, string action)
+        public ActionResult ManageCourse(Course newCourse, int? ID, string action)
         {
-            if(action =="delete")
+            if (action == "delete")
             {
-                //delete course matching ID
-                return RedirectToAction("ManageCourse");
+                if (ID != null)
+                {
+                    int courseID = Convert.ToInt32(ID);
+                    List<Course> courses = service.GetCourses().courses;
+                    Course course = (from n in courses
+                                     where n.ID == courseID
+                                     select n).FirstOrDefault();
+                    //if course is default, the ID was not found, should never happen
+                    service.RemoveCourse(course);
+                    return RedirectToAction("ManageCourse");
+                }
             }
-            ManageCourseViewModel model = service.ManageCourse();
-            if (ModelState.IsValid)
+            ManageCourseViewModel model = service.GetCourses();
+            if (!string.IsNullOrEmpty(newCourse.name))
             {
-                service.ManageCourse(newCourse);
+                service.CreateCourse(newCourse);
                 return RedirectToAction("ManageCourse", model);
             }
             return View(model);
@@ -105,16 +114,9 @@ namespace MooshakPP.Controllers
         //users is a string array of users you are performing an action on
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
-        public ActionResult ConnectUser(int? ID, int[] users, string action)
+        public ActionResult ConnectUser(int? ID, int[] users)
         {
             return RedirectToAction("ConnectUser");
-        }
-
-        [HttpPost]
-        public ActionResult DeleteCourse(int? ID)
-        {
-            //TODO delete course with course.ID == ID
-            return RedirectToAction("ManageCourses");
         }
     }
 }
