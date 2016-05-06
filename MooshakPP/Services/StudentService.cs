@@ -48,7 +48,11 @@ namespace MooshakPP.Services
 
         protected Course GetCourseByID(int courseId)
         {
-            return null;
+            var theCourse = (from c in db.Courses
+                             where c.ID == courseId
+                             select c).SingleOrDefault();
+            
+            return theCourse;
         }
 
         protected List<Assignment> GetAssignments(int courseId)

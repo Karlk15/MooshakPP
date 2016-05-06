@@ -27,9 +27,14 @@ namespace MooshakPP.Controllers
             //if (id.HasValue)
             //{
             //int courseID = id.Value;
-
             //all uncommented code in this ActionResult is temporary
+
             int courseID = 1;
+
+            //getting the selected course name so we can display it in the Create View
+            Course usingThisCourse = service.GetCourseByID(courseID);
+            ViewBag.selectedCourseName = usingThisCourse.name;
+
             CreateAssignmentViewModel model = service.AddAssignment(courseID);
             return View(model);
             //}
