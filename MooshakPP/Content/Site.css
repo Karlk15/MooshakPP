@@ -64,6 +64,11 @@ textarea {
     overflow: auto;
 }
 
+.userlist {
+    height:300px;
+    overflow:auto;
+}
+
 .courselist a:hover {
     text-decoration:none;
 }

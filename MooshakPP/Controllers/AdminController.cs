@@ -29,9 +29,18 @@ namespace MooshakPP.Controllers
             return View(model);
         }
 
+
+        
+        //The action variable is passed by the button pressed in the view to determine what action was requested 
+        //Currently the delete button is the only one who can pass a value, others use actionlinks
         [HttpPost]
-        public ActionResult ManageCourse(Course newCourse)
+        public ActionResult ManageCourse(Course newCourse, int ID, string action)
         {
+            if(action =="delete")
+            {
+                //delete course matching ID
+                return RedirectToAction("ManageCourse");
+            }
             ManageCourseViewModel model = service.ManageCourse();
             if (ModelState.IsValid)
             {
@@ -59,10 +68,7 @@ namespace MooshakPP.Controllers
             return View();
         }
 
-        /** Connects users to courses
-         *  ID is course ID
-            nullable since no course is selected automatically
-         **/
+        //ID is the course.ID
         [HttpGet]
         public ActionResult ConnectUser(int? ID)
         {
@@ -70,11 +76,20 @@ namespace MooshakPP.Controllers
             return View(model);
         }
 
+        //ID is the course.ID
+        //users is a string array of users you are performing an action on
+        //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
-        public ActionResult ConnectUser(FormCollection collection)
+        public ActionResult ConnectUser(int? ID, int[] users, string action)
         {
-            return View();
+            return RedirectToAction("ConnectUser");
         }
 
+        [HttpPost]
+        public ActionResult DeleteCourse(int? ID)
+        {
+            //TODO delete course with course.ID == ID
+            return RedirectToAction("ManageCourses");
+        }
     }
 }
