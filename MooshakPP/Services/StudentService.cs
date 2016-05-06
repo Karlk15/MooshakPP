@@ -66,27 +66,42 @@ namespace MooshakPP.Services
 
         protected Assignment GetAssignmentByID(int assignmentId)
         {
-            return null;
+            var assignment = (from a in db.Assignments
+                              where a.ID == assignmentId
+                              select a).FirstOrDefault();
+            return assignment;
         }
 
         protected List<Milestone> GetMilestones(int assignmentId)
         {
-            return null;
+            var milestones = (from m in db.Milestones
+                              where m.assignmentID == assignmentId
+                              select m).ToList();
+            return milestones;
         }
 
         protected Milestone GetMilestoneByID(int milestoneId)
         {
-            return null;
+            var milestone = (from m in db.Milestones
+                             where m.ID == milestoneId
+                             select m).FirstOrDefault();
+            return milestone;
         }
 
         protected List<Submission> GetSubmissions(int userId, int milestoneId)
         {
-            return null;
+            var submissions = (from s in db.Submissions
+                               where s.userID == userId && s.milestoneID == milestoneId
+                               select s).ToList();
+            return submissions;
         }
 
         protected Submission GetSubmissionByID(int submissionId)
         {
-            return null;
+            var submission = (from s in db.Submissions
+                              where s.ID == submissionId
+                              select s).FirstOrDefault();
+            return submission;
         }
 
         
