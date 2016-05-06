@@ -44,10 +44,11 @@ namespace MooshakPP.Services
             db.SaveChanges();
         }
 
-        public List<ApplicationUser> GetAllUsers()
+        public CreateUserViewModel GetUserViewModel()
         {
-           List<ApplicationUser> result = manager.GetAllUsers();
-           return result;
+            CreateUserViewModel newUserView = new CreateUserViewModel();
+            newUserView.allUsers = GetAllUsers();
+            return newUserView;
         }
 
         public bool CreateUser(string name, bool isTeacher)
@@ -160,6 +161,11 @@ namespace MooshakPP.Services
             return tempUsers;
         }
 
-        
+        private List<ApplicationUser> GetAllUsers()
+        {
+            List<ApplicationUser> result = manager.GetAllUsers();
+            return result;
+        }
+
     }
 }

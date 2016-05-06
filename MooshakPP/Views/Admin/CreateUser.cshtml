@@ -29,25 +29,28 @@
 
             </tbody>
         </table>
+        <div class="form-group">
+            <br /><input type="submit" class="btn btn-default" value="Create user" />
+        </div>
     </div>
+}
     <div class="col-md-6">
         <h3>Select existing courses</h3>
         
-        @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @id = "coursetableform" }))
-        {
+        
             <div class="courselist">
                 <table>
                     <tbody>
-                        @foreach (var user in Model)
+                        @foreach (var user in Model.allUsers)
                         {
                             <tr>
-                                @if (course.ID == @ViewBag.selectedUser)
+                                @if (user.Id == @ViewBag.selectedUser)
                                 {
-                                    <td>@Html.ActionLink(@course.name, "CreateUser", "Admin", new { ID = @course.ID }, new { @class = "selected" })</td>
+                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { ID = @user.Id }, new { @class = "selected" })</td>
                                 }
                                 else
                                 {
-                                    <td>@Html.ActionLink(@course.name, "CreateUser", "Admin", new { ID = @course.ID }, null)</td>
+                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { ID = @user.Id }, null)</td>
                                 }
                             </tr>
                         }
@@ -56,13 +59,10 @@
             </div>
 
         <hr />
-        @Html.ActionLink("Change password", "ChangePassword", "Admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
-        <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected course</button>
-        }
+        <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected user</button>
+        
     </div>
 
     @Html.ActionLink("Back", "Index", "Admin", new { @class = "btn btn-default backbutton" })
-    <div class="form-group">
-        <br/><input type="submit" class="btn btn-default" value="Create user" />
-    </div>
+    
 }
