@@ -32,7 +32,7 @@ namespace MooshakPP.Controllers
         {
             DAL.IdentityManager manager = new DAL.IdentityManager();
 
-            var userId = manager.GetUser(User.Identity.GetUserName()).Id;
+            var userId = User.Identity.GetUserId();
 
             if (manager.UserIsInRole(userId, "admin"))
             {

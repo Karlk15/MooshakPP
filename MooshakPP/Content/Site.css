@@ -30,6 +30,7 @@ textarea {
     float: right;
     color:#555
 }
+
 .m-barborder {
     padding:3px;
     background:#ce2015;
@@ -59,8 +60,8 @@ textarea {
 }
 
 .courselist {
-    font-size: 20px;
-    height: 450px;
+    font-size: 18px;
+    max-height: 25em;
     overflow: auto;
 }
 
@@ -81,4 +82,12 @@ textarea {
 .selected:hover {
     color:#ce2015;
     text-decoration:none;
+}
+
+#teachercheck {
+    padding-left: 50px;
+}
+
+#teachercheckheader {
+    padding-left: 20px;
 }

@@ -91,7 +91,7 @@ namespace MooshakPP.Controllers
         {
             IdentityInitilizer();
 
-            var userId = manager.GetUser(User.Identity.GetUserName()).Id;
+            var userId = User.Identity.GetUserId();
 
             if (manager.UserIsInRole(userId, "admin"))
             {

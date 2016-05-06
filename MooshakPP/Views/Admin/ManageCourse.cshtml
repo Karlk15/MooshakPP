@@ -25,9 +25,10 @@
         </div>
     </div>
 
-    <h3>Select existing courses</h3>
     <div class="col-md-6">
-        @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post))
+        <h3>Select existing courses</h3>
+        
+        @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @id = "coursetableform" }))
         {
             <div class="courselist">
                 <table>
@@ -48,9 +49,10 @@
                     </tbody>
                 </table>
             </div>
-            <hr />
-            @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
-            <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected course</button>
+
+        <hr />
+        @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
+        <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected course</button>
         }
     </div>
 </div>

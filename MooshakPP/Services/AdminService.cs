@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models;
+﻿using MooshakPP.DAL;
+using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using System;
@@ -11,13 +12,15 @@ namespace MooshakPP.Services
     public class AdminService
     {
         private ApplicationDbContext db;
+        private IdentityManager im;
 
         public AdminService()
         {
             db = new ApplicationDbContext();
         }
 
-        public ManageCourseViewModel ManageCourse()
+        //GetCourses is a public function, GetAllCourses is private, both provide a list of all courses
+        public ManageCourseViewModel GetCourses()
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
@@ -26,14 +29,26 @@ namespace MooshakPP.Services
             return allCourses;
         }
 
-        public void ManageCourse(Course newCourse)
+        public void CreateCourse(Course newCourse)
         {
             db.Courses.Add(newCourse);
             db.SaveChanges();
         }
 
-        public bool CreateUsers(List<User> newUsers)
+        public void RemoveCourse(Course course)
+        {   //could be converted to return bool
+            db.Courses.Remove(course);
+            db.SaveChanges();
+        }
+
+        public bool CreateUser(string name, bool isTeacher)
         {
+            ApplicationUser newUser = new ApplicationUser();
+            newUser.Email = name;
+            int index = name.IndexOf("@");
+            newUser.UserName = name.Substring(0, index);
+            im.CreateUser(newUser, "");
+            
             return true;
         }
 
