@@ -1,4 +1,6 @@
-﻿using MooshakPP.DAL;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using MooshakPP.DAL;
 using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
@@ -40,6 +42,12 @@ namespace MooshakPP.Services
         {   //could be converted to return bool
             db.Courses.Remove(course);
             db.SaveChanges();
+        }
+
+        public List<ApplicationUser> GetAllUsers()
+        {
+           List<ApplicationUser> result = manager.GetAllUsers();
+           return result;
         }
 
         public bool CreateUser(string name, bool isTeacher)
@@ -156,5 +164,7 @@ namespace MooshakPP.Services
             tempUsers.Add(tu3);
             return tempUsers;
         }
+
+        
     }
 }

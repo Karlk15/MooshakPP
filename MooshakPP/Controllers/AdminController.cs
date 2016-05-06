@@ -64,6 +64,7 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult CreateUser()
         {
+            service.GetAllUsers();
             return View();
         }
         /// <summary>

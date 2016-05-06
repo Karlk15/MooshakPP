@@ -37,6 +37,13 @@ namespace MooshakPP.DAL
             return um.FindByName(name);
         }
 
+        public List<ApplicationUser> GetAllUsers()
+        {
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            List<ApplicationUser> userList = um.Users.ToList();
+            return userList;
+        }
+
         public bool CreateUser(ApplicationUser user, string password)
         {
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
