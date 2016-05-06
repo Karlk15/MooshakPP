@@ -48,20 +48,15 @@ namespace MooshakPP.Services
             if (!manager.UserExists(name))
             {
                 ApplicationUser nUser = new ApplicationUser();
-                int index = name.LastIndexOf("@");
-
-                if(index > 0)
-                {
-                    nUser.UserName = name.Substring(0, index);
-                }
 
                 nUser.Email = name;
                 string password = Membership.GeneratePassword(8, 0);
+                nUser.UserName = name;
                 manager.CreateUser(nUser, password);
 
                 if(isTeacher == true)
                 {
-                    var teacher = manager.GetUser(name);
+                    var teacher = manager.GetUser(nUser.UserName);
                     if (!manager.UserIsInRole(teacher.Id, "teacher"))
                     {
                         manager.AddUserToRole(teacher.Id, "teacher");
@@ -69,7 +64,7 @@ namespace MooshakPP.Services
                 }
                 else
                 {
-                    var student = manager.GetUser(name);
+                    var student = manager.GetUser(nUser.UserName);
                     if (!manager.UserIsInRole(student.Id, "student"))
                     {
                         manager.AddUserToRole(student.Id, "student");
