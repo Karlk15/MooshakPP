@@ -6,7 +6,6 @@ using System.Web;
 
 namespace MooshakPP.Models.Entities
 {
-    //[Table(Name = "Course")]
     public class Course 
     {
         public int ID { get; set; }
