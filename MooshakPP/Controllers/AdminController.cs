@@ -100,7 +100,9 @@ namespace MooshakPP.Controllers
                     }
                 }
             }
-            return View();
+
+            CreateUserViewModel newModel = service.GetUserViewModel();
+            return RedirectToAction("CreateUser", newModel);
         }
 
         //ID is the course.ID
