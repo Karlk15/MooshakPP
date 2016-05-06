@@ -32,22 +32,24 @@ namespace MooshakPP.Controllers
         {
             DAL.IdentityManager manager = new DAL.IdentityManager();
 
-            if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "admin"))
+            var userId = User.Identity.GetUserId();
+
+            if (manager.UserIsInRole(userId, "admin"))
             {
                 return RedirectToAction("index", "admin");
             }
-            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "teacher"))
+            else if (manager.UserIsInRole(userId, "teacher"))
             {
                 return RedirectToAction("index", "teacher");
             }
-            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "student"))
+            else if (manager.UserIsInRole(userId, "student"))
             {
                 return RedirectToAction("index", "student");
             }
             else
             {
                 //ToDo throw exception, should not go into this view under normal circumstances
-                return View();
+                return RedirectToAction("index", "home");
             }
         }
 

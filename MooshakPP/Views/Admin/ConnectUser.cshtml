@@ -3,42 +3,69 @@
     ViewBag.Title = "Connect users";
 }
 
-@using (Html.BeginForm("ConnectUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    <div class="row">
-        <div class="col-md-offset-2 col-md-4">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Change class<span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    @foreach(var course in Model.courses)
-                    {
-                        <li>@Html.ActionLink(@course.name, "ConnectUser", "Admin", new { id = course.ID }, null)</li>
-                    }
-                </ul>
-            </div>
-        </div>
-        @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
-    </div><br />
-    <div class="row">
-
-        <div class="col-md-offset-2 col-md-3">
-            @Html.ListBoxFor(x => x.connectedUser, Model.connectedUser.Select(f => new SelectListItem { Text = f.email, Value = f.ID.ToString() }), new { @class = "listbox", size = 20 })
-            <div class="row">
-                <input type="submit" value="Remove select users" class="btn btn-default"/>
-            </div>
-        </div>
-        <div class="col-md-offset-1 col-md-3">
-            @Html.ListBoxFor(x => x.notConnectedUser, Model.notConnectedUser.Select(f => new SelectListItem { Text = f.email, Value = f.ID.ToString() }), new { @class = "listbox", size = 20 })
-        </div>
-    </div><br />
-    <div class="row">
-        <div class="col-md-offset-2 col-md-3">
-            
-        </div>
-        <div class="col-md-offset-1 col-md-3">
-            
+<div class="row">
+    <div class="col-md-offset-2 col-md-4">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Change class<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                @foreach(var course in Model.courses)
+                {
+                    <li>@Html.ActionLink(@course.name, "ConnectUser", "Admin", new { id = course.ID }, null)</li>
+                }
+            </ul>
         </div>
     </div>
-}
+    @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+</div><br />
+<div class="row">
+    <div class="col-md-offset-2 col-md-3">
+        @using (Html.BeginForm("ConnectUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="userlist">
+                <table>
+                    <caption>Connected users</caption>
+                    <tbody>
+                        @foreach (var item in Model.connectedUser)
+                        {
+                            <tr>
+                                <td><input type="checkbox" name=users id="@item.ID" value="@item.ID" /><label for="@item.ID">@item.email</label></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <button name="action" value="remove" class="btn btn-default">Remove selected users</button>
+        }
+    </div>
+    <div class="col-md-offset-2 col-md-3">
+        @using (Html.BeginForm("ConnectUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="userlist">
+                <table>
+                    <caption>All users</caption>
+                    <tbody>
+                        @foreach (var item in Model.notConnectedUser)
+                        {
+                            <tr>
+                                <td><input type="checkbox" name=users id="n @item.ID" value="@item.ID" /><label for="n @item.ID">@item.email</label> </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <button name="action" value="add" class="btn btn-default">Add selected users</button>
+        }
+    </div>
+</div><br />
+<div class="row">
+    <div class="col-md-offset-2 col-md-3">
+            
+    </div>
+    <div class="col-md-offset-1 col-md-3">
+            
+    </div>
+</div>

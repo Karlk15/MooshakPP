@@ -32,7 +32,7 @@ namespace MooshakPP.Services
             db.SaveChanges();
         }
 
-        public bool CreateUsers(List<User> newUsers)
+        public bool CreateUser(string name, bool isTeacher)
         {
             return true;
         }
