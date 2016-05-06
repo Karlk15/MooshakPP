@@ -91,15 +91,17 @@ namespace MooshakPP.Controllers
         {
             IdentityInitilizer();
 
-            if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "admin"))
+            var userId = manager.GetUser(User.Identity.GetUserName()).Id;
+
+            if (manager.UserIsInRole(userId, "admin"))
             {
                 return RedirectToAction("index", "admin");
             }
-            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "teacher"))
+            else if (manager.UserIsInRole(userId, "teacher"))
             {
                 return RedirectToAction("index", "teacher");
             }
-            else if (manager.UserIsInRole(manager.GetUser(User.Identity.GetUserName()).Id, "student"))
+            else if (manager.UserIsInRole(userId, "student"))
             {
                 return RedirectToAction("index", "student");
             }
