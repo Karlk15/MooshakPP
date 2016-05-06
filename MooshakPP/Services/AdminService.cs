@@ -1,16 +1,19 @@
-﻿using MooshakPP.Models;
+﻿using MooshakPP.DAL;
+using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
 namespace MooshakPP.Services
 {
     public class AdminService
     {
         private ApplicationDbContext db;
+        private static IdentityManager manager = new IdentityManager();
 
         public AdminService()
         {
@@ -32,8 +35,43 @@ namespace MooshakPP.Services
             db.SaveChanges();
         }
 
+
+
+
         public bool CreateUser(string name, bool isTeacher)
         {
+
+            if (!manager.UserExists(name))
+            {
+                ApplicationUser nUser = new ApplicationUser();
+                int index = name.LastIndexOf("@");
+
+                if(index > 0)
+                {
+                    nUser.UserName = name.Substring(0, index);
+                }
+
+                nUser.Email = name;
+                string password = Membership.GeneratePassword(8, 0);
+                manager.CreateUser(nUser, password);
+
+                if(isTeacher == true)
+                {
+                    var teacher = manager.GetUser(name);
+                    if (!manager.UserIsInRole(teacher.Id, "teacher"))
+                    {
+                        manager.AddUserToRole(teacher.Id, "teacher");
+                    }
+                }
+                else
+                {
+                    var student = manager.GetUser(name);
+                    if (!manager.UserIsInRole(student.Id, "student"))
+                    {
+                        manager.AddUserToRole(student.Id, "student");
+                    }
+                }
+            }
             return true;
         }
 
