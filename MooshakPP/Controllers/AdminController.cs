@@ -57,13 +57,38 @@ namespace MooshakPP.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// collection[1] seeks 
+        /// collection[2] seeks 
+        /// </summary>
         [HttpPost]
         public ActionResult CreateUser(FormCollection collection)
         {
-            for(int i = 0; i < 10; i++)
+            if (ModelState.IsValid)
             {
-                var result = Request.Form["newUser.email"][i];          
+                string temp = collection[1];
+                string b = collection[2];
+                string[] userName = temp.Split(',');
+                string[] isTeacher = b.Split(',');
+
+                for (int i = 0; i < 10; i++)
+                {
+                    if (userName[i] == "")
+                    {
+
+                    }
+                    else
+                    {
+                        if (isTeacher[i] == "true")
+                        {
+                            service.CreateUser(userName[i], true);
+                        }
+                        else if (isTeacher[i] == "false")
+                        {
+                            service.CreateUser(userName[i], false);
+                        }
+                    }
+                }
             }
             return View();
         }
