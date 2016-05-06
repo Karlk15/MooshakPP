@@ -30,7 +30,7 @@
                         @foreach (var item in Model.connectedUser)
                         {
                             <tr>
-                                <td><input type="checkbox" name=users value="@item.ID" /> @item.email </td>
+                                <td><input type="checkbox" name=users id="@item.ID" value="@item.ID" /><label for="@item.ID">@item.email</label></td>
                             </tr>
                         }
                     </tbody>
@@ -47,10 +47,10 @@
                 <table>
                     <caption>All users</caption>
                     <tbody>
-                        @foreach (var item in Model.connectedUser)
+                        @foreach (var item in Model.notConnectedUser)
                         {
                             <tr>
-                                <td><input type="checkbox" name=users value="@item.ID" /> @item.email </td>
+                                <td><input type="checkbox" name=users id="n @item.ID" value="@item.ID" /><label for="n @item.ID">@item.email</label> </td>
                             </tr>
                         }
                     </tbody>
