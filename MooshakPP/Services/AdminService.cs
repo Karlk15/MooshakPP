@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models;
+﻿using MooshakPP.DAL;
+using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using System;
@@ -11,6 +12,7 @@ namespace MooshakPP.Services
     public class AdminService
     {
         private ApplicationDbContext db;
+        private IdentityManager im;
 
         public AdminService()
         {
@@ -34,6 +36,12 @@ namespace MooshakPP.Services
 
         public bool CreateUser(string name, bool isTeacher)
         {
+            ApplicationUser newUser = new ApplicationUser();
+            newUser.Email = name;
+            int index = name.IndexOf("@");
+            newUser.UserName = name.Substring(0, index);
+            im.CreateUser(newUser, "");
+            
             return true;
         }
 
