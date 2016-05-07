@@ -105,11 +105,19 @@ namespace MooshakPP.Services
         {
             foreach (int ID in userIDs)
             {
-                //add ID to courseID in relation table;
+                //add ID to courseID in relation table
             }
             //save
         }
 
+        public void RemoveConnections(int courseID, List<int> userIDs)
+        {
+            foreach (int ID in userIDs)
+            {
+                //remove ID from courseID in relation table
+            }
+            //save
+        }
         private List<Course> GetAllCourses()
         {
             var courses = (from course in db.Courses

@@ -13,7 +13,6 @@ namespace MooshakPP.Controllers
     public class AdminController : BaseController
     {
         private AdminService service = new AdminService();
-
         
         [HttpGet]
         public ActionResult Index()
@@ -107,12 +106,20 @@ namespace MooshakPP.Controllers
             if (ID == null)
             {   //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
                 ID = 0;
-                ViewBag.selectedCourse = "No course selected"; //This is not an error message
-                ViewData["error"] = TempData["error"];         //This is an error message, only appears after a post on course.ID == null
+                ViewData["selectedCourse"] = "No course selected"; //This is not an error message
+                ViewData["error"] = TempData["connError"];         //This is an error message, only appears after a POST on course.ID == null
             }
+
             int courseID = Convert.ToInt32(ID);
-            //TODO setja course með ID í viewbag, taka úr viewbag í view
             AddConnectionsViewModel model = service.GetConnections(courseID);
+            if (ID != null)
+            {
+                foreach (Course course in model.courses)
+                {
+                    if (course.ID == ID)
+                        ViewData["selectedCourse"] = course.name;
+                }
+            }
             return View(model);
         }
 
@@ -120,18 +127,24 @@ namespace MooshakPP.Controllers
         //users is an int array of users you are performing an action on
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
-        public ActionResult ConnectUser(int? ID, int[] users)
+        public ActionResult ConnectUser(int? ID, int[] users, string action)
         {   //TODO if ID is null, do nothing but return an error message
             if(ID == null)
             {
-                TempData["error"] = "No course is selected";
-                ViewBag.errormsg = "No course is selected";
+                TempData["connError"] = "No course is selected";
                 return RedirectToAction("ConnectUser");
             }
 
-            int courseID = Convert.ToInt32(ID);
-            List<int> userIDs = users.ToList();
-            service.AddConnections(courseID, userIDs);
+            int courseID = Convert.ToInt32(ID); //int? to int
+            List<int> userIDs = users.ToList(); //int[] to List<int>
+            if (action == "add")
+            {
+                service.AddConnections(courseID, userIDs);
+            }
+            else if (action == "remove")
+            {
+                service.RemoveConnections(courseID, userIDs);
+            }
             return RedirectToAction("ConnectUser");
         }
     }
