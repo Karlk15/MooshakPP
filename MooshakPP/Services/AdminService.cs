@@ -23,7 +23,8 @@ namespace MooshakPP.Services
             manager = new IdentityManager();
         }
 
-        //GetCourses is a public function, GetAllCourses is private, both provide a list of all courses
+        //ManageCourse is a public function that calls GetAllCourses to retrieve all courses
+        //in the database. Returns a ViewModel, called by the controller
         public ManageCourseViewModel ManageCourse()
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
@@ -59,7 +60,7 @@ namespace MooshakPP.Services
         }
 
         public bool CreateUser(string name, bool isTeacher)
-        {
+        {//could be converted to return bool
 
             if (!manager.UserExists(name))
             {
@@ -86,8 +87,13 @@ namespace MooshakPP.Services
                         manager.AddUserToRole(student.Id, "student");
                     }
                 }
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
+            
         }
 
         public AddConnectionsViewModel GetConnections(int ID)

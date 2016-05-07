@@ -26,7 +26,7 @@
                 {
                     <tr>
                         <td>@Html.LabelFor(x => x.newUser.email, i + ":")</td>
-                        <td><input type="text" name="email" /></td>
+                        <td><input type="text" name="email" class="form-control" placeholder="example@ru.is"/></td>
                         <td id="teachercheck">@Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher" })</td>
                     </tr>
                 }
@@ -34,18 +34,21 @@
             </tbody>
         </table>
         <div class="form-group">
-            <br /><input type="submit" class="btn btn-default" value="Create user" />
+            <br /><input type="submit" class="btn btn-default" value="Create users" />
         </div>
     </div>
 }
     <div class="col-md-6">
-        <h3>Select existing courses</h3>
+        <h3>All users</h3>
+        <h5>Click a user to select</h5>
         
-        @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @id = "coursetableform" }))
+        @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @id = "coursetableform" }))
         {
             <div class="courselist">
                 <table>
                     <tbody>
+                        @Html.ValidationSummary()
+                        
                         @foreach (var user in Model.allUsers)
                         {
                             <tr>

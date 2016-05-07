@@ -56,9 +56,10 @@ namespace MooshakPP.Controllers
         
 
         [HttpGet]
-        public ActionResult CreateUser()
+        public ActionResult CreateUser(int? ID)
         {
             CreateUserViewModel allUsers = service.GetUserViewModel();
+            ViewBag.selectedUser = ID;
             return View(allUsers);
         }
         /// <summary>
@@ -70,10 +71,10 @@ namespace MooshakPP.Controllers
         {
             if (ModelState.IsValid)
             {
-                string temp = collection[1];
-                string b = collection[2];
-                string[] userName = temp.Split(',');
-                string[] isTeacher = b.Split(',');
+                string nameList = collection[1];
+                string isTeacherList = collection[2];
+                string[] userName = nameList.Split(',');
+                string[] isTeacher = isTeacherList.Split(',');
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -85,11 +86,19 @@ namespace MooshakPP.Controllers
                     {
                         if (isTeacher[i] == "true")
                         {
-                            service.CreateUser(userName[i], true);
+                            bool created = service.CreateUser(userName[i], true);
+                            if(!created)
+                            {
+                                ModelState.AddModelError("", "User " + (i + 1) + " already exists");
+                            }
                         }
                         else if (isTeacher[i] == "false")
                         {
-                            service.CreateUser(userName[i], false);
+                            bool created = service.CreateUser(userName[i], false);
+                            if (!created)
+                            {
+                                ModelState.AddModelError("", "User " + (i + 1) + " already exists");
+                            }
                         }
                     }
                 }

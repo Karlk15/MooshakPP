@@ -30,7 +30,7 @@ namespace MooshakPP.Models
         public DbSet<TestCase> Testcases { get; set; }
         //public virtual ICollection<UsersInCourse> UsersInCourses { get; set; }
         //public DbSet<UsersInCourse> UsersInCourses { get; set; }
-        //public DbSet<ApplicationUser> Users { get; set; }
+        
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

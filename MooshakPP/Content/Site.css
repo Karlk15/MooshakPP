@@ -105,3 +105,11 @@ textarea {
 .underline {
     text-decoration: underline;
 }
+
+.add {
+    margin: 3px;
+}
+
+tr .form-control {
+    margin: 3px;
+}

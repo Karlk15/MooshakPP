@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201605062331445_AddedRelationsTableForUserAndCourse.Designer.cs">
       <DependentUpon>201605062331445_AddedRelationsTableForUserAndCourse.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605071511402_AddedForeignKeys.cs" />
+    <Compile Include="Migrations\201605071511402_AddedForeignKeys.Designer.cs">
+      <DependentUpon>201605071511402_AddedForeignKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Assignment.cs" />
@@ -350,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605062331445_AddedRelationsTableForUserAndCourse.resx">
       <DependentUpon>201605062331445_AddedRelationsTableForUserAndCourse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605071511402_AddedForeignKeys.resx">
+      <DependentUpon>201605071511402_AddedForeignKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
