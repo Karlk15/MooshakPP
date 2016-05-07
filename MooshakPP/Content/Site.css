@@ -98,5 +98,10 @@ textarea {
 }
 
 .highlightWrong {
-    color: red;
+    color: white;
+    background-color: #ce2015;
+}
+
+.underline {
+    text-decoration: underline;
 }
