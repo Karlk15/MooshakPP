@@ -96,3 +96,7 @@ textarea {
     line-height: 50%;
     letter-spacing: 3px;
 }
+
+#highlightWrong {
+    color: red;
+}
