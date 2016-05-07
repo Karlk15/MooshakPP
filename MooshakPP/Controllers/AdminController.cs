@@ -24,7 +24,7 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ManageCourse(int? ID)
         {
-            ManageCourseViewModel model = service.GetCourses();
+            ManageCourseViewModel model = service.ManageCourse();
             ViewBag.selectedCourse = ID;
             return View(model);
         }
@@ -41,12 +41,7 @@ namespace MooshakPP.Controllers
                 if (ID != null)
                 {
                     int courseID = Convert.ToInt32(ID);
-                    List<Course> courses = service.GetCourses().courses;
-                    Course course = (from n in courses
-                                     where n.ID == courseID
-                                     select n).FirstOrDefault();
-                    //if course is default, the ID was not found, should never happen
-                    service.RemoveCourse(course);
+                    service.RemoveCourse(courseID);
                     return RedirectToAction("ManageCourse");
                 }
             }
@@ -106,16 +101,24 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ConnectUser(int? ID)
         {
-            AddConnectionsViewModel model = service.AddConnections();
+            if (ID == null)
+            {
+                ID = 0;
+                ViewBag.selectedCourse = "No course selected";
+            }
+            int courseID = Convert.ToInt32(ID);
+            //TODO setja course með ID í viewbag, taka úr viewbag í view
+            AddConnectionsViewModel model = service.GetConnections(courseID);
             return View(model);
         }
 
         //ID is the course.ID
-        //users is a string array of users you are performing an action on
+        //users is an int array of users you are performing an action on
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
         public ActionResult ConnectUser(int? ID, int[] users)
         {
+
             return RedirectToAction("ConnectUser");
         }
     }

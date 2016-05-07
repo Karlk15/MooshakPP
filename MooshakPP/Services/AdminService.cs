@@ -21,7 +21,7 @@ namespace MooshakPP.Services
         }
 
         //GetCourses is a public function, GetAllCourses is private, both provide a list of all courses
-        public ManageCourseViewModel GetCourses()
+        public ManageCourseViewModel ManageCourse()
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
@@ -36,10 +36,16 @@ namespace MooshakPP.Services
             db.SaveChanges();
         }
 
-        public void RemoveCourse(Course course)
+        public void RemoveCourse(int ID)
         {   //could be converted to return bool
-            db.Courses.Remove(course);
-            db.SaveChanges();
+            Course course = (from c in GetAllCourses()
+                            where c.ID == ID
+                            select c).FirstOrDefault();
+            if (course != null)
+            {
+                db.Courses.Remove(course);
+                db.SaveChanges();
+            }
         }
 
         public bool CreateUser(string name, bool isTeacher)
@@ -79,13 +85,14 @@ namespace MooshakPP.Services
             return true;
         }
 
-        public AddConnectionsViewModel AddConnections()
+        public AddConnectionsViewModel GetConnections(int ID)
         {
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
 
             connections.courses = new List<Course>(GetAllCourses());
-            connections.connectedUser = new List<User>(GetConnectedUsers(0));
-            connections.notConnectedUser = new List<User>(GetNotConnected(0));
+            connections.connectedUser = new List<User>(GetConnectedUsers(ID));
+            connections.notConnectedUser = new List<User>(GetNotConnected(ID));
+
 
             return connections;
         }
