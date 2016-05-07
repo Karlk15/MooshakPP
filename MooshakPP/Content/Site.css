@@ -97,6 +97,6 @@ textarea {
     letter-spacing: 3px;
 }
 
-#highlightWrong {
+.highlightWrong {
     color: red;
 }

@@ -49,9 +49,9 @@
 </div>
 
 <div class="row">
-    <div class="col-md-offset-0 col-lg-5">
-        <h3>Obtained output</h3>
-        <div class="userlist">
+    <div class="userlist">
+        <div class="col-md-offset-1 col-lg-5">
+            <h3>Obtained output</h3>
             <table>
                 <tbody>
                     <tr>
@@ -64,7 +64,7 @@
                         <td>Card 2: 4</td>
                     </tr>
                     <tr>
-                        <td>Your total score is: 14</td>
+                        <td class="highlightWrong">Your total score is: 14</td>
                     </tr>
                     <tr>
                         <td>Do you want another card? y</td>
@@ -114,12 +114,9 @@
                 </tbody>
             </table>
         </div>
-
-    </div>
 
     <div class="col-md-offset-7">
         <h3>Expected output</h3>
-        <div class="userlist">
             <table>
                 <tbody>
                     <tr>
@@ -132,7 +129,7 @@
                         <td>Card 2: 4</td>
                     </tr>
                     <tr>
-                        <td id="highlightWrong">Your total score is: fx0000ea42</td>
+                        <td class="highlightWrong">Your total score is: fx0000ea42</td>
                     </tr>
                     <tr>
                         <td>Do you want another card? y</td>
@@ -182,6 +179,5 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
