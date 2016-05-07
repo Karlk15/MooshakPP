@@ -1,26 +1,23 @@
 ﻿
 @{
-    ViewBag.Title = "ViewDetails";
+    ViewBag.Title = "View details";
 }
 
-<div class="=row">
+<div class="row">
+    <h2 class="col-md-6">Details</h2>
     @Html.ActionLink("Back", "Submit", "Student", null, new { @class = "btn btn-primary backbutton" })
 </div>
 
 <div class="row">
-    <h2>Details</h2>
-</div>
-
-<div class="row">
-    <div class="col-md-offset-4 col-md-4">
+    <div class="text-center">
         <h3>Your program failed at this point</h3>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-offset-1">
+    <div class="row">
+    <div class="col-md-6">
         <h3>Input</h3>
-        <div class="userlist">
+        <div class="tablelist">
             <table>
                 <tbody>
                     <tr>
@@ -44,13 +41,12 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
 
 <div class="row">
-    <div class="userlist">
-        <div class="col-md-offset-1 col-lg-5">
+    <div class="tablelist">
+        <div class="col-md-6">
             <h3>Obtained output</h3>
             <table>
                 <tbody>
@@ -115,7 +111,7 @@
             </table>
         </div>
 
-    <div class="col-md-offset-7">
+    <div class="col-md-6">
         <h3>Expected output</h3>
             <table>
                 <tbody>

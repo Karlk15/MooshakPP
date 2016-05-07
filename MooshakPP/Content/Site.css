@@ -65,8 +65,8 @@ textarea {
     overflow: auto;
 }
 
-.userlist {
-    height:300px;
+.tablelist {
+    max-height:300px;
     overflow:auto;
 }
 
