@@ -45,7 +45,7 @@ namespace MooshakPP.Controllers
                     return RedirectToAction("ManageCourse");
                 }
             }
-            ManageCourseViewModel model = service.GetCourses();
+            ManageCourseViewModel model = service.ManageCourse();
             if (!string.IsNullOrEmpty(newCourse.name))
             {
                 service.CreateCourse(newCourse);
@@ -105,9 +105,10 @@ namespace MooshakPP.Controllers
         public ActionResult ConnectUser(int? ID)
         {
             if (ID == null)
-            {
+            {   //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
                 ID = 0;
-                ViewBag.selectedCourse = "No course selected";
+                ViewBag.selectedCourse = "No course selected"; //This is not an error message
+                ViewData["error"] = TempData["error"];         //This is an error message, only appears after a post on course.ID == null
             }
             int courseID = Convert.ToInt32(ID);
             //TODO setja course með ID í viewbag, taka úr viewbag í view
@@ -120,8 +121,17 @@ namespace MooshakPP.Controllers
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
         public ActionResult ConnectUser(int? ID, int[] users)
-        {
+        {   //TODO if ID is null, do nothing but return an error message
+            if(ID == null)
+            {
+                TempData["error"] = "No course is selected";
+                ViewBag.errormsg = "No course is selected";
+                return RedirectToAction("ConnectUser");
+            }
 
+            int courseID = Convert.ToInt32(ID);
+            List<int> userIDs = users.ToList();
+            service.AddConnections(courseID, userIDs);
             return RedirectToAction("ConnectUser");
         }
     }

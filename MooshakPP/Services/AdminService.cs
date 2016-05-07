@@ -101,6 +101,15 @@ namespace MooshakPP.Services
             return connections;
         }
 
+        public void AddConnections(int courseID, List<int> userIDs)
+        {
+            foreach (int ID in userIDs)
+            {
+                //add ID to courseID in relation table;
+            }
+            //save
+        }
+
         private List<Course> GetAllCourses()
         {
             var courses = (from course in db.Courses
