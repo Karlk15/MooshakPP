@@ -3,6 +3,10 @@
     ViewBag.Title = "CreateUser";
 }
 
+<div class="row">
+    @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+</div>
+
 @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
@@ -37,7 +41,8 @@
     <div class="col-md-6">
         <h3>Select existing courses</h3>
         
-        
+        @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @id = "coursetableform" }))
+        {
             <div class="courselist">
                 <table>
                     <tbody>
@@ -60,9 +65,9 @@
 
         <hr />
         <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected user</button>
-        
+        }
     </div>
+        
 
-    @Html.ActionLink("Back", "Index", "Admin", new { @class = "btn btn-default backbutton" })
-    
-}
+
+
