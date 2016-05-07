@@ -65,8 +65,8 @@ textarea {
     overflow: auto;
 }
 
-.userlist {
-    height:300px;
+.tablelist {
+    max-height:300px;
     overflow:auto;
 }
 
@@ -90,4 +90,18 @@ textarea {
 
 #teachercheckheader {
     padding-left: 20px;
+}
+
+#dickbutt {
+    line-height: 50%;
+    letter-spacing: 3px;
+}
+
+.highlightWrong {
+    color: white;
+    background-color: #ce2015;
+}
+
+.underline {
+    text-decoration: underline;
 }

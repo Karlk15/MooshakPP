@@ -1,7 +1,186 @@
 ﻿
 @{
-    ViewBag.Title = "ViewDetails";
+    ViewBag.Title = "View details";
 }
 
-<h2>ViewDetails</h2>
+<div class="row">
+    <h2 class="col-md-6">Details</h2>
+    @Html.ActionLink("Back", "Submit", "Student", null, new { @class = "btn btn-primary backbutton" })
+</div>
 
+<div class="row">
+    <div class="text-center">
+        <h3>Your program failed at this point</h3>
+    </div>
+</div>
+
+    <div class="row">
+    <div class="col-md-6">
+        <h3>Input</h3>
+        <div class="tablelist">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>y</td>
+                    </tr>
+                    <tr>
+                        <td>y</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>y</td>
+                    </tr>
+                    <tr>
+                        <td>n</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3 class="underline">Obtained output</h3>
+    </div>
+    <div class="col-md-6">
+        <h3 class="underline">Expected output</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="tablelist">
+        <div class="col-md-6">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Enter the number of cards: 2</td>
+                    </tr>
+                    <tr>
+                        <td>Card 1: 10</td>
+                    </tr>
+                    <tr>
+                        <td>Card 2: 4</td>
+                    </tr>
+                    <tr>
+                        <td class="highlightWrong">Your total score is: 14</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want another card? y</td>
+                    </tr>
+                    <tr>
+                        <td>Card 3: King</td>
+                    </tr>
+                    <tr>
+                        <td>You are busted you dimwit!</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want to play again? y</td>
+                    </tr>
+                    <tr>
+                        <td>Enter the number of cards: 4</td>
+                    </tr>
+                    <tr>
+                        <td>Card 1: Joker</td>
+                    </tr>
+                    <tr>
+                        <td>Card 2: Ace</td>
+                    </tr>
+                    <tr>
+                        <td>Card 3: Ace</td>
+                    </tr>
+                    <tr>
+                        <td>Card 4: 2</td>
+                    </tr>
+                    <tr>
+                        <td>Your total score is: 15</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want another card? y</td>
+                    </tr>
+                    <tr>
+                        <td>Card 5: 6</td>
+                    </tr>
+                    <tr>
+                        <td>Your total score is: 21</td>
+                    </tr>
+                    <tr>
+                        <td>You win dipshit!</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want to play again? n</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <div class="col-md-6">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Enter the number of cards: 2</td>
+                    </tr>
+                    <tr>
+                        <td>Card 1: 10</td>
+                    </tr>
+                    <tr>
+                        <td>Card 2: 4</td>
+                    </tr>
+                    <tr>
+                        <td class="highlightWrong">Your total score is: fx0000ea42</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want another card? y</td>
+                    </tr>
+                    <tr>
+                        <td>Card 3: King</td>
+                    </tr>
+                    <tr>
+                        <td>You are busted you dimwit!</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want to play again? y</td>
+                    </tr>
+                    <tr>
+                        <td>Enter the number of cards: 4</td>
+                    </tr>
+                    <tr>
+                        <td>Card 1: Joker</td>
+                    </tr>
+                    <tr>
+                        <td>Card 2: Ace</td>
+                    </tr>
+                    <tr>
+                        <td>Card 3: Ace</td>
+                    </tr>
+                    <tr>
+                        <td>Card 4: 2</td>
+                    </tr>
+                    <tr>
+                        <td>Your total score is: 15</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want another card? y</td>
+                    </tr>
+                    <tr>
+                        <td>Card 5: 6</td>
+                    </tr>
+                    <tr>
+                        <td>Your total score is: 21</td>
+                    </tr>
+                    <tr>
+                        <td>You win dipshit!</td>
+                    </tr>
+                    <tr>
+                        <td>Do you want to play again? n</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

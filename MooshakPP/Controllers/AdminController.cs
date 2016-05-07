@@ -13,7 +13,6 @@ namespace MooshakPP.Controllers
     public class AdminController : BaseController
     {
         private AdminService service = new AdminService();
-
         
         [HttpGet]
         public ActionResult Index()
@@ -24,7 +23,7 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ManageCourse(int? ID)
         {
-            ManageCourseViewModel model = service.GetCourses();
+            ManageCourseViewModel model = service.ManageCourse();
             ViewBag.selectedCourse = ID;
             return View(model);
         }
@@ -41,16 +40,11 @@ namespace MooshakPP.Controllers
                 if (ID != null)
                 {
                     int courseID = Convert.ToInt32(ID);
-                    List<Course> courses = service.GetCourses().courses;
-                    Course course = (from n in courses
-                                     where n.ID == courseID
-                                     select n).FirstOrDefault();
-                    //if course is default, the ID was not found, should never happen
-                    service.RemoveCourse(course);
+                    service.RemoveCourse(courseID);
                     return RedirectToAction("ManageCourse");
                 }
             }
-            ManageCourseViewModel model = service.GetCourses();
+            ManageCourseViewModel model = service.ManageCourse();
             if (!string.IsNullOrEmpty(newCourse.name))
             {
                 service.CreateCourse(newCourse);
@@ -109,16 +103,48 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ConnectUser(int? ID)
         {
-            AddConnectionsViewModel model = service.AddConnections();
+            if (ID == null)
+            {   //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
+                ID = 0;
+                ViewData["selectedCourse"] = "No course selected"; //This is not an error message
+                ViewData["error"] = TempData["connError"];         //This is an error message, only appears after a POST on course.ID == null
+            }
+
+            int courseID = Convert.ToInt32(ID);
+            AddConnectionsViewModel model = service.GetConnections(courseID);
+            if (ID != null)
+            {
+                foreach (Course course in model.courses)
+                {
+                    if (course.ID == ID)
+                        ViewData["selectedCourse"] = course.name;
+                }
+            }
             return View(model);
         }
 
         //ID is the course.ID
-        //users is a string array of users you are performing an action on
+        //users is an int array of users you are performing an action on
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
-        public ActionResult ConnectUser(int? ID, int[] users)
-        {
+        public ActionResult ConnectUser(int? ID, int[] users, string action)
+        {   //TODO if ID is null, do nothing but return an error message
+            if(ID == null)
+            {
+                TempData["connError"] = "No course is selected";
+                return RedirectToAction("ConnectUser");
+            }
+
+            int courseID = Convert.ToInt32(ID); //int? to int
+            List<int> userIDs = users.ToList(); //int[] to List<int>
+            if (action == "add")
+            {
+                service.AddConnections(courseID, userIDs);
+            }
+            else if (action == "remove")
+            {
+                service.RemoveConnections(courseID, userIDs);
+            }
             return RedirectToAction("ConnectUser");
         }
     }
