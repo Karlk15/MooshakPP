@@ -59,7 +59,8 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult CreateUser()
         {
-            return View();
+            CreateUserViewModel allUsers = service.GetUserViewModel();
+            return View(allUsers);
         }
         /// <summary>
         /// collection[1] seeks 
@@ -94,7 +95,9 @@ namespace MooshakPP.Controllers
                     }
                 }
             }
-            return View();
+
+            CreateUserViewModel newModel = service.GetUserViewModel();
+            return RedirectToAction("CreateUser", newModel);
         }
 
         //ID is the course.ID
