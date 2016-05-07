@@ -15,11 +15,12 @@ namespace MooshakPP.Services
     public class AdminService
     {
         private ApplicationDbContext db;
-        private static IdentityManager manager = new IdentityManager();
+        private static IdentityManager manager;
 
         public AdminService()
         {
             db = new ApplicationDbContext();
+            manager = new IdentityManager();
         }
 
         //GetCourses is a public function, GetAllCourses is private, both provide a list of all courses
