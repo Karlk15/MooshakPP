@@ -28,7 +28,6 @@ namespace MooshakPP.Models
         public DbSet<Milestone> Milestones { get; set; }
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<TestCase> Testcases { get; set; }
-        //public virtual ICollection<UsersInCourse> UsersInCourses { get; set; }
         //public DbSet<UsersInCourse> UsersInCourses { get; set; }
         
 
