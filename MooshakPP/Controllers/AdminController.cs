@@ -137,7 +137,7 @@ namespace MooshakPP.Controllers
         //users is an int array of users you are performing an action on
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
-        public ActionResult ConnectUser(int? ID, int[] users, string action)
+        public ActionResult ConnectUser(int? ID, string[] users, string action)
         {   //TODO if ID is null, do nothing but return an error message
             if(ID == null)
             {
@@ -146,7 +146,7 @@ namespace MooshakPP.Controllers
             }
 
             int courseID = Convert.ToInt32(ID); //int? to int
-            List<int> userIDs = users.ToList(); //int[] to List<int>
+            List<string> userIDs = users.ToList(); //int[] to List<int>
             if (action == "add")
             {
                 service.AddConnections(courseID, userIDs);

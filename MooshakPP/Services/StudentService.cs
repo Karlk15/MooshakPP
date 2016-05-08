@@ -21,17 +21,17 @@ namespace MooshakPP.Services
             return null;
         }
 
-        public SubmissionViewModel Submissions(int userId, int courseId, int assignmentId, int milestoneId)
+        public SubmissionViewModel Submissions(int userId, int milestoneId)
         {
             return null;
         }
 
-        public DescriptionViewModel Description(int userId, int courseId, int assignmentId, int milestoneId)
+        public DescriptionViewModel Description(int milestoneId)
         {
             return null;
         }
 
-        public DetailsViewModel Details(int userId, int courseId, int assignmentId, int milestoneId, int submissionId)
+        public DetailsViewModel Details(int submissionId)
         {
             return null;
         } 
