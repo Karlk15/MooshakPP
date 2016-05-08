@@ -114,10 +114,15 @@ namespace MooshakPP.Controllers
         public ActionResult ConnectUser(int? ID)
         {
             if (ID == null)
-            {   //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
+            {   
+                //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
                 ID = 0;
-                ViewData["selectedCourse"] = "No course selected"; //This is not an error message
-                ViewData["error"] = TempData["connError"];         //This is an error message, only appears after a POST on course.ID == null
+
+                //This is not an error message
+                ViewData["selectedCourse"] = "No course selected";
+
+                //This is an error message, only appears after a POST on course.ID == null
+                ViewData["error"] = TempData["connError"];         
             }
 
             int courseID = Convert.ToInt32(ID);
