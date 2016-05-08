@@ -172,9 +172,21 @@ namespace MooshakPP.Services
 
         private List<ApplicationUser> GetNotConnected(int courseID)
         {
-            var allUsers = GetAllUsers();
-            var connectedUsers = GetConnectedUsers(courseID);
-            var notConnectedUsers = allUsers.Except(connectedUsers).ToList();
+            List<ApplicationUser> allUsers = GetAllUsers();
+            List<ApplicationUser> connectedUsers = GetConnectedUsers(courseID);
+            List<ApplicationUser> notConnectedUsers = new List<ApplicationUser>();
+
+            foreach (ApplicationUser user in allUsers)
+            {
+                if(!connectedUsers.Contains(user))
+                {
+                    notConnectedUsers.Add(user);
+                }
+                else
+                {
+
+                }
+            }
             return notConnectedUsers;
         }
 
