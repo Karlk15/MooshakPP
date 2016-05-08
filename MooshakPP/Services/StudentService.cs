@@ -16,8 +16,12 @@ namespace MooshakPP.Services
             db = new Models.ApplicationDbContext();
         }
 
-        public IndexViewModel Index(int userId, int courseId, int assignmentId)
+        public IndexViewModel Index(string userId, int courseId, int assignmentId)
         {
+            IndexViewModel newIndex = new IndexViewModel();
+            newIndex.studentCourses = GetCourses(userId);
+            newIndex.courseAssignments = GetAssignments(courseId);
+            //newIndex.studentSubmissions = GetSubmissions(userId);
             return null;
         }
 
@@ -41,14 +45,17 @@ namespace MooshakPP.Services
             return true;
         }
 
-        protected List<Course> GetCourses(int userId)
+        protected List<Course> GetCourses(string userId)
         {
-            return null;
+            List<Course> courses = (from c in db.UsersInCourses
+                           where c.userID == userId
+                           select c.course).ToList();
+            return courses;
         }
 
         protected Course GetCourseByID(int courseId)
         {
-            var theCourse = (from c in db.Courses
+            Course theCourse = (from c in db.Courses
                              where c.ID == courseId
                              select c).SingleOrDefault();
             
@@ -57,7 +64,7 @@ namespace MooshakPP.Services
 
         protected List<Assignment> GetAssignments(int courseId)
         {
-            var assignments = (from a in db.Assignments
+            List<Assignment> assignments = (from a in db.Assignments
                                where a.courseID == courseId
                                select a).ToList();
 
@@ -66,7 +73,7 @@ namespace MooshakPP.Services
 
         protected Assignment GetAssignmentByID(int assignmentId)
         {
-            var assignment = (from a in db.Assignments
+            Assignment assignment = (from a in db.Assignments
                               where a.ID == assignmentId
                               select a).FirstOrDefault();
             return assignment;
@@ -74,7 +81,7 @@ namespace MooshakPP.Services
 
         protected List<Milestone> GetMilestones(int assignmentId)
         {
-            var milestones = (from m in db.Milestones
+            List<Milestone> milestones = (from m in db.Milestones
                               where m.assignmentID == assignmentId
                               select m).ToList();
             return milestones;
@@ -82,7 +89,7 @@ namespace MooshakPP.Services
 
         protected Milestone GetMilestoneByID(int milestoneId)
         {
-            var milestone = (from m in db.Milestones
+            Milestone milestone = (from m in db.Milestones
                              where m.ID == milestoneId
                              select m).FirstOrDefault();
             return milestone;
@@ -90,7 +97,7 @@ namespace MooshakPP.Services
 
         protected List<Submission> GetSubmissions(int userId, int milestoneId)
         {
-            var submissions = (from s in db.Submissions
+            List<Submission> submissions = (from s in db.Submissions
                                where s.userID == userId && s.milestoneID == milestoneId
                                select s).ToList();
             return submissions;
@@ -98,7 +105,7 @@ namespace MooshakPP.Services
 
         protected Submission GetSubmissionByID(int submissionId)
         {
-            var submission = (from s in db.Submissions
+            Submission submission = (from s in db.Submissions
                               where s.ID == submissionId
                               select s).FirstOrDefault();
             return submission;
