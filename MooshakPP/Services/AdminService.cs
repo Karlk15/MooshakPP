@@ -46,7 +46,7 @@ namespace MooshakPP.Services
             }
         }
 
-        public void RemoveCourse(int ID)
+        public bool RemoveCourse(int ID)
         {   //could be converted to return bool
             Course course = (from c in GetAllCourses()
                             where c.ID == ID
@@ -55,6 +55,11 @@ namespace MooshakPP.Services
             {
                 db.Courses.Remove(course);
                 db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -122,27 +127,33 @@ namespace MooshakPP.Services
             return connections;
         }
 
-        public void AddConnections(int courseID, List<int> userIDs)
+        public void AddConnections(int courseID, List<string> userIDs)
         {
-            foreach (int ID in userIDs)
-            {/*
-                UsersInCourse entry = new UsersInCourse();
-                entry.courseID = courseID;
-                entry.userID = ID;
-                entry.RoleID = 1;  
-                db.UsersInCourses.Add(entry);
-                */
+            foreach (string ID in userIDs)
+            {
+                if(!IsConnected(courseID, ID))
+                {
+                    UsersInCourse entry = new UsersInCourse();
+                    entry.courseID = courseID;
+                    entry.userID = ID;
+                    db.UsersInCourses.Add(entry);
+                }
             }
-            //db.SaveChanges();
+            db.SaveChanges();
         }
 
-        public void RemoveConnections(int courseID, List<int> userIDs)
+        public void RemoveConnections(int courseID, List<string> userIDs)
         {
-            foreach (int ID in userIDs)
+            foreach (string ID in userIDs)
             {
-                //remove ID from courseID in relation table
+                UsersInCourse connection = GetConnectionByID(courseID, ID);
+                if(connection != null)
+                {
+                    db.UsersInCourses.Remove(connection);
+                    db.SaveChanges();
+                }
+                
             }
-            //save
         }
         private List<Course> GetAllCourses()
         {
@@ -161,9 +172,21 @@ namespace MooshakPP.Services
 
         private List<ApplicationUser> GetNotConnected(int courseID)
         {
-            var notConnectedUsers = (from users in db.UsersInCourses
-                                  where users.courseID != courseID
-                                  select users.user).ToList();
+            List<ApplicationUser> allUsers = GetAllUsers();
+            List<ApplicationUser> connectedUsers = GetConnectedUsers(courseID);
+            List<ApplicationUser> notConnectedUsers = new List<ApplicationUser>();
+
+            foreach (ApplicationUser user in allUsers)
+            {
+                if(!connectedUsers.Contains(user))
+                {
+                    notConnectedUsers.Add(user);
+                }
+                else
+                {
+
+                }
+            }
             return notConnectedUsers;
         }
 
@@ -173,5 +196,23 @@ namespace MooshakPP.Services
             return result;
         }
 
+        private bool IsConnected(int courseID, string userID)
+        {
+            var getConnected = (from user in db.UsersInCourses
+                                where user.userID == userID && user.courseID == courseID
+                                select user).FirstOrDefault();
+            if (getConnected != null)
+                return true;
+            else
+                return false;
+        }
+
+        private UsersInCourse GetConnectionByID(int courseID, string userID)
+        {
+            UsersInCourse connection = (from u in db.UsersInCourses
+                                    where u.courseID == courseID && u.userID == userID
+                                    select u).FirstOrDefault();
+            return connection;
+        }
     }
 }

@@ -114,10 +114,15 @@ namespace MooshakPP.Controllers
         public ActionResult ConnectUser(int? ID)
         {
             if (ID == null)
-            {   //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
+            {   
+                //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
                 ID = 0;
-                ViewData["selectedCourse"] = "No course selected"; //This is not an error message
-                ViewData["error"] = TempData["connError"];         //This is an error message, only appears after a POST on course.ID == null
+
+                //This is not an error message
+                ViewData["selectedCourse"] = "No course selected";
+
+                //This is an error message, only appears after a POST on course.ID == null
+                ViewData["error"] = TempData["connError"];         
             }
 
             int courseID = Convert.ToInt32(ID);
@@ -137,7 +142,7 @@ namespace MooshakPP.Controllers
         //users is an int array of users you are performing an action on
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
-        public ActionResult ConnectUser(int? ID, int[] users, string action)
+        public ActionResult ConnectUser(int? ID, string[] users, string action)
         {   //TODO if ID is null, do nothing but return an error message
             if(ID == null)
             {
@@ -146,7 +151,7 @@ namespace MooshakPP.Controllers
             }
 
             int courseID = Convert.ToInt32(ID); //int? to int
-            List<int> userIDs = users.ToList(); //int[] to List<int>
+            List<string> userIDs = users.ToList(); //int[] to List<int>
             if (action == "add")
             {
                 service.AddConnections(courseID, userIDs);
