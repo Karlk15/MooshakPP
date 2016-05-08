@@ -122,23 +122,21 @@ namespace MooshakPP.Services
             return connections;
         }
 
-        public void AddConnections(int courseID, List<int> userIDs)
+        public void AddConnections(int courseID, List<string> userIDs)
         {
-            foreach (int ID in userIDs)
-            {/*
+            foreach (string ID in userIDs)
+            {
                 UsersInCourse entry = new UsersInCourse();
                 entry.courseID = courseID;
                 entry.userID = ID;
-                entry.RoleID = 1;  
                 db.UsersInCourses.Add(entry);
-                */
             }
-            //db.SaveChanges();
+            db.SaveChanges();
         }
 
-        public void RemoveConnections(int courseID, List<int> userIDs)
+        public void RemoveConnections(int courseID, List<string> userIDs)
         {
-            foreach (int ID in userIDs)
+            foreach (string ID in userIDs)
             {
                 //remove ID from courseID in relation table
             }
@@ -161,9 +159,9 @@ namespace MooshakPP.Services
 
         private List<ApplicationUser> GetNotConnected(int courseID)
         {
-            var notConnectedUsers = (from users in db.UsersInCourses
-                                  where users.courseID != courseID
-                                  select users.user).ToList();
+            var allUsers = GetAllUsers();
+            var connectedUsers = GetConnectedUsers(courseID);
+            var notConnectedUsers = allUsers.Except(connectedUsers).ToList();
             return notConnectedUsers;
         }
 
