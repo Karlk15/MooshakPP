@@ -1,5 +1,4 @@
-﻿
-
+﻿@model MooshakPP.Models.ViewModels.IndexViewModel
 @{
     ViewBag.Title = "Index";
 }
@@ -7,7 +6,10 @@
 
 <div class="collapse" id="collapseExample">
     <div class="well">
-        ...
+        @foreach(var course in Model.studentCourses)
+        {
+            <li>@Html.ActionLink(@course.name, "Index", "student", new { id = course.ID }, null) </li>
+        }
     </div>
 </div>
 
@@ -34,25 +36,23 @@
 }
 
 
-
-<form id="uploadbanner" method="post" action="#">
-    <input id="fileupload" type="file" />
-    <input type="submit" value="submit" id="submit" />
+<form  id="uploadbanner" method="post" action="#">
+    <input  id="fileupload" type="file" />
+    <input  type="submit" value="submit" id="submit" />
 </form>
 
-
-<div class="userlist">
-    <table>
-        <tbody>
-            <tr>
-                <td><input type="checkbox" /><label>Palindromde</label></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" /><label>BankAccount</label></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" /><label>TikTakToe</label></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="userlist">
+        <table>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" /><label>Palindromde</label></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" /><label>BankAccount</label></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" /><label>TikTakToe</label></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
