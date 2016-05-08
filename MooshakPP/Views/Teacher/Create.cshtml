@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-md-6">
-        @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+        @Html.ActionLink("Back", "Index", "Teacher", null, new { @class = "btn btn-primary backbutton" })
     </div>
 </div>
 
@@ -24,7 +24,8 @@
                 <div class="form-group">
                     <input type="hidden" name="courseID" value="@Model.newAssignment.courseID" />
                     @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", placeholder = "Enter assignment name" })
-                    @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control", placeholder = "Enter due date" })
+                    @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "datepicker form-control"})
+                    <input class="form-control datepicker" id="newAssignment_dueDate" name="newAssignment.dueDate" placeholder="Enter assignment name" type="text" value="">
                 </div>
 
                 <div class="form-group">
@@ -36,7 +37,7 @@
 
     <div class="col-md-6">
         <h3>Existing assignments</h3>
-        @using (Html.BeginForm("Create", "Teacher", FormMethod.Post, new { @id = "assignmenttableform" }))
+        @using (Html.BeginForm("Create", "Teacher", FormMethod.Post, new { @class = "interactiveList" }))
         {
             <div class="courselist">
                 <table>
@@ -46,14 +47,7 @@
                             foreach (var assign in Model.assignments)
                             {
                                 <tr>
-                                    @if (assign.ID == @ViewBag.selectedAssignment)
-                                    {
-                                        <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { ID = @assign.ID }, new { @class = "selected" })</td>
-                                    }
-                                    else
-                                    {
-                                        <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { id = @assign.ID }, null)</td >
-                                     }
+                                    <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { id = @assign.ID }, new { @class = "test" })</td >
                                 </tr>
                             }
                         }
@@ -66,3 +60,8 @@
         }
     </div>
 </div>
+
+@section scripts
+{
+    <script src="@Url.Content("~/Scripts/custom.js")"></script>    
+}
