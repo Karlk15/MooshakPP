@@ -23,8 +23,6 @@ namespace MooshakPP.Services
             manager = new IdentityManager();
         }
 
-        //ManageCourse is a public function that calls GetAllCourses to retrieve all courses
-        //in the database. Returns a ViewModel, called by the controller
         public ManageCourseViewModel ManageCourse()
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
@@ -34,10 +32,18 @@ namespace MooshakPP.Services
             return allCourses;
         }
 
-        public void CreateCourse(Course newCourse)
+        public bool CreateCourse(Course newCourse)
         {
-            db.Courses.Add(newCourse);
-            db.SaveChanges();
+            try
+            { 
+                db.Courses.Add(newCourse);
+                db.SaveChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         public void RemoveCourse(int ID)
@@ -60,7 +66,7 @@ namespace MooshakPP.Services
         }
 
         public bool CreateUser(string name, bool isTeacher)
-        {//could be converted to return bool
+        {
 
             if (!manager.UserExists(name))
             {
@@ -111,10 +117,15 @@ namespace MooshakPP.Services
         public void AddConnections(int courseID, List<int> userIDs)
         {
             foreach (int ID in userIDs)
-            {
-                //add ID to courseID in relation table
+            {/*
+                UsersInCourse entry = new UsersInCourse();
+                entry.courseID = courseID;
+                entry.userID = ID;
+                entry.RoleID = 1;  
+                db.UsersInCourses.Add(entry);
+                */
             }
-            //save
+            //db.SaveChanges();
         }
 
         public void RemoveConnections(int courseID, List<int> userIDs)
