@@ -10,6 +10,6 @@ namespace MooshakPP.Models.ViewModels
     {
         public List<ApplicationUser> allUsers { get; set; }
         public bool isTeacher { get; set; }
-        public User newUser { get; set; }
+        public ApplicationUser newUser { get; set; }
     }
 }

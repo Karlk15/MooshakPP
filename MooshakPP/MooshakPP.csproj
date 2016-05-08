@@ -224,9 +224,13 @@
     <Compile Include="Migrations\201605062331445_AddedRelationsTableForUserAndCourse.Designer.cs">
       <DependentUpon>201605062331445_AddedRelationsTableForUserAndCourse.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605071511402_AddedForeignKeys.cs" />
-    <Compile Include="Migrations\201605071511402_AddedForeignKeys.Designer.cs">
-      <DependentUpon>201605071511402_AddedForeignKeys.cs</DependentUpon>
+    <Compile Include="Migrations\201605071730494_UserCourseMigrationTest.cs" />
+    <Compile Include="Migrations\201605071730494_UserCourseMigrationTest.Designer.cs">
+      <DependentUpon>201605071730494_UserCourseMigrationTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605081511020_MigrationIsComplaining.cs" />
+    <Compile Include="Migrations\201605081511020_MigrationIsComplaining.Designer.cs">
+      <DependentUpon>201605081511020_MigrationIsComplaining.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -235,7 +239,6 @@
     <Compile Include="Models\Entities\Milestone.cs" />
     <Compile Include="Models\Entities\Submission.cs" />
     <Compile Include="Models\Entities\TestCase.cs" />
-    <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Entities\UsersInCourse.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -355,8 +358,11 @@
     <EmbeddedResource Include="Migrations\201605062331445_AddedRelationsTableForUserAndCourse.resx">
       <DependentUpon>201605062331445_AddedRelationsTableForUserAndCourse.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605071511402_AddedForeignKeys.resx">
-      <DependentUpon>201605071511402_AddedForeignKeys.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605071730494_UserCourseMigrationTest.resx">
+      <DependentUpon>201605071730494_UserCourseMigrationTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605081511020_MigrationIsComplaining.resx">
+      <DependentUpon>201605081511020_MigrationIsComplaining.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

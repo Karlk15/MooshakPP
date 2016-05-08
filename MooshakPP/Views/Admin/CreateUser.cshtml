@@ -7,12 +7,14 @@
     @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
 </div>
 
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
 @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <div class="col-md-6">
         <h3>Create User</h3>
-        @Html.ValidationSummary("", new { @class = "text-danger" })
+        
         <table>
             <thead>
                 <tr>
@@ -25,7 +27,7 @@
                 @for (int i = 1; i <= 10; i++)
                 {
                     <tr>
-                        <td>@Html.LabelFor(x => x.newUser.email, i + ":")</td>
+                        <td>@Html.LabelFor(x => x.newUser.Email, i + ":")</td>
                         <td><input type="text" name="email" class="form-control" placeholder="example@ru.is"/></td>
                         <td id="teachercheck">@Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher" })</td>
                     </tr>
