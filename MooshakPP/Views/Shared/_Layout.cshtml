@@ -24,12 +24,23 @@
 
             @if (Request.IsAuthenticated)
             {
+
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
                     @Html.AntiForgeryToken()
 
                     <ul class="nav navbar-nav navbar-right">
-                        
+                        @if(User.IsInRole("student") || User.IsInRole("teacher"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Change Class <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Plat Forritun</a></li>
+                                    <li><a href="#">Plat Vefforritun</a></li>
+                                    <li><a href="#">Plat Gagnaskipan</a></li>
+                                </ul>
+                             </li>
+                        }
                             <li>
                                     @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                             </li>
