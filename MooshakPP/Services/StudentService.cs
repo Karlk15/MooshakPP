@@ -95,7 +95,7 @@ namespace MooshakPP.Services
             return milestone;
         }
 
-        protected List<Submission> GetSubmissions(int userId, int milestoneId)
+        protected List<Submission> GetSubmissions(string userId, int milestoneId)
         {
             List<Submission> submissions = (from s in db.Submissions
                                where s.userID == userId && s.milestoneID == milestoneId

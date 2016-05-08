@@ -12,5 +12,6 @@ namespace MooshakPP.Models.Entities
         public int milestoneID { get; set; }
         public string inputUrl { get; set; }
         public string outputUrl { get; set; }
+
     }
 }
