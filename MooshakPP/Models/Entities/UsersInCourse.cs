@@ -14,8 +14,6 @@ namespace MooshakPP.Models.Entities
     
         public int courseID { get; set; }
 
-        public int RoleID { get; set; }
-
         [ForeignKey("userID")]
         public virtual ApplicationUser user { get; set; }
 

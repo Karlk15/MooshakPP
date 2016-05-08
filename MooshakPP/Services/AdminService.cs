@@ -75,31 +75,39 @@ namespace MooshakPP.Services
                 nUser.Email = name;
                 string password = Membership.GeneratePassword(8, 0);
                 nUser.UserName = name;
-                manager.CreateUser(nUser, password);
+                bool result = manager.CreateUser(nUser, password);
 
-                if(isTeacher == true)
+                if (result)
                 {
-                    var teacher = manager.GetUser(nUser.UserName);
-                    if (!manager.UserIsInRole(teacher.Id, "teacher"))
+                    if (isTeacher == true)
                     {
-                        manager.AddUserToRole(teacher.Id, "teacher");
+                        var teacher = manager.GetUser(nUser.UserName);
+                        if (!manager.UserIsInRole(teacher.Id, "teacher"))
+                        {
+                            manager.AddUserToRole(teacher.Id, "teacher");
+                        }
                     }
+                    else
+                    {
+                        var student = manager.GetUser(nUser.UserName);
+                        if (!manager.UserIsInRole(student.Id, "student"))
+                        {
+                            manager.AddUserToRole(student.Id, "student");
+                        }
+                    }
+                    return true;
                 }
                 else
                 {
-                    var student = manager.GetUser(nUser.UserName);
-                    if (!manager.UserIsInRole(student.Id, "student"))
-                    {
-                        manager.AddUserToRole(student.Id, "student");
-                    }
+                    return false;
                 }
-                return true;
             }
             else
             {
                 return false;
             }
-            
+
+
         }
 
         public AddConnectionsViewModel GetConnections(int ID)
@@ -107,8 +115,8 @@ namespace MooshakPP.Services
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
 
             connections.courses = new List<Course>(GetAllCourses());
-            connections.connectedUser = new List<User>(GetConnectedUsers(ID));
-            connections.notConnectedUser = new List<User>(GetNotConnected(ID));
+            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers(ID));
+            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(ID));
 
 
             return connections;
@@ -143,64 +151,20 @@ namespace MooshakPP.Services
             return courses;
         }
 
-        private List<User> GetConnectedUsers(int courseID)
+        private List<ApplicationUser> GetConnectedUsers(int courseID)
         {
-            User tu1 = new User();
-            User tu2 = new User();
-            User tu3 = new User();
-
-            tu1.ID = 1;
-            tu2.ID = 2;
-            tu3.ID = 3;
-
-            tu1.email = "jon15@ru.is";
-            tu2.email = "dickbutt13@ru.is";
-            tu3.email = "stalin<3@ru.is";
-
-            tu1.passwordhash = "thisisapassword";
-            tu2.passwordhash = "thisisalsoapassword";
-            tu3.passwordhash = "thisisnotapassword";
-
-            tu1.securitystamp = "dumdum";
-            tu2.securitystamp = "canttuchthis";
-            tu3.securitystamp = "racecarisapalindrome";
-
-            List<User> tempUsers = new List<User>();
-
-            tempUsers.Add(tu1);
-            tempUsers.Add(tu2);
-            tempUsers.Add(tu3);
-            return tempUsers;
+            var connectedUsers = (from users in db.UsersInCourses
+                                  where users.courseID == courseID
+                                  select users.user).ToList();
+            return connectedUsers;
         }
 
-        private List<User> GetNotConnected(int courseID)
+        private List<ApplicationUser> GetNotConnected(int courseID)
         {
-            User tu1 = new User();
-            User tu2 = new User();
-            User tu3 = new User();
-
-            tu1.ID = 1;
-            tu2.ID = 2;
-            tu3.ID = 3;
-
-            tu1.email = "NCjon15@ru.is";
-            tu2.email = "NCdickbutt13@ru.is";
-            tu3.email = "NCstalin<3@ru.is";
-
-            tu1.passwordhash = "thisisapassword";
-            tu2.passwordhash = "thisisalsoapassword";
-            tu3.passwordhash = "thisisnotapassword";
-
-            tu1.securitystamp = "dumdum";
-            tu2.securitystamp = "canttuchthis";
-            tu3.securitystamp = "racecarisapalindrome";
-
-            List<User> tempUsers = new List<User>();
-
-            tempUsers.Add(tu1);
-            tempUsers.Add(tu2);
-            tempUsers.Add(tu3);
-            return tempUsers;
+            var notConnectedUsers = (from users in db.UsersInCourses
+                                  where users.courseID != courseID
+                                  select users.user).ToList();
+            return notConnectedUsers;
         }
 
         private List<ApplicationUser> GetAllUsers()
