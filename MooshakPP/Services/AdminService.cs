@@ -46,7 +46,7 @@ namespace MooshakPP.Services
             }
         }
 
-        public void RemoveCourse(int ID)
+        public bool RemoveCourse(int ID)
         {   //could be converted to return bool
             Course course = (from c in GetAllCourses()
                             where c.ID == ID
@@ -55,6 +55,11 @@ namespace MooshakPP.Services
             {
                 db.Courses.Remove(course);
                 db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -126,10 +131,13 @@ namespace MooshakPP.Services
         {
             foreach (string ID in userIDs)
             {
-                UsersInCourse entry = new UsersInCourse();
-                entry.courseID = courseID;
-                entry.userID = ID;
-                db.UsersInCourses.Add(entry);
+                if(!IsConnected(courseID, ID))
+                {
+                    UsersInCourse entry = new UsersInCourse();
+                    entry.courseID = courseID;
+                    entry.userID = ID;
+                    db.UsersInCourses.Add(entry);
+                }
             }
             db.SaveChanges();
         }
@@ -138,9 +146,14 @@ namespace MooshakPP.Services
         {
             foreach (string ID in userIDs)
             {
-                //remove ID from courseID in relation table
+                UsersInCourse connection = GetConnectionByID(courseID, ID);
+                if(connection != null)
+                {
+                    db.UsersInCourses.Remove(connection);
+                    db.SaveChanges();
+                }
+                
             }
-            //save
         }
         private List<Course> GetAllCourses()
         {
@@ -171,5 +184,23 @@ namespace MooshakPP.Services
             return result;
         }
 
+        private bool IsConnected(int courseID, string userID)
+        {
+            var getConnected = (from user in db.UsersInCourses
+                                where user.userID == userID && user.courseID == courseID
+                                select user).FirstOrDefault();
+            if (getConnected != null)
+                return true;
+            else
+                return false;
+        }
+
+        private UsersInCourse GetConnectionByID(int courseID, string userID)
+        {
+            UsersInCourse connection = (from u in db.UsersInCourses
+                                    where u.courseID == courseID && u.userID == userID
+                                    select u).FirstOrDefault();
+            return connection;
+        }
     }
 }

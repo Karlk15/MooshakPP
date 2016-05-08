@@ -31,10 +31,14 @@
                     <tbody>
                         @foreach (var item in Model.connectedUser)
                         {
-                            <tr>
-                                <td><input type="checkbox" name=users id="@item.ID" value="@item.ID" /><label for="@item.ID">@item.email</label></td>
-                            </tr>
+                            if (item != null)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name=users id="@item.Id" value="@item.Id" /><label for="@item.Id">@item.Email</label></td>
+                                </tr>
+                            }
                         }
+
                     </tbody>
                 </table>
             </div>
@@ -51,16 +55,19 @@
                     <tbody>
                         @foreach (var item in Model.notConnectedUser)
                         {
-                            <tr>
-                                <td><input type="checkbox" name=users id="n @item.ID" value="@item.ID" /><label for="n @item.ID">@item.email</label> </td>
-                            </tr>
+                            if (item != null)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name=users id="n @item.Id" value="@item.Id" /><label for="n @item.Id">@item.Email</label> </td>
+                                </tr>
+
+                            }
                         }
                     </tbody>
                 </table>
             </div>
             <hr />
             <button name="action" value="add" class="btn btn-default add">Add selected users as students</button>
-            <button name="action" value="addTeacher" class="btn btn-default add">Add selected users as teachers</button>
         }
     </div>
 </div><br />
