@@ -47,7 +47,7 @@ namespace MooshakPP.Services
         }
 
         public bool RemoveCourse(int ID)
-        {   //could be converted to return bool
+        {
             Course course = (from c in GetAllCourses()
                             where c.ID == ID
                             select c).FirstOrDefault();
@@ -64,7 +64,6 @@ namespace MooshakPP.Services
         }
 
         // n represents how many new users can be accepted
-        // ID represents the selected user in the all users list
         public CreateUserViewModel GetUserViewModel(int n)
         {
             CreateUserViewModel newUserView = new CreateUserViewModel();

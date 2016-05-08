@@ -125,7 +125,7 @@ namespace MooshakPP.Controllers
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
         public ActionResult ConnectUser(int? ID, string[] users, string action)
-        {   //TODO if ID is null, do nothing but return an error message
+        {
             if(ID == null)
             {
                 TempData["connError"] = "No course is selected";
@@ -133,7 +133,7 @@ namespace MooshakPP.Controllers
             }
 
             int courseID = Convert.ToInt32(ID); //int? to int
-            List<string> userIDs = users.ToList(); //int[] to List<int>
+            List<string> userIDs = users.ToList(); //string[] to List<string>
             if (action == "add")
             {
                 service.AddConnections(courseID, userIDs);

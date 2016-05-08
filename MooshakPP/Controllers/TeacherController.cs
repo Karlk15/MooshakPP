@@ -22,7 +22,7 @@ namespace MooshakPP.Controllers
 
         //int? id <--- vantar sem parameter í Create, kemur frá dropdown lista í Index view fyrir courseID í assigment
         [HttpGet]
-        public ActionResult Create(int? ID)
+        public ActionResult Create()
         {
 
             //ALL UNCOMMENTED CODE IN THIS ACTION RESULT IS TEMPORARY
@@ -38,8 +38,9 @@ namespace MooshakPP.Controllers
             Course usingThisCourse = service.GetCourseByID(courseID);
 
             //this line is temporary and will be removed when jquery is added
-            ViewBag.selectedAssignment = ID;
+            //ViewBag.selectedAssignment = ID;
 
+            //is used to display the name of the course were createing a assignment for
             ViewBag.selectedCourseName = usingThisCourse.name;
 
             CreateAssignmentViewModel model = service.AddAssignment(courseID);
