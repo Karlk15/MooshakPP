@@ -51,6 +51,13 @@ namespace MooshakPP.DAL
             return idResult.Succeeded;
         }
 
+        public bool RemoveUser(ApplicationUser user)
+        {
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var idResult = um.Delete(user);
+            return idResult.Succeeded;
+        }
+
         public bool AddUserToRole(string userId, string roleName)
         {
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
