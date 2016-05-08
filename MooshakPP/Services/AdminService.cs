@@ -178,13 +178,9 @@ namespace MooshakPP.Services
 
             foreach (ApplicationUser user in allUsers)
             {
-                if(!connectedUsers.Contains(user))
+                if(!connectedUsers.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
                 {
                     notConnectedUsers.Add(user);
-                }
-                else
-                {
-
                 }
             }
             return notConnectedUsers;
