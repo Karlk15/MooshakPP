@@ -4,8 +4,5 @@
         $(this).addClass('selected');
     });
 
-    $(function () {
-        $(".datepicker").datepicker();
-    });
 
 });
