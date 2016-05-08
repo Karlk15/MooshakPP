@@ -26,22 +26,27 @@
 
             @if (Request.IsAuthenticated)
             {
+
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
                     @Html.AntiForgeryToken()
 
                     <ul class="nav navbar-nav navbar-right">
-                        
-                            <li>
-                                    @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                            </li>
+                        @if (User.IsInRole("student") || User.IsInRole("teacher"))
+                        {
+                            <a role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"> ChangeCourse </a>
+                        }
+                        <li>
+                            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                        </li>
                            
-                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                     </ul>
                 }
             }
         </div>
         <div class="m-barborder"></div>
+        
     </div>
     <div class="container body-content">
         @RenderBody()
@@ -65,3 +70,4 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+

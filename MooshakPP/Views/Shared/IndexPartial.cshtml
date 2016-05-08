@@ -1,0 +1,58 @@
+﻿
+
+@{
+    ViewBag.Title = "Index";
+}
+<!--not ready just a setup-->
+
+<div class="collapse" id="collapseExample">
+    <div class="well">
+        ...
+    </div>
+</div>
+
+
+<h2>ClassChoosen</h2>
+
+
+<div class="btn-group">
+        <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+            Forritun<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Plat Lab1</a></li>
+            <li><a href="#">Plat Lab2</a></li>
+            <li><a href="#">Plat Lab3</a></li>
+            <li><a href="#">Plat Assignment1</a></li>
+        </ul>
+</div>
+
+@if (User.IsInRole("teacher"))
+{
+    @Html.ActionLink("Manage assignment", "Create", "Teacher", null, new { @class = "btn btn-default" })
+
+}
+
+
+
+<form id="uploadbanner" method="post" action="#">
+    <input id="fileupload" type="file" />
+    <input type="submit" value="submit" id="submit" />
+</form>
+
+
+<div class="userlist">
+    <table>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" /><label>Palindromde</label></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" /><label>BankAccount</label></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" /><label>TikTakToe</label></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

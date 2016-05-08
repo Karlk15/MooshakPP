@@ -59,54 +59,36 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult CreateUser(int? ID)
         {
-            CreateUserViewModel allUsers = service.GetUserViewModel();
-            ViewBag.selectedUser = ID;
-            return View(allUsers);
+            // 10 is how many new users can be entered
+            CreateUserViewModel model = service.GetUserViewModel(10);
+            ViewData["selectedID"] = ID;
+
+            return View(model);
         }
         /// <summary>
         /// collection[1] seeks 
         /// collection[2] seeks 
         /// </summary>
         [HttpPost]
-        public ActionResult CreateUser(FormCollection collection)
+        public ActionResult CreateUser(CreateUserViewModel collection, string action, string ID)
         {
-            if (ModelState.IsValid)
+            if (action == "delete")
             {
-                string nameList = collection[1];
-                string isTeacherList = collection[2];
-                string[] userName = nameList.Split(',');
-                string[] isTeacher = isTeacherList.Split(',');
-
+                if (!string.IsNullOrEmpty(ID))
+                    service.RemoveUser(ID);
+            }
+            else if (collection.newUsers.Count > 0)
+            {
                 for (int i = 0; i < 10; i++)
                 {
-                    if (userName[i] == "")
+                    if (!string.IsNullOrEmpty(collection.newUsers[i].Email))
                     {
-
-                    }
-                    else
-                    {
-                        if (isTeacher[i] == "true")
-                        {
-                            bool created = service.CreateUser(userName[i], true);
-                            if(!created)
-                            {
-                                ModelState.AddModelError("", "User " + (i + 1) + " already exists");
-                            }
-                        }
-                        else if (isTeacher[i] == "false")
-                        {
-                            bool created = service.CreateUser(userName[i], false);
-                            if (!created)
-                            {
-                                ModelState.AddModelError("", "User " + (i + 1) + " already exists");
-                            }
-                        }
+                        service.CreateUser(collection.newUsers[i].Email, collection.isTeacher[i]);
                     }
                 }
             }
 
-            CreateUserViewModel newModel = service.GetUserViewModel();
-            return RedirectToAction("CreateUser", newModel);
+            return RedirectToAction("CreateUser");
         }
 
         //ID is the course.ID
@@ -143,7 +125,7 @@ namespace MooshakPP.Controllers
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
         public ActionResult ConnectUser(int? ID, string[] users, string action)
-        {   //TODO if ID is null, do nothing but return an error message
+        {
             if(ID == null)
             {
                 TempData["connError"] = "No course is selected";
@@ -151,7 +133,7 @@ namespace MooshakPP.Controllers
             }
 
             int courseID = Convert.ToInt32(ID); //int? to int
-            List<string> userIDs = users.ToList(); //int[] to List<int>
+            List<string> userIDs = users.ToList(); //string[] to List<string>
             if (action == "add")
             {
                 service.AddConnections(courseID, userIDs);

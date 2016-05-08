@@ -24,12 +24,12 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 10; i++)
+                @for (int i = 0; i < Model.newUsers.Count; i++)
                 {
                     <tr>
-                        <td>@Html.LabelFor(x => x.newUser.Email, i + ":")</td>
-                        <td><input type="text" name="email" class="form-control" placeholder="example@ru.is"/></td>
-                        <td id="teachercheck">@Html.CheckBoxFor(x => x.isTeacher, new { @name = "isteacher" })</td>
+                        <td>@Html.LabelFor(x => x.newUsers[i].Email, (i+1) + ":", new { @class = "control-label" })</td>
+                        <td>@Html.TextBoxFor(x => x.newUsers[i].Email, new { @class = "form-control" })</td>
+                        <td class="teachercheck">@Html.CheckBoxFor(x => x.isTeacher[i])</td>
                     </tr>
                 }
 
