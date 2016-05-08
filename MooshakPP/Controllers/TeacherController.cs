@@ -24,10 +24,13 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult Create(int? ID)
         {
+
+            //ALL UNCOMMENTED CODE IN THIS ACTION RESULT IS TEMPORARY
+
             //if (id.HasValue)
             //{
             //int courseID = id.Value;
-            //all uncommented code in this ActionResult is temporary
+
 
             int courseID = 1;
 
