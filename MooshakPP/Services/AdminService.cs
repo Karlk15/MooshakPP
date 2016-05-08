@@ -63,10 +63,19 @@ namespace MooshakPP.Services
             }
         }
 
-        public CreateUserViewModel GetUserViewModel()
+        // n represents how many new users can be accepted
+        // ID represents the selected user in the all users list
+        public CreateUserViewModel GetUserViewModel(int n)
         {
             CreateUserViewModel newUserView = new CreateUserViewModel();
             newUserView.allUsers = GetAllUsers();
+            newUserView.newUsers = new List<ApplicationUser>();
+
+            for (int i = 0; i < n && i >= 0; i++)
+            {
+                newUserView.newUsers.Add(new ApplicationUser());
+            }
+            
             return newUserView;
         }
 
@@ -113,6 +122,16 @@ namespace MooshakPP.Services
             }
 
 
+        }
+
+        // hashed IDs are strings
+        public void RemoveUser(string ID)
+        {
+            ApplicationUser user = (from u in GetAllUsers()
+                                    where u.Id == ID
+                                    select u).FirstOrDefault();
+            if(user != null)
+                manager.RemoveUser(user);
         }
 
         public AddConnectionsViewModel GetConnections(int ID)
