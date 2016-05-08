@@ -10,6 +10,6 @@ namespace MooshakPP.Models.ViewModels
     {
         public List<ApplicationUser> users { get; set; }
         public List<Submission> submissions { get; set; }
-        public IndexViewModel viewModels;
+        public IndexViewModel viewModels { get; set; }
     }
 }

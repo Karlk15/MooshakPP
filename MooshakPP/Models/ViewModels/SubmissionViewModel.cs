@@ -9,6 +9,6 @@ namespace MooshakPP.Models.ViewModels
     public class SubmissionViewModel
     {
         public List<Submission> mySubmissions { get; set;}
-        public IndexViewModel indexView;
+        public IndexViewModel indexView { get; set; }
     }
 }

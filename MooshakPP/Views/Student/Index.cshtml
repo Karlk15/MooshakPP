@@ -1,6 +1,6 @@
-﻿
+﻿@model MooshakPP.Models.ViewModels.IndexViewModel
 @{
     ViewBag.Title = "Index";
 }
 
-@{ Html.RenderPartial("IndexPartial");  }
+@{ Html.RenderPartial("IndexPartial",Model);}

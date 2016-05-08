@@ -8,7 +8,7 @@ namespace MooshakPP.Models.ViewModels
 {
     public class DetailsViewModel
     {
-        List<TestCase> testcases;
-        Submission submission;
+        List<TestCase> testcases { get; set; }
+        Submission submission { get; set; }
     }
 }
