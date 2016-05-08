@@ -41,8 +41,9 @@ namespace MooshakPP.Controllers
                 {
                     int courseID = Convert.ToInt32(ID);
                     service.RemoveCourse(courseID);
-                    return RedirectToAction("ManageCourse");
+                    
                 }
+                return RedirectToAction("ManageCourse");
             }
             ManageCourseViewModel model = service.ManageCourse();
             if (!string.IsNullOrEmpty(newCourse.name))
