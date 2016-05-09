@@ -27,13 +27,22 @@
 
 <div class="col-md-2">
         <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-            Forritun<span class="caret"></span>
+            Assignments in @ViewBag.selectedCourseName
+            
+            <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li><a href="#">Plat Lab1</a></li>
-            <li><a href="#">Plat Lab2</a></li>
-            <li><a href="#">Plat Lab3</a></li>
-            <li><a href="#">Plat Assignment1</a></li>
+            @foreach (var assign in Model.assignments)
+            {
+                if (User.IsInRole("student"))
+                {
+                    <li>@Html.ActionLink(@assign.title, "Index", "Student", new { courseid = assign.courseID, assignmentid = assign.ID }, null)</li>
+                }
+                else if (User.IsInRole("teacher"))
+                {
+                    <li>@Html.ActionLink(@assign.title, "Index", "Teacher", new { courseid = assign.courseID, assignmentid = assign.ID }, null)</li>
+                }
+            }
         </ul>
 </div>
 
@@ -67,7 +76,7 @@
                 </tbody>
             </table>
         </div>
-
+    </div>
 
 <div class="col-lg-10">
     <ul class="nav nav-tabs" role="tablist">
