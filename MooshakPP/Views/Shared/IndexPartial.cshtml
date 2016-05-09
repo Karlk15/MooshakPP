@@ -45,9 +45,9 @@
 </div>
 
 <div class="col-md-6">
-    @using (Html.BeginForm("Submit", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("Submit", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
     {
-        <input id="fileupload" type="file" />
+        <input name="file" type="file" />
         <input type="submit" value="submit" id="submit" class="btn btn-default" />
     }
 </div>

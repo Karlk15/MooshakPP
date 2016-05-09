@@ -60,7 +60,6 @@ namespace MooshakPP.Controllers
         
         }
 
-        //int? courseid, CreateAssignmentViewModel model, int? assignmentid, string action <--inside of parameter
         [HttpPost]
         public ActionResult Create(CreateAssignmentViewModel collection, int? courseID,  int? assignmentID, string action)
         {

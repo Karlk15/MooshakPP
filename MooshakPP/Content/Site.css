@@ -115,6 +115,11 @@ tr .form-control {
 }
 
 .plusbutton {
-    width: 200px; 
-    height: 200px;
+    padding: 30px 37px;
+    font-size: 60px;
+}
+
+.descriptionbox {
+    resize: none;
+    overflow: auto;
 }
