@@ -41,7 +41,7 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create(int? courseID)
+        public ActionResult Create(int? courseID, int? assignmentID)
         {
 
             if(courseID == null)
@@ -77,7 +77,7 @@ namespace MooshakPP.Controllers
                 string tempDueDate = collection["newAssignment.dueDate"];
                 tempDueDate = tempDueDate + " 23:59:59";
                 model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-
+               
 
                 //adding the new assignment to the database through the TeacherService
                 service.CreateAssignment(model);
@@ -123,7 +123,7 @@ namespace MooshakPP.Controllers
         public ActionResult AddMilestones(int assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-            //model = service.
+           
             return View();
         }
 
