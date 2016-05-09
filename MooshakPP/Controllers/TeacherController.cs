@@ -38,10 +38,6 @@ namespace MooshakPP.Controllers
 
             model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
-            Course usingThisCourse = service.GetCourse((int)courseID);
-
-            ViewBag.selectedCourseName = usingThisCourse.name;
-
             return View(model);
         }
 
@@ -54,12 +50,12 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
            
-            Course usingThisCourse = service.GetCourse((int)courseID);
+            if(assignmentID == null)
+            {
+                assignmentID = service.GetFirstAssignment((int)courseID);
+            }
 
-            //is used to display the name of the course were createing a assignment for
-            ViewBag.selectedCourseName = usingThisCourse.name;
-            ViewBag.selectedAssignment = Convert.ToInt32(assignmentID);
-            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
+            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
             return View(model);
         
         }
@@ -71,7 +67,7 @@ namespace MooshakPP.Controllers
 
             if (ModelState.IsValid)
             {
-                
+
                 if (action == "delete")
                 {
                     //TODO
@@ -80,7 +76,7 @@ namespace MooshakPP.Controllers
 
                 //string tempCourseID = collection["courseID"];
                 //model.courseID = Int32.Parse(tempCourseID);
-               
+
                 //model.title = collection["newAssignment.title"];
 
                 //adding a default time to the due date of the assignment and parsing the right format to avoid errors
@@ -93,7 +89,7 @@ namespace MooshakPP.Controllers
                 service.CreateAssignment(newAssignment);
 
                 //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(User.Identity.GetUserId(), newAssignment.courseID);
+                allAssignments = service.AddAssignment(User.Identity.GetUserId(), newAssignment.courseID, newAssignment.ID);
 
                 Course usingThisCourse = service.GetCourse(newAssignment.courseID);
 
@@ -133,7 +129,7 @@ namespace MooshakPP.Controllers
         public ActionResult AddMilestones(int? assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-           
+            
             return View(model);
         }
 

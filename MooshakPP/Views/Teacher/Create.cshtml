@@ -18,11 +18,11 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h2>@ViewBag.selectedCourseName</h2>
+        <h2>@Model.currentCourse.name</h2>
     </div>
 
     <div class="col-md-6">
-        @Html.ActionLink("Back", "Index", "Teacher", null, new { @class = "btn btn-primary backbutton" })
+        @Html.ActionLink("Back", "Index", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-primary backbutton" })
     </div>
 </div>
 
@@ -69,7 +69,7 @@
             </div>
 
             <hr />
-            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { id = @ViewBag.selectedAssignment }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
         }
     </div>
 </div>

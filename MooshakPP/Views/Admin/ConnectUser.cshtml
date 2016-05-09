@@ -9,12 +9,20 @@
     <div class="col-md-offset-2 col-md-4">
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @ViewData["selectedCourse"]<span class="caret"></span>
+                @if (Model.currentCourse != null)
+                {
+                    @Model.currentCourse.name
+                }
+                else
+                {
+                    <span>No course selected</span>
+                }
+                    <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                 @foreach(var course in Model.courses)
                 {
-                    <li>@Html.ActionLink(@course.name, "ConnectUser", "Admin", new { id = course.ID }, null)</li>
+                    <li>@Html.ActionLink(@course.name, "ConnectUser", "Admin", new { courseid = course.ID }, null)</li>
                 }
             </ul>
         </div>

@@ -37,14 +37,7 @@
                         @foreach (var course in Model.courses)
                         {
                             <tr>
-                                @if (course.ID == @ViewBag.selectedCourse)
-                                {
-                                    <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { ID = @course.ID }, new { @class = "selected" })</td>
-                                }
-                                else
-                                {
-                                    <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { ID = @course.ID }, null)</td>
-                                }
+                                <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { courseid = @course.ID }, null)</td>
                             </tr>
                         }
                     </tbody>
@@ -52,7 +45,7 @@
             </div>
 
         <hr />
-        @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { id = @ViewBag.selectedCourse }, new { @class = "btn btn-default" })
+        @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
         <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected course</button>
         }
     </div>

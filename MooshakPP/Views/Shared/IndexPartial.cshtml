@@ -22,14 +22,12 @@
 </div>
 
 
-<h2>@ViewBag.selectedCourseName</h2>
+<h2>@Model.currentCourse.name</h2>
 
 
 <div class="col-md-2">
         <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-            Assignments in @ViewBag.selectedCourseName
-            
-            <span class="caret"></span>
+            Assignments<span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
             @foreach (var assign in Model.assignments)
@@ -57,7 +55,7 @@
 
 @if (User.IsInRole("teacher"))
 {
-    @Html.ActionLink("Manage assignment", "Create", "Teacher", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
 }
 
 <div class="col-md-6">
@@ -65,13 +63,13 @@
             <table>
                 <tbody>
                     <tr>
-                    <td><label>Palindromde</label></td>
+                    <td><label>1 Palindromde</label></td>
                     </tr>
                     <tr>
-                    <td><label>BankAccount</label></td>
+                    <td><label>2 BankAccount</label></td>
                     </tr>
                     <tr>
-                    <td><label>TikTakToe</label></td>
+                    <td><label>3 TikTakToe</label></td>
                     </tr>
                 </tbody>
             </table>
