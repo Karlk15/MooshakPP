@@ -9,7 +9,7 @@
         @foreach (var course in Model.courses)
         {
             {
-                @Html.ActionLink(@course.name, "Create", "Teacher", new { courseid = course.ID }, null)
+                @Html.ActionLink(@course.name, "Create", "Teacher", new { courseid = course.ID }, new { @class="btn btn-default"})
             }
         }
     </div>
@@ -37,7 +37,8 @@
                 <div class="form-group">
                     <input type="hidden" name="courseID" value="@Model.newAssignment.courseID" />
                     @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", placeholder = "Enter assignment name" })
-                    @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control datepicker"})
+                    <!--@Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control datepicker"})-->
+                    <input class="form-control datepicker" data-val="true" id="newAssignment_dueDate" name="newAssignment.dueDate" placeholder="Enter due date" type="text" value="" >
                 </div>
 
                 <div class="form-group">
@@ -59,7 +60,7 @@
                             foreach (var assign in Model.assignments)
                             {
                                 <tr>
-                                    <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { id = @assign.ID })</td >
+                                    <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { courseid = @assign.courseID, assignmentid = @assign.ID}, null)</td >
                                 </tr>
                             }
                         }

@@ -38,6 +38,18 @@ namespace MooshakPP.Services
             db.SaveChanges();
         }
 
+        public CreateMilestoneViewModel AddMilestone(int assId)
+        {
+            CreateMilestoneViewModel model = new CreateMilestoneViewModel();
+            model.milestones = GetMilestones(assId);
+            return model;
+        }
+
+        public bool CreateMilestones(List<Milestone> milestones)
+        {
+            return true;
+        }
+
         /// <summary>
         /// The "new" in this function is to get rid of the "hide inherited" warning
         /// </summary>

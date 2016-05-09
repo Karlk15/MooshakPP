@@ -9,5 +9,6 @@ namespace MooshakPP.Models.ViewModels
     public class CreateMilestoneViewModel
     {
         public List<Milestone> milestones { get; set; }
+        public Milestone newMilestone { get; set; }
     }
 }

@@ -8,3 +8,24 @@
         @Html.ActionLink("Back", "Create", "Teacher", null, new { @class = "btn btn-primary backbutton" })
     </div>
 </div>
+
+
+<div class="col-md-6">
+
+
+    <h2>@ViewBag.selectedCourseName</h2>
+
+
+    <div class="col-md-6">
+        @using (Html.BeginForm("AddMilestones", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.milestones. , new { @class = "form-control", placeholder = "Enter name for part" })
+            </div>
+
+
+        }
+    </div>
+</div>
