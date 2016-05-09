@@ -46,11 +46,7 @@ namespace MooshakPP.Services
             return theCourse;
         }
 
-        public int GetFirstCourse(string userID)
-        {
-            List<Course> courses = base.GetCourses(userID);
-            return courses[0].ID;
-        } 
+        
 
     }
 }

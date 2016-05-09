@@ -47,7 +47,19 @@ namespace MooshakPP.Services
         public bool CreateSubmission(Submission studentSubmission)
         {
             return true;
-        } 
+        }
+
+        public int GetFirstCourse(string userId)
+        {
+            List<Course> courses = GetCourses(userId);
+            return courses[0].ID;
+        }
+
+        public int GetFirstAssignment(int courseId)
+        {
+            List<Assignment> assignments = GetAssignments(courseId);
+            return assignments[0].ID;
+        }
 
         protected List<Course> GetCourses(string userId)
         {
