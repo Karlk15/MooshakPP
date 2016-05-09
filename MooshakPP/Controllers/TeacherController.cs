@@ -60,32 +60,37 @@ namespace MooshakPP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Assignment newAssignment, string action)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
 
             if (ModelState.IsValid)
             {
-                Assignment model = new Assignment();
-                
-                string tempCourseID = collection["courseID"];
-                model.courseID = Int32.Parse(tempCourseID);
 
-                model.title = collection["newAssignment.title"];
+                if (action == "delete")
+                {
+                    //TODO
+                }
+                //Assignment model = new Assignment();
 
-                //adding a default time to the due date of the assignment
-                string tempDueDate = collection["newAssignment.dueDate"];
-                tempDueDate = tempDueDate + " 23:59:59";
-                model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-               
+                //string tempCourseID = collection["courseID"];
+                //model.courseID = Int32.Parse(tempCourseID);
 
+                //model.title = collection["newAssignment.title"];
+
+                //adding a default time to the due date of the assignment and parsing the right format to avoid errors
+                //string tempDueDate = collection["newAssignment.dueDate"];
+                string tempDueDate = newAssignment.dueDate + " 23:59:59";
+                //tempDueDate = tempDueDate + " 23:59:59";
+                //model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                newAssignment.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 //adding the new assignment to the database through the TeacherService
-                service.CreateAssignment(model);
+                service.CreateAssignment(newAssignment);
 
                 //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID);
+                allAssignments = service.AddAssignment(User.Identity.GetUserId(), newAssignment.courseID);
 
-                Course usingThisCourse = service.GetCourse(model.courseID);
+                Course usingThisCourse = service.GetCourse(newAssignment.courseID);
 
                 ViewBag.selectedCourseName = usingThisCourse.name;
 

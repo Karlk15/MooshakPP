@@ -31,14 +31,13 @@ namespace MooshakPP.Controllers
         //The action variable is passed by the button pressed in the view to determine what action was requested 
         //Currently the delete button is the only one who can pass a value, others use actionlinks
         [HttpPost]
-        public ActionResult ManageCourse(Course newCourse, int? ID, string action)
+        public ActionResult ManageCourse(Course newCourse, int? courseID, string action)
         {
             if (action == "delete")
             {
-                if (ID != null)
+                if (courseID != null)
                 {
-                    int courseID = Convert.ToInt32(ID);
-                    service.RemoveCourse(courseID);
+                    service.RemoveCourse((int)courseID);
                     
                 }
                 return RedirectToAction("ManageCourse");
