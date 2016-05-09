@@ -114,6 +114,7 @@ tr .form-control {
     margin: 3px;
 }
 
-#plusbutton {
-    width: 20em;  height: 2em;
+.plusbutton {
+    width: 200px; 
+    height: 200px;
 }

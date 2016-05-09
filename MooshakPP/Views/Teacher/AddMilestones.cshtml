@@ -4,39 +4,45 @@
 }
 
 <div class="row">
-    <div class="col-md-6">
         @Html.ActionLink("Back", "Create", "Teacher", null, new { @class = "btn btn-primary backbutton" })
-    </div>
 </div>
 
 
-<div class="col-md-6">
+    <h2>    </h2>
 
-
-    <h2>@ViewBag.selectedCourseName</h2>
-
-
-    <div class="col-md-6">
-        @using (Html.BeginForm("AddMilestones", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-        
-            <div class="form-group">
-                @Html.TextBoxFor(m => m.newMilestone.name , new { @class = "form-control", placeholder = "Enter name for part" })
+    @using (Html.BeginForm("AddMilestones", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.newMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
+                </div>
             </div>
-
-            <div class="form-group">
-                 @Html.TextAreaFor(n => n.newMilestone.description, new { @class = "form-control", placeholder = "Enter description for part" })
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                @Html.TextAreaFor(n => n.newMilestone.description, new { @class = "form-control", placeholder = "Enter description for part" })
+                </div>
             </div>
-
-            <div class="form-group">
-                @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    <input id="fileupload" type="file" />
-                }
+            <div class="plusbutton">
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
             </div>
-        }
-    </div>
-</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <input id="fileupload" type="file" />
+                    }
+                </div>
+            </div>
+                <div class="plusbutton">
+                    <button type="submit" class="btn btn-primary" value="Done">Done</button>
+                </div>
+            </div>
+    }
+ 
 
-<button type="submit" class="btn btn-primary" id="PlussButton"><span class="glyphicon glyphicon-plus"></span></button>
