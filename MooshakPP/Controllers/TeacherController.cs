@@ -61,40 +61,43 @@ namespace MooshakPP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(CreateAssignmentViewModel collection, int? courseID,  int? assignmentID, string action)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
-
-            if(ModelState.IsValid)
+            Assignment model = new Assignment();
+            if (ModelState.IsValid)
             {
 
-                /*if (action == "delete")
+                if (action == "delete")
                 {
                     if (assignmentID != null)
                     {
-                        service.RemoveAssignment((int)assignmentID);
-
+                        //service.RemoveAssignment((int)assignmentID);
                     }
-                    return RedirectToAction("ManageCourse");
-                }*/
+                    //getting the new list of assignments with the new assignment added ton the database
+                    allAssignments = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)service.GetFirstAssignment((int)courseID));
 
-                Assignment model = new Assignment();
+                }
+                else if (action == "create")
+                {
+                    
 
-                string tempCourseID = collection["courseID"];
-                model.courseID = Int32.Parse(tempCourseID);
+                    model.courseID = (int)courseID;
 
-                model.title = collection["newAssignment.title"];
+                    model.title = collection.newAssignment.title;
 
-                //adding a default time to the due date of the assignment and parsing the right format to avoid errors
-                string tempDueDate = collection["newAssignment.dueDate"];
-                tempDueDate = tempDueDate + " 23:59:59";
-                model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    //adding a default time to the due date of the assignment and parsing the right format to avoid errors
+                    string tempDueDate = collection.due;
+                    tempDueDate = tempDueDate + " 23:59:59";
+                    model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-                //adding the new assignment to the database through the TeacherService
-                service.CreateAssignment(model);
+                    //adding the new assignment to the database through the TeacherService
 
-                //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID, model.ID);
+                    service.CreateAssignment(model);
+
+                    //getting the new list of assignments with the new assignment added ton the database
+                    allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID, model.ID);
+                }
 
                 return RedirectToAction("Create", allAssignments);
             }
