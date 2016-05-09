@@ -57,6 +57,8 @@ namespace MooshakPP.Services
 
             string code;
             string fileName = file.FileName;
+
+            //produce uploaded code
             using (StreamReader sr = new StreamReader(file.InputStream))
             {
                 code = sr.ReadToEnd();
