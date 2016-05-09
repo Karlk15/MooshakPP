@@ -6,8 +6,6 @@
         $(this).addClass('selected');
     });
 
-    $(function () {
-        $('#datepicker').datepicker();
-    });
+    $('.datepicker').datepicker();
 });
 
