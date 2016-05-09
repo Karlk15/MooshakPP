@@ -4,6 +4,7 @@ using MooshakPP.Models.ViewModels;
 using MooshakPP.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -87,8 +88,8 @@ namespace MooshakPP.Controllers
                 //adding a default time to the due date of the assignment
                 string tempDueDate = collection["newAssignment.dueDate"];
                 tempDueDate = tempDueDate + " 23:59:59";
-                model.dueDate = Convert.ToDateTime(tempDueDate);
-               
+                model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
 
                 //adding the new assignment to the database through the TeacherService
                 service.CreateAssignment(model);
@@ -130,7 +131,7 @@ namespace MooshakPP.Controllers
         public ActionResult AddMilestones(int assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-            model = service.
+            //model = service.
             return View();
         }
 
