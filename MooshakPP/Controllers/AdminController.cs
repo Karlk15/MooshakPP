@@ -63,10 +63,7 @@ namespace MooshakPP.Controllers
 
             return View(model);
         }
-        /// <summary>
-        /// collection[1] seeks 
-        /// collection[2] seeks 
-        /// </summary>
+
         [HttpPost]
         public ActionResult CreateUser(CreateUserViewModel collection, string action, string ID)
         {

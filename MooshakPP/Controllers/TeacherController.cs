@@ -45,7 +45,6 @@ namespace MooshakPP.Controllers
             return View(model);
         }
 
-        //int? id <--- vantar sem parameter í Create, kemur frá dropdown lista í Index view fyrir courseID í assigment
         [HttpGet]
         public ActionResult Create(int? courseID, int? assignmentID)
         {
@@ -55,7 +54,6 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
            
-            //getting the selected course name so we can display it in the Create View
             Course usingThisCourse = service.GetCourse((int)courseID);
 
             //is used to display the name of the course were createing a assignment for
@@ -63,8 +61,7 @@ namespace MooshakPP.Controllers
 
             CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
             return View(model);
-            
-            //return View("Error");
+        
         }
 
         [HttpPost]
@@ -92,6 +89,10 @@ namespace MooshakPP.Controllers
 
                 //getting the new list of assignments with the new assignment added ton the database
                 allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID);
+
+                Course usingThisCourse = service.GetCourse(model.courseID);
+
+                ViewBag.selectedCourseName = usingThisCourse.name;
 
                 RedirectToAction("Create", allAssignments);
             }
@@ -127,7 +128,7 @@ namespace MooshakPP.Controllers
         public ActionResult AddMilestones(int assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-           
+            
             return View();
         }
 

@@ -6,12 +6,21 @@ using System.Web;
 
 namespace MooshakPP.Models.Entities
 {
+    public enum result
+    {
+        none = 0,
+        compError,
+        runError,
+        memError,
+        Accepted
+    }
+
     public class Submission
     {
         public int ID { get; set; }
         public string userID{ get; set; }
         public int milestoneID { get; set; }
-        //public enum status { get; set; }
+        public result status { get; set; }
         public string fileURL { get; set; }
     }
 }
