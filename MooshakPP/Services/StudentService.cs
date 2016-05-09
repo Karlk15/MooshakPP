@@ -23,6 +23,7 @@ namespace MooshakPP.Services
             newIndex.assignments = GetAssignments(courseId);
             if(assignmentId != null)
                 newIndex.milestones = GetMilestones((int)assignmentId);
+            newIndex.currentCourse = GetCourseByID(courseId);
             //newIndex.studentSubmissions = GetSubmissions(userId);
             return newIndex;
         }

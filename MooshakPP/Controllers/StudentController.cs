@@ -43,10 +43,6 @@ namespace MooshakPP.Controllers
 
             model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
-            Course usingThisCourse = service.GetCourse((int)courseID);
-
-            ViewBag.selectedCourseName = usingThisCourse.name;
-
             return View(model);
         }
 

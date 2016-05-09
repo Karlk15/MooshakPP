@@ -13,5 +13,8 @@ namespace MooshakPP.Models.ViewModels
         public List<Milestone> milestones { get; set; }
         public List<Submission> submissions { get; set; }
         public Submission newSubmission { get; set; }
+
+        //currently selected
+        public Course currentCourse { get; set; }
     }
 }

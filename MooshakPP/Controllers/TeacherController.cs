@@ -37,11 +37,7 @@ namespace MooshakPP.Controllers
             }
 
             model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
-
-            Course usingThisCourse = service.GetCourse((int)courseID);
-
-            ViewBag.selectedCourseName = usingThisCourse.name;
-
+            
             return View(model);
         }
 
@@ -53,13 +49,13 @@ namespace MooshakPP.Controllers
             {
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
-           
-            Course usingThisCourse = service.GetCourse((int)courseID);
 
-            //is used to display the name of the course were createing a assignment for
-            ViewBag.selectedCourseName = usingThisCourse.name;
+            if(assignmentID == null)
+            {
+                assignmentID = service.GetFirstAssignment((int)courseID);
+            }
 
-            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
+            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
             return View(model);
         
         }
@@ -93,7 +89,7 @@ namespace MooshakPP.Controllers
                 service.CreateAssignment(newAssignment);
 
                 //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(User.Identity.GetUserId(), newAssignment.courseID);
+                allAssignments = service.AddAssignment(User.Identity.GetUserId(), newAssignment.courseID, newAssignment.ID);
 
                 Course usingThisCourse = service.GetCourse(newAssignment.courseID);
 
