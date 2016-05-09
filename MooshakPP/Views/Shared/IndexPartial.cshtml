@@ -11,11 +11,11 @@
         {
             if (User.IsInRole("student"))
             {
-                @Html.ActionLink(@course.name, "Index", "Student", new { courseid = course.ID  }, null) 
+                @Html.ActionLink(@course.name, "Index", "Student", new { courseid = course.ID  }, new { @class="btn btn-default"}) 
             }
             else if (User.IsInRole("teacher"))
             {
-                @Html.ActionLink(@course.name, "Index", "Teacher", new { courseid = course.ID }, null) 
+                @Html.ActionLink(@course.name, "Index", "Teacher", new { courseid = course.ID }, new { @class = "btn btn-default" }) 
             }
         }
     </div>

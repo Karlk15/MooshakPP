@@ -9,7 +9,7 @@
         @foreach (var course in Model.courses)
         {
             {
-                @Html.ActionLink(@course.name, "Create", "Teacher", new { courseid = course.ID }, null)
+                @Html.ActionLink(@course.name, "Create", "Teacher", new { courseid = course.ID }, new { @class="btn btn-default"})
             }
         }
     </div>
