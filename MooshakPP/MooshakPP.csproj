@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201605082121370_ChangedUserIdInSubmissionEntityToAString.Designer.cs">
       <DependentUpon>201605082121370_ChangedUserIdInSubmissionEntityToAString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605091551054_AddedEnumResultToSubmissionsEntity.cs" />
+    <Compile Include="Migrations\201605091551054_AddedEnumResultToSubmissionsEntity.Designer.cs">
+      <DependentUpon>201605091551054_AddedEnumResultToSubmissionsEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Assignment.cs" />
@@ -373,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605082121370_ChangedUserIdInSubmissionEntityToAString.resx">
       <DependentUpon>201605082121370_ChangedUserIdInSubmissionEntityToAString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605091551054_AddedEnumResultToSubmissionsEntity.resx">
+      <DependentUpon>201605091551054_AddedEnumResultToSubmissionsEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
