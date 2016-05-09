@@ -74,6 +74,7 @@ namespace MooshakPP.Controllers
                     {
                         //service.RemoveAssignment((int)assignmentID);
                     }
+                    //getting the new list of assignments with the new assignment added ton the database
                     allAssignments = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)service.GetFirstAssignment((int)courseID));
 
                 }
@@ -93,9 +94,11 @@ namespace MooshakPP.Controllers
                     //adding the new assignment to the database through the TeacherService
 
                     service.CreateAssignment(model);
+
+                    //getting the new list of assignments with the new assignment added ton the database
                     allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID, model.ID);
                 }
-                //getting the new list of assignments with the new assignment added ton the database
+
                 return RedirectToAction("Create", allAssignments);
             }
 
