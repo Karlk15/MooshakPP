@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models;
+﻿using Microsoft.AspNet.Identity;
+using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using System;
@@ -17,10 +18,10 @@ namespace MooshakPP.Services
             db = new ApplicationDbContext();
         }
 
-        public CreateAssignmentViewModel AddAssignment(int courseId)
+        public CreateAssignmentViewModel AddAssignment(string userId, int courseId)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
-
+            allAssignments.courses = GetCourses(userId);
             allAssignments.assignments = new List<Assignment>(base.GetAssignments(courseId));
 
             //created a single assignment for the Post request in the Teacher controller
