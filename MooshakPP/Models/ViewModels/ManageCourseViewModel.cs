@@ -10,5 +10,8 @@ namespace MooshakPP.Models.ViewModels
     {
         public List<Course> courses{ get; set; }
         public Course newCourse { get; set; }
+
+        //currently selected
+        public Course currentCourse { get; set; }
     }
 }
