@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using MooshakPP.Models.ViewModels;
 using MooshakPP.Models.Entities;
+using System.Configuration;
+using System.IO;
+using System.Diagnostics;
+
 
 namespace MooshakPP.Services
 {
@@ -45,11 +49,120 @@ namespace MooshakPP.Services
         public DetailsViewModel Details(int submissionId)
         {
             return null;
-        } 
+        }
 
-        public bool CreateSubmission(Submission studentSubmission)
+        //mileID is milestone ID
+        public bool CreateSubmission(string userID, string userName, int mileID, HttpPostedFileBase file)
         {
+
+            string code;
+            string fileName = file.FileName;
+            using (StreamReader sr = new StreamReader(file.InputStream))
+            {
+                code = sr.ReadToEnd();
+            }
+
+            //Get the submission directory relative location from AppSettings
+            string submissionDir = ConfigurationManager.AppSettings["SubmissionDir"];
+
+            //Make relative path absolute
+            submissionDir = HttpContext.Current.Server.MapPath(submissionDir);
+
+            //Get working directory information
+            //Milestone milestone = GetMilestoneByID(mileID); uncomment me when milestones exist
+
+            //PLACEHOLDER
+            Milestone milestone = new Milestone();
+            milestone.name = "Gagnaskipan";
+            milestone.assignmentID = 2;
+            //END OF PLACEHOLDER
+            Assignment assignment = GetAssignmentByID(milestone.assignmentID);
+            Course course = GetCourseByID(assignment.courseID);
+            List<TestCase> testCases = GetTestCasesByMilestoneID(1); //PLACEHOLDER
+            submissionDir += "\\" +course.name+ "\\" + "\\"+assignment.title+"\\" + "\\"+milestone.name+"\\";
+            
+            string userSubmission = submissionDir + userName + "\\Submission ";
+
+            //Find an unused submission number
+            int i = 1;
+            while (Directory.Exists(userSubmission + i))
+            {
+                i++;
+            }
+            // the "\\" is vital
+            userSubmission += i + "\\";
+
+            Directory.CreateDirectory(userSubmission);
+
+            var workingFolder = userSubmission;
+            var cppFileName = fileName;
+            var exeFilePath = workingFolder + fileName;
+
+            // Write the code to a file, such that the compiler
+            // can find it:
+            System.IO.File.WriteAllText(workingFolder + cppFileName, code);
+
+            var compilerFolder = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\";
+
+
+            Process compiler = new Process();
+            compiler.StartInfo.FileName = "cmd.exe";
+            compiler.StartInfo.WorkingDirectory = workingFolder;
+            compiler.StartInfo.RedirectStandardInput = true;
+            compiler.StartInfo.RedirectStandardOutput = true;
+            compiler.StartInfo.UseShellExecute = false;
+
+            bool failed = false;
+            foreach(TestCase test in testCases)
+            {
+                compiler.Start();
+                compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
+                compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
+                compiler.StandardInput.WriteLine("exit");
+                string output = compiler.StandardOutput.ReadToEnd();
+                compiler.WaitForExit();
+                compiler.Close();
+
+                using (StreamReader sr = new StreamReader(test.outputUrl))
+                {
+                    string expected = sr.ReadToEnd();
+                    if(expected != output)
+                    {
+                        failed = true;
+                    }
+                }
+            }
+
+            //TODO, MAKE SURE CRASHES ARE NOT ACCEPTED, PROBABLY WITH TRY/CATCH
+            Submission submission = new Submission();
+            submission.fileURL = userSubmission;
+            submission.milestoneID = milestone.ID;
+            //not yet rated
+            submission.status = result.none;
+            submission.userID = userID;
+            if(!failed)
+            {
+                submission.status = result.Accepted;
+                db.Submissions.Add(submission);
+                db.SaveChanges();
+            }
+
             return true;
+        }
+
+        public List<TestCase> GetTestCasesByMilestoneID(int milestoneID)
+        {
+            List<TestCase> testCases = (from c in GetTestCases()
+                                        where c.milestoneID == milestoneID
+                                        select c).ToList();
+            return testCases;
+        }
+
+        public List<TestCase> GetTestCases()
+        {
+            List<TestCase> testCases = (from c in db.Testcases
+                                        select c).ToList();
+            return testCases;
         }
 
         public int? GetFirstCourse(string userId)
