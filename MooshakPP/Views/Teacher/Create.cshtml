@@ -69,7 +69,7 @@
             </div>
 
             <hr />
-            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { id = @ViewBag.selectedAssignment }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
             <button name="action" value="delete" class="btn btn-danger ">Delete selected assignment</button>
         }
     </div>
