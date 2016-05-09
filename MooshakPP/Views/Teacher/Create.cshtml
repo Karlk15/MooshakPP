@@ -3,6 +3,19 @@
     ViewBag.Title = "Create";
 }
 
+<div class="collapse collapseExample">
+    <div class="well">
+
+        @foreach (var course in Model.courses)
+        {
+            {
+                @Html.ActionLink(@course.name, "Create", "Teacher", new { courseid = course.ID }, null)
+            }
+        }
+    </div>
+</div>
+
+
 <div class="row">
     <div class="col-md-6">
         <h2>@ViewBag.selectedCourseName</h2>
@@ -24,8 +37,7 @@
                 <div class="form-group">
                     <input type="hidden" name="courseID" value="@Model.newAssignment.courseID" />
                     @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", placeholder = "Enter assignment name" })
-                    @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control"})
-                    <input type="text" id="datepicker" />
+                    @Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control datepicker"})
                 </div>
 
                 <div class="form-group">
