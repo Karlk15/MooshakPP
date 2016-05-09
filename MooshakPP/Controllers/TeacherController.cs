@@ -53,7 +53,7 @@ namespace MooshakPP.Controllers
 
             //is used to display the name of the course were createing a assignment for
             ViewBag.selectedCourseName = usingThisCourse.name;
-
+            ViewBag.selectedAssignment = Convert.ToInt32(assignmentID);
             CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
             return View(model);
         
@@ -120,16 +120,16 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddMilestones(int assignmentID)
+        public ActionResult AddMilestones(int? assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
            
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult AddMilestone(FormCollection collection)
-    {
+        {
             return View();
         }
     }
