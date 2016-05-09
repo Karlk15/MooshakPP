@@ -64,7 +64,7 @@ namespace MooshakPP.Controllers
             //is used to display the name of the course were createing a assignment for
             ViewBag.selectedCourseName = usingThisCourse.name;
 
-            CreateAssignmentViewModel model = service.AddAssignment((int)courseID);
+            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
             return View(model);
             //}
             //return View("Error");
@@ -93,7 +93,7 @@ namespace MooshakPP.Controllers
                 service.CreateAssignment(model);
 
                 //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(model.courseID);
+                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID);
 
                 RedirectToAction("Create", allAssignments);
             }

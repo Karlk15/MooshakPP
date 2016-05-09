@@ -3,6 +3,19 @@
     ViewBag.Title = "Create";
 }
 
+<div class="collapse collapseExample">
+    <div class="well">
+
+        @foreach (var course in Model.courses)
+        {
+            {
+                @Html.ActionLink(@course.name, "Create", "Teacher", new { courseid = course.ID }, null)
+            }
+        }
+    </div>
+</div>
+
+
 <div class="row">
     <div class="col-md-6">
         <h2>@ViewBag.selectedCourseName</h2>
