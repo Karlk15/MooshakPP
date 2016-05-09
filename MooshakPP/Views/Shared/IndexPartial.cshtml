@@ -9,7 +9,7 @@
         
         @foreach (var course in Model.studentCourses)
         {
-            if(User.IsInRole("student"))
+            if (User.IsInRole("student"))
             {
                 @Html.ActionLink(@course.name, "Index", "Student", new { id = course.ID }, null) 
             }
@@ -22,10 +22,10 @@
 </div>
 
 
-<h2>ClassChoosen</h2>
+<h2>Forritun</h2>
 
 
-<div class="btn-group">
+<div class="col-md-2">
         <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
             Forritun<span class="caret"></span>
         </a>
@@ -37,10 +37,17 @@
         </ul>
 </div>
 
+<div class="col-md-6">
+    <form id="uploadbanner" method="post" action="#">
+        <input id="fileupload" type="file" />
+        <input type="submit" value="submit" id="submit" />
+    </form>
+</div>
+
+
 @if (User.IsInRole("teacher"))
 {
     @Html.ActionLink("Manage assignment", "Create", "Teacher", null, new { @class = "btn btn-default" })
-
 }
 
 <div>
@@ -48,20 +55,30 @@
         <input id="fileupload" type="file" />
         <input type="submit" value="submit" id="submit" />
     </form>
+<div>
+
+        <div class="userlist">
+            <table>
+                <tbody>
+                    <tr>
+                    <td><label>Palindromde</label></td>
+                    </tr>
+                    <tr>
+                    <td><label>BankAccount</label></td>
+                    </tr>
+                    <tr>
+                    <td><label>TikTakToe</label></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 </div>
 
-<div class="userlist">
-    <table>
-        <tbody>
-            <tr>
-                <td><input type="checkbox" /><label>Palindromde</label></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" /><label>BankAccount</label></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" /><label>TikTakToe</label></td>
-            </tr>
-        </tbody>
-    </table>
+
+<div class="col-lg-10">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+    </ul>
 </div>
