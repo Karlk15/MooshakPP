@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
 using MooshakPP.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 
 
 namespace MooshakPP.Controllers
@@ -18,30 +19,21 @@ namespace MooshakPP.Controllers
 
         // GET: Student
         [HttpGet]
-        public ActionResult Index(int? ID)
+        public ActionResult Index(int? courseID, int? assignmentID)
         {
             IndexViewModel model = new IndexViewModel();
-            List<Course> courses = new List<Course>();
-            List<Assignment> assignments = new List<Assignment>();
-            List<Submission> submissions = new List<Submission>();
-            Submission newSub = new Submission();
 
-            Course course1 = new Course();
-            course1.ID = 1;
-            course1.name = "gagnaskipan";
+            if (courseID == null)
+            {
+                courseID = service.GetFirstCourse(User.Identity.GetUserId());
+            }
 
-            Course course2 = new Course();
-            course2.ID = 2;
-            course2.name = "vefforritun";
+            if(assignmentID == null)
+            {
+                assignmentID = service.GetFirstAssignment((int)courseID);
+            }
 
-            courses.Add(course1);
-            courses.Add(course2);
-
-            model.courseAssignments = assignments;
-            model.newSubmission = newSub;
-            model.studentCourses = courses;
-            model.studentSubmissions = submissions;
-            
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
            
             return View(model);
         }

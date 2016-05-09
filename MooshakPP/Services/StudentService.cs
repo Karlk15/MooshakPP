@@ -19,20 +19,24 @@ namespace MooshakPP.Services
         public IndexViewModel Index(string userId, int courseId, int assignmentId)
         {
             IndexViewModel newIndex = new IndexViewModel();
-            newIndex.studentCourses = GetCourses(userId);
-            newIndex.courseAssignments = GetAssignments(courseId);
+            newIndex.courses = GetCourses(userId);
+            newIndex.assignments = GetAssignments(courseId);
             //newIndex.studentSubmissions = GetSubmissions(userId);
-            return null;
+            return newIndex;
         }
 
-        public SubmissionViewModel Submissions(int userId, int milestoneId)
+        public SubmissionViewModel Submissions(string userId, int milestoneId)
         {
-            return null;
+            SubmissionViewModel mySubmissions = new SubmissionViewModel();
+            mySubmissions.mySubmissions = GetSubmissions(userId, milestoneId);
+            return mySubmissions;
         }
 
         public DescriptionViewModel Description(int milestoneId)
         {
-            return null;
+            DescriptionViewModel description = new DescriptionViewModel();
+            description.milestone = GetMilestoneByID(milestoneId);
+            return description;
         }
 
         public DetailsViewModel Details(int submissionId)
@@ -43,6 +47,18 @@ namespace MooshakPP.Services
         public bool CreateSubmission(Submission studentSubmission)
         {
             return true;
+        }
+
+        public int GetFirstCourse(string userId)
+        {
+            List<Course> courses = GetCourses(userId);
+            return courses[0].ID;
+        }
+
+        public int GetFirstAssignment(int courseId)
+        {
+            List<Assignment> assignments = GetAssignments(courseId);
+            return assignments[0].ID;
         }
 
         protected List<Course> GetCourses(string userId)
