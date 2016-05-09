@@ -30,15 +30,14 @@
     <div class="col-md-6">
         <h3>Create assignment</h3>
         <div class="col-md-6">
-            @using (Html.BeginForm("Create", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Create", "Teacher", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
 
                 <div class="form-group">
-                    <input type="hidden" name="courseID" value="@Model.newAssignment.courseID" />
                     @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", @placeholder = "Enter assignment name" })
-                    <!--@Html.TextBoxFor(d => d.newAssignment.dueDate, new { @class = "form-control datepicker", @placeholder = "Enter due date" })-->
-                    <input class="form-control datepicker" data-val="true" id="newAssignment_dueDate" name="newAssignment.dueDate" placeholder="Enter due date" type="text" value="" >
+                    <!--@Html.TextBoxFor(d => d.due, new { @class = "form-control datepicker", @placeholder = "Enter due date" })-->
+                    <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="" >
                 </div>
 
                 <div class="form-group">
@@ -50,7 +49,7 @@
 
     <div class="col-md-6">
         <h3>Existing assignments</h3>
-        @using (Html.BeginForm("Create", "Teacher", FormMethod.Post, new { @class = "interactiveList" }))
+        @using (Html.BeginForm("Create", "Teacher", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentAssignment.ID },FormMethod.Post, new { @class = "interactiveList" }))
         {
             <div class="courselist">
                 <table>
@@ -69,7 +68,7 @@
             </div>
 
             <hr />
-            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { id = @ViewBag.selectedAssignment }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
             <button name="action" value="delete" class="btn btn-danger ">Delete selected assignment</button>
         }
     </div>
