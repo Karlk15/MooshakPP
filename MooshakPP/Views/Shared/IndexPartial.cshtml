@@ -26,15 +26,15 @@
 
 
 <div class="col-md-2">
-        <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-            Forritun<span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="#">Plat Lab1</a></li>
-            <li><a href="#">Plat Lab2</a></li>
-            <li><a href="#">Plat Lab3</a></li>
-            <li><a href="#">Plat Assignment1</a></li>
-        </ul>
+    <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+        Forritun<span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="#">Plat Lab1</a></li>
+        <li><a href="#">Plat Lab2</a></li>
+        <li><a href="#">Plat Lab3</a></li>
+        <li><a href="#">Plat Assignment1</a></li>
+    </ul>
 </div>
 
 <div class="col-md-6">
@@ -50,35 +50,29 @@
     @Html.ActionLink("Manage assignment", "Create", "Teacher", null, new { @class = "btn btn-default" })
 }
 
-<div>
-    <form id="uploadbanner" method="post" action="#">
-        <input id="fileupload" type="file" />
-        <input type="submit" value="submit" id="submit" />
-    </form>
-<div>
-
-        <div class="userlist">
-            <table>
-                <tbody>
-                    <tr>
+<div class="col-md-6">
+    <div class="userlist">
+        <table>
+            <tbody>
+                <tr>
                     <td><label>Palindromde</label></td>
-                    </tr>
-                    <tr>
+                </tr>
+                <tr>
                     <td><label>BankAccount</label></td>
-                    </tr>
-                    <tr>
+                </tr>
+                <tr>
                     <td><label>TikTakToe</label></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
-<div class="col-lg-10">
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
-        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
-        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
-    </ul>
-</div>
+    <div class="col-lg-10">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+        </ul>
+    </div>
