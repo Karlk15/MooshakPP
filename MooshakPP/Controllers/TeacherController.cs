@@ -30,7 +30,11 @@ namespace MooshakPP.Controllers
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID); 
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+
+            Course usingThisCourse = service.GetCourse((int)courseID);
+
+            ViewBag.selectedCourseName = usingThisCourse.name;
 
             return View(model);
         }
@@ -52,7 +56,7 @@ namespace MooshakPP.Controllers
             }
            
             //getting the selected course name so we can display it in the Create View
-            Course usingThisCourse = service.GetCourseByID((int)courseID);
+            Course usingThisCourse = service.GetCourse((int)courseID);
 
             //this line is temporary and will be removed when jquery is added
             //ViewBag.selectedAssignment = ID;

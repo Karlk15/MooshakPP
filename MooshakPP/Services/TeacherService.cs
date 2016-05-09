@@ -40,11 +40,7 @@ namespace MooshakPP.Services
         /// <summary>
         /// The "new" in this function is to get rid of the "hide inherited" warning
         /// </summary>
-        public new Course GetCourseByID(int courseID)
-        {
-            Course theCourse = base.GetCourseByID(courseID);
-            return theCourse;
-        }
+        
 
         
 

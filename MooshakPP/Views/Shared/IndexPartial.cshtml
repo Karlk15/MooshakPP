@@ -7,13 +7,13 @@
 <div class="collapse" id="collapseExample">
     <div class="well">
         
-        @foreach (var course in Model.studentCourses)
+        @foreach (var course in Model.courses)
         {
             if (User.IsInRole("student"))
             {
                 @Html.ActionLink(@course.name, "Index", "Student", new { id = course.ID }, null) 
             }
-            if (User.IsInRole("teacher"))
+            else if (User.IsInRole("teacher"))
             {
                 @Html.ActionLink(@course.name, "Index", "Teacher", new { id = course.ID }, null) 
             }
@@ -22,7 +22,7 @@
 </div>
 
 
-<h2>Forritun</h2>
+<h2>@ViewBag.selectedCourseName</h2>
 
 
 <div class="col-md-2">

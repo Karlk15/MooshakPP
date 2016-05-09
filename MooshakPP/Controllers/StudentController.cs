@@ -31,6 +31,10 @@ namespace MooshakPP.Controllers
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
+            Course usingThisCourse = service.GetCourse((int)courseID);
+
+            ViewBag.selectedCourseName = usingThisCourse.name;
+
             model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
            
             return View(model);
