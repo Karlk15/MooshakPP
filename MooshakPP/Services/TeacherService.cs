@@ -32,10 +32,19 @@ namespace MooshakPP.Services
             return allAssignments;
         }
         
-        public void CreateAssignment(Assignment newAssignment)
+        public bool CreateAssignment(Assignment newAssignment)
         {
-            db.Assignments.Add(newAssignment);
-            db.SaveChanges();
+            try
+            {
+                db.Assignments.Add(newAssignment);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
         public CreateMilestoneViewModel AddMilestone(int assId)
@@ -50,12 +59,22 @@ namespace MooshakPP.Services
             return true;
         }
 
-        /// <summary>
-        /// The "new" in this function is to get rid of the "hide inherited" warning
-        /// </summary>
-        
+        public bool RemoveAssignment(int assignmentID)
+        {
+            Assignment assignment = GetAssignmentByID(assignmentID);
+            if (assignment != null)
+            {
+                db.Assignments.Remove(assignment);
+                db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-        
+
 
     }
 }
