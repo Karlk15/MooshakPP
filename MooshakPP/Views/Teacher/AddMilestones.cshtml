@@ -14,16 +14,16 @@
     {
         @Html.AntiForgeryToken()
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     @Html.TextBoxFor(m => m.newMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
-                @Html.TextAreaFor(n => n.newMilestone.description, new { @class = "form-control", placeholder = "Enter description for part" })
+                @Html.TextAreaFor(n => n.newMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
                 </div>
             </div>
             <div class="col-md-6">
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
