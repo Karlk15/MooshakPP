@@ -130,7 +130,7 @@ namespace MooshakPP.Services
                                     where u.Id == ID
                                     select u).FirstOrDefault();
             if(user != null)
-                manager.RemoveUser(user);
+                manager.RemoveUser(user);   //FIX ME
         }
 
         public AddConnectionsViewModel GetConnections(int ID)
