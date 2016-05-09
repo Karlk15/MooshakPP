@@ -38,7 +38,7 @@ namespace MooshakPP.Services
             db.SaveChanges();
         }
 
-        public CreateMilestoneViewModel AddMilestone(int courseId, int assId)
+        public CreateMilestoneViewModel AddMilestone(int assId)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
             model.milestones = GetMilestones(assId);
