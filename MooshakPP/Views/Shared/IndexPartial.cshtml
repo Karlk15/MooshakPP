@@ -1,5 +1,4 @@
-﻿
-
+﻿@model MooshakPP.Models.ViewModels.IndexViewModel
 @{
     ViewBag.Title = "Index";
 }
@@ -7,15 +6,26 @@
 
 <div class="collapse" id="collapseExample">
     <div class="well">
-        ...
+        
+        @foreach (var course in Model.studentCourses)
+        {
+            if (User.IsInRole("student"))
+            {
+                @Html.ActionLink(@course.name, "Index", "Student", new { id = course.ID }, null) 
+            }
+            if (User.IsInRole("teacher"))
+            {
+                @Html.ActionLink(@course.name, "Index", "Teacher", new { id = course.ID }, null) 
+            }
+        }
     </div>
 </div>
 
 
-<h2>ClassChoosen</h2>
+<h2>Forritun</h2>
 
 
-<div class="btn-group">
+<div class="col-md-2">
         <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
             Forritun<span class="caret"></span>
         </a>
@@ -27,32 +37,40 @@
         </ul>
 </div>
 
+<div class="col-md-6">
+    <form id="uploadbanner" method="post" action="#">
+        <input id="fileupload" type="file" />
+        <input type="submit" value="submit" id="submit" />
+    </form>
+</div>
+
+
 @if (User.IsInRole("teacher"))
 {
     @Html.ActionLink("Manage assignment", "Create", "Teacher", null, new { @class = "btn btn-default" })
-
 }
-
-
-
-<form id="uploadbanner" method="post" action="Submit">
-    <input id="fileupload" type="file" />
-    <input type="submit" value="submit" id="submit" />
-</form>
-
 
 <div class="userlist">
     <table>
         <tbody>
             <tr>
-                <td><input type="checkbox" /><label>Palindromde</label></td>
+            <td><label>Palindromde</label></td>
             </tr>
             <tr>
-                <td><input type="checkbox" /><label>BankAccount</label></td>
+            <td><label>BankAccount</label></td>
             </tr>
             <tr>
-                <td><input type="checkbox" /><label>TikTakToe</label></td>
+            <td><label>TikTakToe</label></td>
             </tr>
         </tbody>
     </table>
+</div>
+
+
+<div class="col-lg-10">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+    </ul>
 </div>
