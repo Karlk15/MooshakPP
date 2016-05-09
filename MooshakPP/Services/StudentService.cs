@@ -61,6 +61,12 @@ namespace MooshakPP.Services
             return assignments[0].ID;
         }
 
+        public Course GetCourse(int courseID)
+        {
+            Course theCourse = GetCourseByID(courseID);
+            return theCourse;
+        }
+
         protected List<Course> GetCourses(string userId)
         {
             List<Course> courses = (from c in db.UsersInCourses

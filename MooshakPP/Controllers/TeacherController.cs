@@ -30,7 +30,11 @@ namespace MooshakPP.Controllers
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID); 
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+
+            Course usingThisCourse = service.GetCourse((int)courseID);
+
+            ViewBag.selectedCourseName = usingThisCourse.name;
 
             return View(model);
         }
@@ -52,7 +56,7 @@ namespace MooshakPP.Controllers
             }
            
             //getting the selected course name so we can display it in the Create View
-            Course usingThisCourse = service.GetCourseByID((int)courseID);
+            Course usingThisCourse = service.GetCourse((int)courseID);
 
             //this line is temporary and will be removed when jquery is added
             //ViewBag.selectedAssignment = ID;
@@ -60,7 +64,7 @@ namespace MooshakPP.Controllers
             //is used to display the name of the course were createing a assignment for
             ViewBag.selectedCourseName = usingThisCourse.name;
 
-            CreateAssignmentViewModel model = service.AddAssignment((int)courseID);
+            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
             return View(model);
             //}
             //return View("Error");
@@ -82,14 +86,15 @@ namespace MooshakPP.Controllers
 
                 //adding a default time to the due date of the assignment
                 string tempDueDate = collection["newAssignment.dueDate"];
-                tempDueDate = tempDueDate + " 23:59:59.42";
+                tempDueDate = tempDueDate + " 23:59:59";
                 model.dueDate = Convert.ToDateTime(tempDueDate);
+               
 
                 //adding the new assignment to the database through the TeacherService
                 service.CreateAssignment(model);
 
                 //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(model.courseID);
+                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID);
 
                 RedirectToAction("Create", allAssignments);
             }
@@ -124,6 +129,8 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult AddMilestones(int assignmentID)
         {
+            CreateMilestoneViewModel model = new CreateMilestoneViewModel();
+            model = service.
             return View();
         }
 
