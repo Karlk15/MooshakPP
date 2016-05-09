@@ -45,6 +45,7 @@ namespace MooshakPP.Services
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
             model.milestones = GetMilestones(assId);
+            model.currentAssignment = GetAssignmentByID(assId);
             return model;
         }
 
