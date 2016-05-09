@@ -94,7 +94,7 @@ namespace MooshakPP.Controllers
                 service.CreateAssignment(model);
 
                 //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID);
+                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID, model.ID);
 
                 return RedirectToAction("Create", allAssignments);
             }
