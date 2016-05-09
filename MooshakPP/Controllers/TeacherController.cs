@@ -17,7 +17,7 @@ namespace MooshakPP.Controllers
         private TeacherService service = new TeacherService();
 
         [HttpGet]
-        public ActionResult Index(int? courseID, int? assignmentID)
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID)
         {
             IndexViewModel model = new IndexViewModel();
 
@@ -31,11 +31,12 @@ namespace MooshakPP.Controllers
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+            if(milestoneID == null)
+            {
+                milestoneID = service.GetFirstMilestone(assignmentID);
+            }
 
-            Course usingThisCourse = service.GetCourse((int)courseID);
-
-            ViewBag.selectedCourseName = usingThisCourse.name;
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
             return View(model);
         }
@@ -49,12 +50,12 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
            
-            Course usingThisCourse = service.GetCourse((int)courseID);
+            if(assignmentID == null)
+            {
+                assignmentID = service.GetFirstAssignment((int)courseID);
+            }
 
-            //is used to display the name of the course were createing a assignment for
-            ViewBag.selectedCourseName = usingThisCourse.name;
-
-            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
+            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
             return View(model);
         
         }
@@ -64,35 +65,41 @@ namespace MooshakPP.Controllers
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
+
+                /*if (action == "delete")
+                {
+                    if (assignmentID != null)
+                    {
+                        service.RemoveAssignment((int)assignmentID);
+
+                    }
+                    return RedirectToAction("ManageCourse");
+                }*/
+
                 Assignment model = new Assignment();
-                
+
                 string tempCourseID = collection["courseID"];
                 model.courseID = Int32.Parse(tempCourseID);
 
                 model.title = collection["newAssignment.title"];
 
-                //adding a default time to the due date of the assignment
+                //adding a default time to the due date of the assignment and parsing the right format to avoid errors
                 string tempDueDate = collection["newAssignment.dueDate"];
                 tempDueDate = tempDueDate + " 23:59:59";
                 model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-               
 
                 //adding the new assignment to the database through the TeacherService
                 service.CreateAssignment(model);
 
                 //getting the new list of assignments with the new assignment added ton the database
-                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID);
+                allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID, model.ID);
 
-                Course usingThisCourse = service.GetCourse(model.courseID);
-
-                ViewBag.selectedCourseName = usingThisCourse.name;
-
-                RedirectToAction("Create", allAssignments);
+                return RedirectToAction("Create", allAssignments);
             }
 
-            return View(allAssignments);
+            return View("Error");
         }
 
         [HttpPost]
@@ -120,11 +127,11 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddMilestones(int assignmentID)
+        public ActionResult AddMilestones(int? assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-            
-            return View();
+            model = service.AddMilestone((int)assignmentID);
+            return View(model);
         }
 
         [HttpPost]

@@ -18,11 +18,14 @@ namespace MooshakPP.Services
             db = new ApplicationDbContext();
         }
 
-        public CreateAssignmentViewModel AddAssignment(string userId, int courseId)
+        public CreateAssignmentViewModel AddAssignment(string userId, int courseId, int assignmentId)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
             allAssignments.courses = GetCourses(userId);
             allAssignments.assignments = new List<Assignment>(base.GetAssignments(courseId));
+            allAssignments.currentCourse = GetCourseByID(courseId);
+            allAssignments.currentAssignment = GetAssignmentByID(assignmentId);
+            
 
             //created a single assignment for the Post request in the Teacher controller
             //so now we have a courseID for our new assignment
@@ -32,16 +35,26 @@ namespace MooshakPP.Services
             return allAssignments;
         }
         
-        public void CreateAssignment(Assignment newAssignment)
+        public bool CreateAssignment(Assignment newAssignment)
         {
-            db.Assignments.Add(newAssignment);
-            db.SaveChanges();
+            try
+            {
+                db.Assignments.Add(newAssignment);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
         public CreateMilestoneViewModel AddMilestone(int assId)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
             model.milestones = GetMilestones(assId);
+            model.currentAssignment = GetAssignmentByID(assId);
             return model;
         }
 
@@ -50,12 +63,22 @@ namespace MooshakPP.Services
             return true;
         }
 
-        /// <summary>
-        /// The "new" in this function is to get rid of the "hide inherited" warning
-        /// </summary>
-        
+        public bool RemoveAssignment(int assignmentID)
+        {
+            Assignment assignment = GetAssignmentByID(assignmentID);
+            if (assignment != null)
+            {
+                db.Assignments.Remove(assignment);
+                db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-        
+
 
     }
 }

@@ -10,7 +10,11 @@ namespace MooshakPP.Models.ViewModels
     {
         public List<Course> courses { get; set; }
         public List<Assignment> assignments { get; set; }
+        public List<Milestone> milestones { get; set; }
         public List<Submission> submissions { get; set; }
         public Submission newSubmission { get; set; }
+
+        //currently selected
+        public Course currentCourse { get; set; }
     }
 }

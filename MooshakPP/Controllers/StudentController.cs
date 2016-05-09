@@ -17,7 +17,7 @@ namespace MooshakPP.Controllers
 
         // GET: Student
         [HttpGet]
-        public ActionResult Index(int? courseID, int? assignmentID)
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID)
         {
             IndexViewModel model = new IndexViewModel();
 
@@ -31,11 +31,12 @@ namespace MooshakPP.Controllers
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            Course usingThisCourse = service.GetCourse((int)courseID);
+            if (milestoneID == null)
+            {
+                milestoneID = service.GetFirstMilestone((int)assignmentID);
+            }
 
-            ViewBag.selectedCourseName = usingThisCourse.name;
-
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
             return View(model);
         }
