@@ -33,10 +33,10 @@ namespace MooshakPP.Controllers
 
             if(milestoneID == null)
             {
-                milestoneID = service.GetFirstMilestone((int)assignmentID);
+                milestoneID = service.GetFirstMilestone(assignmentID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID/*, (int)milestoneID*/);
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
             Course usingThisCourse = service.GetCourse((int)courseID);
 
