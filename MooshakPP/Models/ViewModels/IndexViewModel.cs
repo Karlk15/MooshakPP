@@ -8,9 +8,9 @@ namespace MooshakPP.Models.ViewModels
 {
     public class IndexViewModel
     {
-        public List<Course> studentCourses;
-        public List<Assignment> courseAssignments;
-        public List<Submission> studentSubmissions;
-        public Submission newSubmission;
+        public List<Course> studentCourses { get; set; }
+        public List<Assignment> courseAssignments { get; set; }
+        public List<Submission> studentSubmissions { get; set; }
+        public Submission newSubmission { get; set; }
     }
 }

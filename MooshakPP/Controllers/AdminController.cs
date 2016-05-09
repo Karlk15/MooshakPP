@@ -28,8 +28,6 @@ namespace MooshakPP.Controllers
             return View(model);
         }
 
-
-
         //The action variable is passed by the button pressed in the view to determine what action was requested 
         //Currently the delete button is the only one who can pass a value, others use actionlinks
         [HttpPost]
