@@ -51,9 +51,9 @@ namespace MooshakPP.Services
 
         public int? GetFirstCourse(string userId)
         {
-            if (GetCourses(userId) != null)
+            List<Course> courses = GetCourses(userId);
+            if (courses != null)
             {
-                List<Course> courses = GetCourses(userId);
                 return courses[0].ID;
             }
             return null;
@@ -61,9 +61,9 @@ namespace MooshakPP.Services
 
         public int? GetFirstAssignment(int courseId)
         {
-            if (GetAssignments(courseId) != null)
+            List<Assignment> assignments = GetAssignments(courseId);
+            if (assignments.Count != 0)
             {
-                List<Assignment> assignments = GetAssignments(courseId);
                 return assignments[0].ID;
             }
             return null;
