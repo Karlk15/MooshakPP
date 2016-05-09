@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
 using MooshakPP.Models.ViewModels;
+using Microsoft.AspNet.Identity;
+
 
 namespace MooshakPP.Controllers
 {
@@ -16,30 +19,25 @@ namespace MooshakPP.Controllers
 
         // GET: Student
         [HttpGet]
-        public ActionResult Index(int? ID)
+        public ActionResult Index(int? courseID, int? assignmentID)
         {
             IndexViewModel model = new IndexViewModel();
-            List<Course> courses = new List<Course>();
-            List<Assignment> assignments = new List<Assignment>();
-            List<Submission> submissions = new List<Submission>();
-            Submission newSub = new Submission();
 
-            Course course1 = new Course();
-            course1.ID = 1;
-            course1.name = "gagnaskipan";
+            if (courseID == null)
+            {
+                courseID = service.GetFirstCourse(User.Identity.GetUserId());
+            }
 
-            Course course2 = new Course();
-            course2.ID = 2;
-            course2.name = "vefforritun";
+            if(assignmentID == null)
+            {
+                assignmentID = service.GetFirstAssignment((int)courseID);
+            }
 
-            courses.Add(course1);
-            courses.Add(course2);
+            Course usingThisCourse = service.GetCourse((int)courseID);
 
-            model.courseAssignments = assignments;
-            model.newSubmission = newSub;
-            model.studentCourses = courses;
-            model.studentSubmissions = submissions;
-            
+            ViewBag.selectedCourseName = usingThisCourse.name;
+
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
            
             return View(model);
         }
@@ -47,7 +45,48 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult Submit(FormCollection collection)
         {
-            return View();
+            //placeholder code
+            var code = "#include <iostream>\n" +
+                    "using namespace std;\n" +
+                    "int main()\n" +
+                    "{\n" +
+                    "cout << \"Hello world\" << endl;\n" +
+                    "cout << \"The output should contain two lines\" << endl;\n" +
+                    "return 0;\n" +
+                    "}";
+
+            // Set up our working folder, and the file names/paths.
+            // In this example, this is all hardcoded, but in a
+            // real life scenario, there should probably be individual
+            // folders for each user/assignment/milestone.
+            var workingFolder = "C:\\Temp\\Mooshak2Code\\";
+            var cppFileName = "Hello.cpp";
+            var exeFilePath = workingFolder + "Hello.exe";
+
+            // Write the code to a file, such that the compiler
+            // can find it:
+            System.IO.File.WriteAllText(workingFolder + cppFileName, code);
+
+            // In this case, we use the C++ compiler (cl.exe) which ships
+            // with Visual Studio. It is located in this folder:
+            var compilerFolder = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\";
+
+
+            Process compiler = new Process();
+            compiler.StartInfo.FileName = "cmd.exe";
+            compiler.StartInfo.WorkingDirectory = workingFolder;
+            compiler.StartInfo.RedirectStandardInput = true;
+            compiler.StartInfo.RedirectStandardOutput = true;
+            compiler.StartInfo.UseShellExecute = false;
+
+            compiler.Start();
+            compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
+            compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
+            compiler.StandardInput.WriteLine("exit");
+            string output = compiler.StandardOutput.ReadToEnd();
+            compiler.WaitForExit();
+            compiler.Close();
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
