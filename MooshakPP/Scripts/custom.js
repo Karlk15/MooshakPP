@@ -1,8 +1,13 @@
 ﻿$(document).ready(function () {
 
-    $('.interactiveList a.test').click(function (e) {
+    $('.interactiveList a').click(function (e) {
+
+        $('selected').removeClass('selected');
         $(this).addClass('selected');
     });
 
-
+    $(function () {
+        $('#datepicker').datepicker();
+    });
 });
+
