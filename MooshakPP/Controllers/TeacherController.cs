@@ -130,7 +130,7 @@ namespace MooshakPP.Controllers
         public ActionResult AddMilestones(int assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-            model = service.
+            
             return View();
         }
 
