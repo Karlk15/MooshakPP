@@ -26,8 +26,10 @@
                 @Html.TextAreaFor(n => n.newMilestone.description, new { @class = "form-control", placeholder = "Enter description for part" })
                 </div>
             </div>
-            <div class="plusbutton">
-                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+            <div class="col-md-6">
+                <div class="plusbutton">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -39,10 +41,12 @@
                     }
                 </div>
             </div>
+            <div class="col-md-6">
                 <div class="plusbutton">
                     <button type="submit" class="btn btn-primary" value="Done">Done</button>
                 </div>
             </div>
+        </div>
     }
  
 
