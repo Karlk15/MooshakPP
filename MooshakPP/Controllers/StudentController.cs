@@ -8,6 +8,9 @@ using System.Web.Mvc;
 using System.Diagnostics;
 using MooshakPP.Models.ViewModels;
 using Microsoft.AspNet.Identity;
+// move following to service when service is ready
+using System.Configuration;
+using System.IO;
 
 
 namespace MooshakPP.Controllers
@@ -19,7 +22,7 @@ namespace MooshakPP.Controllers
 
         // GET: Student
         [HttpGet]
-        public ActionResult Index(int? courseID, int? assignmentID)
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID)
         {
             IndexViewModel model = new IndexViewModel();
 
@@ -33,14 +36,20 @@ namespace MooshakPP.Controllers
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
+            if (milestoneID == null)
+            {
+                milestoneID = service.GetFirstMilestone((int)assignmentID);
+            }
+
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID/*, (int)milestoneID*/);
+
             Course usingThisCourse = service.GetCourse((int)courseID);
 
             ViewBag.selectedCourseName = usingThisCourse.name;
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
-           
             return View(model);
         }
+
 
         [HttpPost]
         public ActionResult Submit(FormCollection collection)
@@ -57,9 +66,26 @@ namespace MooshakPP.Controllers
 
             // Set up our working folder, and the file names/paths.
             // In this example, this is all hardcoded, but in a
-            // real life scenario, there should probably be individual
-            // folders for each user/assignment/milestone.
-            var workingFolder = "C:\\Temp\\Mooshak2Code\\";
+            string submissionDir = ConfigurationManager.AppSettings["SubmissionDir"];
+            //Make relative path absolute
+            submissionDir = HttpContext.Server.MapPath(submissionDir);
+            //Add working directory
+            submissionDir += "\\Forritun\\" + "\\Assignment 1\\" + "\\Milestone 1\\";
+            string userSubmission = submissionDir + User.Identity.GetUserName() + "\\Submission ";
+
+            int i = 1;
+            while (Directory.Exists(userSubmission + i))
+            {
+                i++;
+            }
+            // the "\\" is vital
+            userSubmission += i + "\\";
+
+            
+
+            Directory.CreateDirectory(userSubmission);
+
+            var workingFolder = userSubmission;
             var cppFileName = "Hello.cpp";
             var exeFilePath = workingFolder + "Hello.exe";
 
