@@ -1,4 +1,5 @@
-﻿using MooshakPP.Models.Entities;
+﻿using Microsoft.AspNet.Identity;
+using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using MooshakPP.Services;
 using System;
@@ -22,7 +23,7 @@ namespace MooshakPP.Controllers
 
         //int? id <--- vantar sem parameter í Create, kemur frá dropdown lista í Index view fyrir courseID í assigment
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int? courseID)
         {
 
             //ALL UNCOMMENTED CODE IN THIS ACTION RESULT IS TEMPORARY
@@ -31,11 +32,13 @@ namespace MooshakPP.Controllers
             //{
             //int courseID = id.Value;
 
-
-            int courseID = 1;
-
+            if(courseID == null)
+            {
+                courseID = service.GetFirstCourse(User.Identity.GetUserId());
+            }
+           
             //getting the selected course name so we can display it in the Create View
-            Course usingThisCourse = service.GetCourseByID(courseID);
+            Course usingThisCourse = service.GetCourseByID((int)courseID);
 
             //this line is temporary and will be removed when jquery is added
             //ViewBag.selectedAssignment = ID;
@@ -43,7 +46,7 @@ namespace MooshakPP.Controllers
             //is used to display the name of the course were createing a assignment for
             ViewBag.selectedCourseName = usingThisCourse.name;
 
-            CreateAssignmentViewModel model = service.AddAssignment(courseID);
+            CreateAssignmentViewModel model = service.AddAssignment((int)courseID);
             return View(model);
             //}
             //return View("Error");

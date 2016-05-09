@@ -43,7 +43,7 @@ namespace MooshakPP.Services
         public bool CreateSubmission(Submission studentSubmission)
         {
             return true;
-        }
+        } 
 
         protected List<Course> GetCourses(string userId)
         {
