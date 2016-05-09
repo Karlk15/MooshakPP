@@ -20,12 +20,23 @@
         @using (Html.BeginForm("AddMilestones", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
-
+        
             <div class="form-group">
-                @Html.TextBoxFor(m => m.milestones. , new { @class = "form-control", placeholder = "Enter name for part" })
+                @Html.TextBoxFor(m => m.newMilestone.name , new { @class = "form-control", placeholder = "Enter name for part" })
             </div>
 
+            <div class="form-group">
+                 @Html.TextAreaFor(n => n.newMilestone.description, new { @class = "form-control", placeholder = "Enter description for part" })
+            </div>
 
+            <div class="form-group">
+                @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <input id="fileupload" type="file" />
+                }
+            </div>
         }
     </div>
 </div>
+
+<button type="submit" class="btn btn-primary" id="PlussButton"><span class="glyphicon glyphicon-plus"></span></button>
