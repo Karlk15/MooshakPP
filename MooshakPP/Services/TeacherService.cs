@@ -50,11 +50,23 @@ namespace MooshakPP.Services
 
         }
 
-        public CreateMilestoneViewModel AddMilestone(int assId)
+        public CreateMilestoneViewModel AddMilestone(int assId, int? currMilestoneId)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
             model.milestones = GetMilestones(assId);
+            if(currMilestoneId == null)
+            {
+                model.currentMilestone = new Milestone();
+                model.currentMilestone.assignmentID = 8; // assId;
+            }
+            else
+            {
+                model.currentMilestone = (from Milestone m in model.milestones
+                                          where m.ID == currMilestoneId
+                                          select m).FirstOrDefault();
+            }
             model.currentAssignment = GetAssignmentByID(assId);
+            
             return model;
         }
 
@@ -77,8 +89,5 @@ namespace MooshakPP.Services
                 return false;
             }
         }
-
-
-
     }
 }
