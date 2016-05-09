@@ -23,11 +23,12 @@ namespace MooshakPP.Services
             manager = new IdentityManager();
         }
 
-        public ManageCourseViewModel ManageCourse()
+        public ManageCourseViewModel ManageCourse(int courseId)
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
             allCourses.courses = new List<Course>(GetAllCourses());
+            allCourses.currentCourse = GetCourseByID(courseId);
 
             return allCourses;
         }
@@ -133,14 +134,14 @@ namespace MooshakPP.Services
                 manager.RemoveUser(user);   //FIX ME
         }
 
-        public AddConnectionsViewModel GetConnections(int ID)
+        public AddConnectionsViewModel GetConnections(int courseID)
         {
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
 
             connections.courses = new List<Course>(GetAllCourses());
-            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers(ID));
-            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(ID));
-
+            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers(courseID));
+            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(courseID));
+            connections.currentCourse = GetCourseByID(courseID);
 
             return connections;
         }
@@ -173,11 +174,27 @@ namespace MooshakPP.Services
                 
             }
         }
+
+        public Course GetFirstCourse()
+        {
+            List<Course> allCourses = GetAllCourses();
+            return allCourses[0];
+        }
+
         private List<Course> GetAllCourses()
         {
             var courses = (from course in db.Courses
                            select course).ToList();
             return courses;
+        }
+
+        private Course GetCourseByID(int courseId)
+        {
+            Course theCourse = (from c in db.Courses
+                                where c.ID == courseId
+                                select c).SingleOrDefault();
+
+            return theCourse;
         }
 
         private List<ApplicationUser> GetConnectedUsers(int courseID)

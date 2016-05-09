@@ -33,14 +33,10 @@ namespace MooshakPP.Controllers
 
             if(milestoneID == null)
             {
-                milestoneID = service.GetFirstMilestone((int)assignmentID);
+                milestoneID = service.GetFirstMilestone(assignmentID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID/*, (int)milestoneID*/);
-
-            Course usingThisCourse = service.GetCourse((int)courseID);
-
-            ViewBag.selectedCourseName = usingThisCourse.name;
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
             return View(model);
         }
@@ -54,12 +50,12 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
            
-            Course usingThisCourse = service.GetCourse((int)courseID);
+            if(assignmentID == null)
+            {
+                assignmentID = service.GetFirstAssignment((int)courseID);
+            }
 
-            //is used to display the name of the course were createing a assignment for
-            ViewBag.selectedCourseName = usingThisCourse.name;
-
-            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID);
+            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
             return View(model);
         
         }
@@ -131,11 +127,11 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddMilestones(int assignmentID)
+        public ActionResult AddMilestones(int? assignmentID)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-            
-            return View();
+            model = service.AddMilestone((int)assignmentID);
+            return View(model);
         }
 
         [HttpPost]

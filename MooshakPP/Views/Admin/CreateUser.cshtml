@@ -54,14 +54,7 @@
                         @foreach (var user in Model.allUsers)
                         {
                             <tr>
-                                @if (user.Id == @ViewBag.selectedUser)
-                                {
-                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { ID = @user.Id }, new { @class = "selected" })</td>
-                                }
-                                else
-                                {
-                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { ID = @user.Id }, null)</td>
-                                }
+                                <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { userid = @user.Id }, null)</td>
                             </tr>
                         }
                     </tbody>

@@ -3668,6 +3668,7 @@ textarea.input-group-lg > .form-control,
 textarea.input-group-lg > .input-group-addon,
 textarea.input-group-lg > .input-group-btn > .btn {
   height: auto;
+  resize: none;
 }
 
 .input-group-sm > .form-control,

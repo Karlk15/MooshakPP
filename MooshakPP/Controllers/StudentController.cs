@@ -41,11 +41,7 @@ namespace MooshakPP.Controllers
                 milestoneID = service.GetFirstMilestone((int)assignmentID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID/*, (int)milestoneID*/);
-
-            Course usingThisCourse = service.GetCourse((int)courseID);
-
-            ViewBag.selectedCourseName = usingThisCourse.name;
+            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
             return View(model);
         }
