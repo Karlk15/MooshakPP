@@ -128,6 +128,8 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult AddMilestones(int assignmentID)
         {
+            CreateMilestoneViewModel model = new CreateMilestoneViewModel();
+            model = service.
             return View();
         }
 
