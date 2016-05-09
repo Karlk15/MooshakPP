@@ -20,6 +20,16 @@ namespace MooshakPP.Controllers
         {
             IndexViewModel model = new IndexViewModel();
 
+            if (courseID == null)
+            {
+                courseID = service.GetFirstCourse(User.Identity.GetUserId());
+            }
+
+            if (assignmentID == null)
+            {
+                assignmentID = service.GetFirstAssignment((int)courseID);
+            }
+
             model = service.Index(User.Identity.GetUserId(), (int)courseID, (int)assignmentID); 
 
             return View(model);
