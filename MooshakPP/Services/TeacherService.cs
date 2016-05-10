@@ -65,9 +65,18 @@ namespace MooshakPP.Services
             return model;
         }
 
-        public bool CreateMilestones(List<Milestone> milestones)
+        public bool CreateMilestones(Milestone milestone)
         {
-            return true;
+            if(milestone != null)
+            {
+                db.Milestones.Add(milestone);
+                db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool RemoveAssignment(int assignmentID)

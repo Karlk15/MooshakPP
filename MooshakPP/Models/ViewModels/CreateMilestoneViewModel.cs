@@ -10,6 +10,7 @@ namespace MooshakPP.Models.ViewModels
     {
         public List<Milestone> milestones { get; set; }
         public Milestone currentMilestone { get; set; }
+        public Milestone newMilestone { get; set; }
 
         //currently selected
         public Assignment currentAssignment { get; set; }
