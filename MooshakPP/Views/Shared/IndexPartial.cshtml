@@ -40,7 +40,15 @@ else
 
 <div class="col-md-2">
         <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-            Assignments<span class="caret"></span>
+            @if(Model.currentAssignment == null)
+            {
+                <span>Assignments</span>
+            }
+            else
+            {
+                @Model.currentAssignment.title
+            }
+            <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
             @if (Model.assignments != null)
@@ -80,7 +88,18 @@ else
 <div class="col-md-6">
         @if (Model.milestones != null && Model.currentMilestone != null)
         {
-            using (Html.BeginForm("IndexPartial", "Shared", new { assignID = Model.currentAssignment.ID, milestoneID = (int?)Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+            //checks if the logged in user is a teacher or student
+            string role;
+            if(User.IsInRole("teacher"))
+            {
+                role = "teacher";
+            }
+            else
+            {
+                role = "student";
+            }
+
+            using (Html.BeginForm("Index", role, new { assignID = Model.currentAssignment.ID, milestoneID = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
             {
                 <div class="courselist">
                     <table>
@@ -90,7 +109,7 @@ else
                                 foreach (var m in Model.milestones)
                                 {
                                     <tr>
-                                        <td>@Html.ActionLink(@m.name, "DescriptionPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                        <td>@Html.ActionLink(@m.name, "Index", role, new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
                                     </tr>
                                 }
                             }
