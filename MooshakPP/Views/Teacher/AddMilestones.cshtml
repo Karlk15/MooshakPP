@@ -10,41 +10,59 @@
 
     <h2>@Model.currentAssignment.title</h2>
 
+
     @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
 
-        </div>
-            <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
-                </div>
+            
+        <div class="col-md-1">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
-                </div>
+
+            <div class="form-group">
+            @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
             </div>
-            <div class="col-md-6">
-                <button type="submit" class="plusbutton btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+
+            <button type="submit" class="plusbutton btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+
+            <div class="form-group">
+                @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <input id="fileupload" type="file" />
+                }
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        <input id="fileupload" type="file" />
-                    }
-                </div>
-            </div>
-            <div class="col-md-6">
-                <button type="submit" class="btn btn-primary" value="Done">Done</button>
-            </div>
+
+            <button type="submit" class="btn btn-primary" value="Done">Done</button>
         </div>
     }
  
+
+<div class="col-md-6">
+
+    <h2>Milestones in @Model.currentAssignment.title</h2>
+
+    @if (Model.currentMilestone != null)
+    {
+        using (Html.BeginForm("AddMilestones", "Teacher", new { assignID = Model.currentAssignment.ID, milestoneID = (int?)Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+        {
+            <div class="courselist">
+                <table>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var m in Model.milestones)
+                            {
+                                <tr>
+                                    <td>@Html.ActionLink(@m.name , "AddMilestones", "Teacher", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+</div>
 
