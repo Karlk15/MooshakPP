@@ -6,6 +6,7 @@ using MooshakPP.Models.ViewModels;
 using MooshakPP.Models.Entities;
 using System.Configuration;
 using System.IO;
+using System.IO.Compression;
 using System.Diagnostics;
 
 
@@ -57,6 +58,7 @@ namespace MooshakPP.Services
         //mileID is milestone ID
         public bool CreateSubmission(string userID, string userName, int mileID, HttpPostedFileBase file)
         {
+            unpackZip("C:\test.zip");
 
             string code;
             string fileName = file.FileName;
@@ -107,7 +109,7 @@ namespace MooshakPP.Services
             // can find it:
             System.IO.File.WriteAllText(workingFolder + cppFileName, code);
 
-            var compilerFolder = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\";
+            var compilerFolder = ConfigurationManager.AppSettings["compilerFolder"];
 
 
             Process compiler = new Process();
@@ -128,6 +130,7 @@ namespace MooshakPP.Services
                 compiler.WaitForExit();
                 compiler.Close();
 
+                //Read the expected output of current test case
                 using (StreamReader sr = new StreamReader(test.outputUrl))
                 {
                     string expected = sr.ReadToEnd();
@@ -145,9 +148,18 @@ namespace MooshakPP.Services
             //not yet rated
             submission.status = result.none;
             submission.userID = userID;
-            if(!failed)
+            if(testCases.Count > 0)
             {
-                submission.status = result.Accepted;
+                if (!failed)
+                {
+                    submission.status = result.Accepted;
+
+                }
+                else
+                {
+                    submission.status = result.wrongAnswer;
+                }
+                //save submission
                 db.Submissions.Add(submission);
                 db.SaveChanges();
             }
@@ -195,10 +207,7 @@ namespace MooshakPP.Services
             if(assignmentId != null)
             {
                 List<Milestone> milestones = GetMilestones((int)assignmentId);
-                if (milestones.Count != 0)
-                {
-                    return milestones[0].ID;
-                }
+                return milestones.FirstOrDefault().ID;
             }
             return null;
         }
@@ -207,6 +216,15 @@ namespace MooshakPP.Services
         {
             Course theCourse = GetCourseByID(courseID);
             return theCourse;
+        }
+
+        public bool unpackZip(string zipPath)
+        {
+            string extractPath = @"c:\example\extract";
+            
+            ZipFile.ExtractToDirectory(zipPath, extractPath);
+            return true;
+
         }
 
         protected List<Course> GetCourses(string userId)
@@ -274,7 +292,5 @@ namespace MooshakPP.Services
                               select s).FirstOrDefault();
             return submission;
         }
-
-        
     }
 }
