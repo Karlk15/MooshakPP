@@ -72,8 +72,9 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewDescription()
+        public ActionResult ViewDescription(int milestoneId)
         {
+            DescriptionViewModel model = new DescriptionViewModel();
             return View();
         }
     }

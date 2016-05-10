@@ -13,12 +13,15 @@ namespace MooshakPP.Services
 {
     public class AdminService
     {
-        private ApplicationDbContext db;
+        //private ApplicationDbContext db;
         private static IdentityManager manager;
+        private readonly IAppDataContext db;
 
-        public AdminService()
+        public AdminService(IAppDataContext context)
         {
-            db = new ApplicationDbContext();
+            //db = new ApplicationDbContext();
+            db = context ?? new ApplicationDbContext();
+             
             manager = new IdentityManager();
         }
 
