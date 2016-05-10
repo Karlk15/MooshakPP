@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using MooshakPP.DAL;
+﻿using MooshakPP.DAL;
+using System.Net.Mail;
 using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
@@ -89,10 +88,10 @@ namespace MooshakPP.Services
                 nUser.Email = name;
                 string password = Membership.GeneratePassword(8, 0);
                 nUser.UserName = name;
-                bool result = manager.CreateUser(nUser, password);
-
-                if (result)
+                bool wasCreated = manager.CreateUser(nUser, password);
+                if (wasCreated)
                 {
+                    SendUserEmail(name, password);
                     if (isTeacher == true)
                     {
                         var teacher = manager.GetUser(nUser.UserName);
@@ -244,6 +243,23 @@ namespace MooshakPP.Services
                                     where u.courseID == courseID && u.userID == userID
                                     select u).FirstOrDefault();
             return connection;
+        }
+
+        private void SendUserEmail(string userEmail, string userPassword)
+        {
+            MailMessage mail = new MailMessage("mooshakpp@gmail.com", userEmail);
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Host = "smtp.gmail.com";
+            mail.Subject = "Mooshak++ login credentials";
+            mail.Body = "You can login with Mooshak++ using the following login information: " + Environment.NewLine
+                        + "\t UserName: " + userEmail + Environment.NewLine
+                        + "\t Password: " + userPassword + "." + Environment.NewLine
+                        + "You can change your password later when logged in. ";
+            client.Credentials = new System.Net.NetworkCredential("mooshakpp@gmail.com", "ArnarErBestur123");
+            client.EnableSsl = true;
+            client.Send(mail);
         }
     }
 }

@@ -18,19 +18,14 @@ namespace MooshakPP.Services
             db = new ApplicationDbContext();
         }
 
-        public CreateAssignmentViewModel AddAssignment(string userID, int courseID, int assignmentID)
+        public CreateAssignmentViewModel AddAssignment(string userID, int courseID, int? assignmentID)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
             allAssignments.courses = GetCourses(userID);
             allAssignments.assignments = new List<Assignment>(GetAssignments(courseID));
             allAssignments.currentCourse = GetCourseByID(courseID);
-            allAssignments.currentAssignment = GetAssignmentByID(assignmentID);
-            
-
-            //created a single assignment for the Post request in the Teacher controller
-            //so now we have a courseID for our new assignment
-            //allAssignments.newAssignment = new Assignment();
-            //allAssignments.newAssignment.courseID = courseID;
+            if(assignmentID != null)
+                allAssignments.currentAssignment = GetAssignmentByID((int)assignmentID);
 
             return allAssignments;
         }
@@ -50,11 +45,23 @@ namespace MooshakPP.Services
 
         }
 
-        public CreateMilestoneViewModel AddMilestone(int assId)
+        public CreateMilestoneViewModel AddMilestone(int assId, int? currMilestoneId)
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
             model.milestones = GetMilestones(assId);
+            if(currMilestoneId == null)
+            {
+                model.currentMilestone = new Milestone();
+                model.currentMilestone.assignmentID = 8; // assId;
+            }
+            else
+            {
+                model.currentMilestone = (from Milestone m in model.milestones
+                                          where m.ID == currMilestoneId
+                                          select m).FirstOrDefault();
+            }
             model.currentAssignment = GetAssignmentByID(assId);
+            
             return model;
         }
 
@@ -77,8 +84,5 @@ namespace MooshakPP.Services
                 return false;
             }
         }
-
-
-
     }
 }

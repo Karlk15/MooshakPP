@@ -78,7 +78,8 @@ namespace MooshakPP.Controllers
                 {
                     if (!string.IsNullOrEmpty(collection.newUsers[i].Email))
                     {
-                        service.CreateUser(collection.newUsers[i].Email, collection.isTeacher[i]);
+                        if(collection.newUsers[i].Email.IndexOf("@") != -1)
+                            service.CreateUser(collection.newUsers[i].Email, collection.isTeacher[i]);
                     }
                 }
             }
