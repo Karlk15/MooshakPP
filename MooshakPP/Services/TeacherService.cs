@@ -79,6 +79,20 @@ namespace MooshakPP.Services
             }
         }
 
+        public bool CreateTestCase(TestCase testcase)
+        {
+            if(testcase != null)
+            {
+                db.Testcases.Add(testcase);
+                db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool RemoveAssignment(int assignmentID)
         {
             Assignment assignment = GetAssignmentByID(assignmentID);

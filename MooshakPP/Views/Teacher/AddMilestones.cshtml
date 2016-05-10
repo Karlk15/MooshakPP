@@ -31,13 +31,17 @@
             </div>
 
             <div class="form-group">
+                <!--<label for="fileupload">Input.zip</label>
+                <input id="fileupload" type="file" />-->
                 <label for="fileupload">Input.zip</label>
-                <input id="fileupload" type="file" />
+                @Html.TextBoxFor(m => m.testCase.inputUrl, new { type = "file" })
             </div>
 
             <div class="form-group">
+                <!--<label for="fileupload2">Output.zip</label>
+                <input id="fileupload2" type="file" />-->
                 <label for="fileupload2">Output.zip</label>
-                <input id="fileupload2" type="file" />
+                @Html.TextBoxFor(o => o.testCase.outputUrl, new { type = "file" })
             </div>
 
             <button type="submit" class="btn btn-primary" value="Done">Done</button>
