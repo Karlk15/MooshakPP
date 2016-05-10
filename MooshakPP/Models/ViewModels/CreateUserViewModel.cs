@@ -11,5 +11,7 @@ namespace MooshakPP.Models.ViewModels
         public List<ApplicationUser> allUsers { get; set; }
         public List<ApplicationUser> newUsers { get; set; }
         public bool[] isTeacher { get; set; }
+
+        public ApplicationUser currentUser { get; set; }
     }
 }
