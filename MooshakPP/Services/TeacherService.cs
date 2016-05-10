@@ -18,19 +18,14 @@ namespace MooshakPP.Services
             db = new ApplicationDbContext();
         }
 
-        public CreateAssignmentViewModel AddAssignment(string userID, int courseID, int assignmentID)
+        public CreateAssignmentViewModel AddAssignment(string userID, int courseID, int? assignmentID)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
             allAssignments.courses = GetCourses(userID);
             allAssignments.assignments = new List<Assignment>(GetAssignments(courseID));
             allAssignments.currentCourse = GetCourseByID(courseID);
-            allAssignments.currentAssignment = GetAssignmentByID(assignmentID);
-            
-
-            //created a single assignment for the Post request in the Teacher controller
-            //so now we have a courseID for our new assignment
-            //allAssignments.newAssignment = new Assignment();
-            //allAssignments.newAssignment.courseID = courseID;
+            if(assignmentID != null)
+                allAssignments.currentAssignment = GetAssignmentByID((int)assignmentID);
 
             return allAssignments;
         }

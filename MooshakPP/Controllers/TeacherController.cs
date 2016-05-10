@@ -55,7 +55,7 @@ namespace MooshakPP.Controllers
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+            CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
             return View(model);
         
         }
@@ -63,7 +63,6 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult Create(CreateAssignmentViewModel collection, int? courseID,  int? assignmentID, string action)
         {
-            CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
             Assignment model = new Assignment();
             if (ModelState.IsValid)
             {
@@ -75,13 +74,11 @@ namespace MooshakPP.Controllers
                         //service.RemoveAssignment((int)assignmentID);
                     }
                     //getting the new list of assignments with the new assignment added ton the database
-                    allAssignments = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, (int)service.GetFirstAssignment((int)courseID));
+                    return RedirectToAction("Create");
 
                 }
-                else if (action == "create")
+                else if (action == "Create")
                 {
-                    
-
                     model.courseID = (int)courseID;
 
                     model.title = collection.newAssignment.title;
@@ -95,11 +92,12 @@ namespace MooshakPP.Controllers
 
                     service.CreateAssignment(model);
 
+                    CreateAssignmentViewModel allAssignments = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, model.ID);
                     //getting the new list of assignments with the new assignment added ton the database
-                    allAssignments = service.AddAssignment(User.Identity.GetUserId(), model.courseID, model.ID);
+                    return RedirectToAction("Create", new { courseid = (int)courseID, assignmentid = model.ID});
                 }
 
-                return RedirectToAction("Create", allAssignments);
+                
             }
 
             return View("Error");
