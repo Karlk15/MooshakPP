@@ -29,7 +29,7 @@
         <h3>All courses</h3>
         <h5>Click a course to select</h5>
         
-        @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @id = "coursetableform" }))
+        @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @class = "interactivelist" }))
         {
             <div class="courselist">
                 <table>
@@ -50,3 +50,8 @@
         }
     </div>
 </div>
+
+@section scripts
+{
+    <script src="@Url.Content("~/Scripts/interactivelist.js")"></script>
+}

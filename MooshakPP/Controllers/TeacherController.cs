@@ -36,7 +36,7 @@ namespace MooshakPP.Controllers
                 milestoneID = service.GetFirstMilestone((int)assignmentID);
             }
 
-                model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
+                model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID, milestoneID);
 
             return View(model);
         }
@@ -189,13 +189,19 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult AddMilestones(CreateMilestoneViewModel model, int? assignmentID)
         {
+            Milestone newMilestone = new Milestone();
 
+            if (ModelState.IsValid)
+            {
+                newMilestone.assignmentID = (int)assignmentID;
+                newMilestone.name = model.currentMilestone.name;
+                newMilestone.description = model.currentMilestone.description;
 
-            //collection.currentAssignment
+                service.CreateMilestone(newMilestone, model.testCaseZip);
 
-
-
-            return RedirectToAction("AddMilestones");
+                return RedirectToAction("AddMilestones", new { assignid = (int)assignmentID, milestoneid = newMilestone.ID });
+            }
+            return View("Error");
         }
     }
 }

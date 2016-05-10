@@ -80,6 +80,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -291,7 +293,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\custom.js" />
+    <Content Include="Scripts\datepicker.js" />
+    <Content Include="Scripts\interactivelist.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -345,14 +348,15 @@
     <Content Include="Views\Admin\ConnectUser.cshtml" />
     <Content Include="Views\Teacher\Create.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
-    <Content Include="Views\Student\Submit.cshtml" />
     <Content Include="Views\Student\ViewDetails.cshtml" />
     <Content Include="Views\Student\ViewSubmission.cshtml" />
-    <Content Include="Views\Student\ViewDescription.cshtml" />
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Shared\IndexPartial.cshtml" />
     <Content Include="Views\Teacher\AddMilestones.cshtml" />
-    <Content Include="Views\Teacher\RecoverAssignments.cshtml" />
+    <Content Include="Views\Shared\DescriptionPartial.cshtml" />
+    <Content Include="Views\Shared\SubmitPartial.cshtml" />
+    <Content Include="Views\Shared\SubmissionsPartial.cshtml" />
+	<Content Include="Views\Teacher\RecoverAssignments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

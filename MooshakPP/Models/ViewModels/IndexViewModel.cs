@@ -16,5 +16,7 @@ namespace MooshakPP.Models.ViewModels
 
         //currently selected
         public Course currentCourse { get; set; }
+        public Assignment currentAssignment { get; set; }
+        public Milestone currentMilestone { get; set; }
     }
 }

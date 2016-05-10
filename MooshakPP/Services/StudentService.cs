@@ -6,6 +6,7 @@ using MooshakPP.Models.ViewModels;
 using MooshakPP.Models.Entities;
 using System.Configuration;
 using System.IO;
+using System.IO.Compression;
 using System.Diagnostics;
 
 
@@ -20,7 +21,7 @@ namespace MooshakPP.Services
             db = new Models.ApplicationDbContext();
         }
 
-        public IndexViewModel Index(string userId, int? courseId, int? assignmentId/*, int milestoneId*/)
+        public IndexViewModel Index(string userId, int? courseId, int? assignmentId, int? milestoneId)
         {
             IndexViewModel newIndex = new IndexViewModel();
             if (courseId != null)
@@ -28,8 +29,14 @@ namespace MooshakPP.Services
                 newIndex.courses = GetCourses(userId);
                 newIndex.assignments = GetAssignments((int)courseId);
                 if (assignmentId != null)
+                {
                     newIndex.milestones = GetMilestones((int)assignmentId);
+                    newIndex.currentAssignment = GetAssignmentByID((int)assignmentId);
+                    if(milestoneId != null)
+                        newIndex.currentMilestone = GetMilestoneByID((int)milestoneId);
+                }
                 newIndex.currentCourse = GetCourseByID((int)courseId);
+                
                 //newIndex.studentSubmissions = GetSubmissions(userId);
             }
             return newIndex;
@@ -79,7 +86,7 @@ namespace MooshakPP.Services
             //PLACEHOLDER
             Milestone milestone = new Milestone();
             milestone.name = "Gagnaskipan";
-            milestone.assignmentID = 2;
+            milestone.assignmentID = 55;
             //END OF PLACEHOLDER
             Assignment assignment = GetAssignmentByID(milestone.assignmentID);
             Course course = GetCourseByID(assignment.courseID);
@@ -107,7 +114,7 @@ namespace MooshakPP.Services
             // can find it:
             System.IO.File.WriteAllText(workingFolder + cppFileName, code);
 
-            var compilerFolder = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\";
+            var compilerFolder = ConfigurationManager.AppSettings["compilerFolder"];
 
 
             Process compiler = new Process();
@@ -128,6 +135,7 @@ namespace MooshakPP.Services
                 compiler.WaitForExit();
                 compiler.Close();
 
+                //Read the expected output of current test case
                 using (StreamReader sr = new StreamReader(test.outputUrl))
                 {
                     string expected = sr.ReadToEnd();
@@ -145,9 +153,18 @@ namespace MooshakPP.Services
             //not yet rated
             submission.status = result.none;
             submission.userID = userID;
-            if(!failed)
+            if(testCases.Count > 0)
             {
-                submission.status = result.Accepted;
+                if (!failed)
+                {
+                    submission.status = result.Accepted;
+
+                }
+                else
+                {
+                    submission.status = result.wrongAnswer;
+                }
+                //save submission
                 db.Submissions.Add(submission);
                 db.SaveChanges();
             }
@@ -168,6 +185,20 @@ namespace MooshakPP.Services
             List<TestCase> testCases = (from c in db.Testcases
                                         select c).ToList();
             return testCases;
+        }
+
+        // Enter a testCaseRoot read from ApplicationManager.config and a milestone and get
+        // the correct subdirectory for your test case
+        public string GetTestCasePath(string testCaseRoot, Milestone milestone)
+        {
+            // Assign subdirectories
+            string assignmentTitle = GetAssignmentByID(milestone.assignmentID).title;
+            string caseDir = testCaseRoot + "\\" + assignmentTitle + "\\" + milestone.name + "\\";
+
+            // Make the path absolute
+            caseDir = HttpContext.Current.Server.MapPath(caseDir);
+            return caseDir;
+
         }
 
         public int? GetFirstCourse(string userId)
@@ -192,12 +223,13 @@ namespace MooshakPP.Services
 
         public int? GetFirstMilestone(int? assignmentId)
         {
-            if(assignmentId != null)
+            if (assignmentId != null)
             {
                 List<Milestone> milestones = GetMilestones((int)assignmentId);
                 if (milestones.Count != 0)
                 {
-                    return milestones[0].ID;
+                    return milestones.FirstOrDefault().ID;
+
                 }
             }
             return null;
@@ -207,6 +239,29 @@ namespace MooshakPP.Services
         {
             Course theCourse = GetCourseByID(courseID);
             return theCourse;
+        }
+
+        public bool unpackZip(string zipPath, string extractPath)
+        {
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // create the subdirectories inside the zip
+                        string newDir = Directory.GetParent(extractPath + "\\" + entry.FullName).FullName;
+                        if (!Directory.Exists(newDir))
+                        {
+                            Directory.CreateDirectory(newDir);
+                        }
+                        // Save the zipped file
+                        entry.ExtractToFile(Path.Combine(extractPath, entry.FullName));
+                    }
+                }
+            }
+            return true;
+
         }
 
         protected List<Course> GetCourses(string userId)
@@ -274,7 +329,5 @@ namespace MooshakPP.Services
                               select s).FirstOrDefault();
             return submission;
         }
-
-        
     }
 }

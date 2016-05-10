@@ -78,27 +78,47 @@ else
 }
 
 <div class="col-md-6">
-        <div class="userlist">
-            <table>
-                <tbody>
-                    <tr>
-                    <td><label>1 Palindromde</label></td>
-                    </tr>
-                    <tr>
-                    <td><label>2 BankAccount</label></td>
-                    </tr>
-                    <tr>
-                    <td><label>3 TikTakToe</label></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        @if (Model.milestones != null && Model.currentMilestone != null)
+        {
+            using (Html.BeginForm("IndexPartial", "Shared", new { assignID = Model.currentAssignment.ID, milestoneID = (int?)Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+            {
+                <div class="courselist">
+                    <table>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var m in Model.milestones)
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(@m.name, "IndexPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
     </div>
 
 <div class="col-lg-10">
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
-        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
-        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+        <li class="active"><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
+        <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
+        <li><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
     </ul>
+
+    <div class="tab-content">
+        <div id="mysubmissions" class="tab-pane fade">
+            @{ Html.RenderPartial("SubmitPartial", Model);}
+        </div>
+        <div id="allsubmissions" class="tab-pane fade">
+            <h3>DickButt</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div id="description" class="tab-pane fade">
+            <h3>Maus</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
 </div>
