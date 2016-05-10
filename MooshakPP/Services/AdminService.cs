@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using MooshakPP.DAL;
+﻿using MooshakPP.DAL;
+using System.Net.Mail;
 using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
@@ -23,12 +22,17 @@ namespace MooshakPP.Services
             manager = new IdentityManager();
         }
 
-        public ManageCourseViewModel ManageCourse(int courseId)
+        public ManageCourseViewModel ManageCourse(int? courseId)
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
             allCourses.courses = new List<Course>(GetAllCourses());
-            allCourses.currentCourse = GetCourseByID(courseId);
+            if(courseId == null)
+            {
+                allCourses.currentCourse = new Course();
+            }
+            else
+                allCourses.currentCourse = GetCourseByID((int)courseId);
 
             return allCourses;
         }
@@ -89,10 +93,10 @@ namespace MooshakPP.Services
                 nUser.Email = name;
                 string password = Membership.GeneratePassword(8, 0);
                 nUser.UserName = name;
-                bool result = manager.CreateUser(nUser, password);
-
-                if (result)
+                bool wasCreated = manager.CreateUser(nUser, password);
+                if (wasCreated)
                 {
+                    SendUserEmail(name, password);
                     if (isTeacher == true)
                     {
                         var teacher = manager.GetUser(nUser.UserName);
@@ -134,14 +138,22 @@ namespace MooshakPP.Services
                 manager.RemoveUser(user);   //FIX ME
         }
 
-        public AddConnectionsViewModel GetConnections(int courseID)
+        public AddConnectionsViewModel GetConnections(int? courseID)
         {
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
 
             connections.courses = new List<Course>(GetAllCourses());
-            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers(courseID));
-            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(courseID));
-            connections.currentCourse = GetCourseByID(courseID);
+            if (courseID == null)
+            {
+                connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(0));
+                connections.connectedUser = new List<ApplicationUser>();
+                connections.currentCourse = new Course();
+                connections.currentCourse.name = "No course selected";
+                return connections;
+            }
+            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers((int)courseID));
+            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected((int)courseID));
+            connections.currentCourse = GetCourseByID((int)courseID);
 
             return connections;
         }
@@ -150,15 +162,16 @@ namespace MooshakPP.Services
         {
             foreach (string ID in userIDs)
             {
-                if(!IsConnected(courseID, ID))
+                if(!IsConnected(courseID, ID) && courseID != 0)
                 {
                     UsersInCourse entry = new UsersInCourse();
                     entry.courseID = courseID;
                     entry.userID = ID;
                     db.UsersInCourses.Add(entry);
+                    db.SaveChanges();
                 }
             }
-            db.SaveChanges();
+            
         }
 
         public void RemoveConnections(int courseID, List<string> userIDs)
@@ -244,6 +257,23 @@ namespace MooshakPP.Services
                                     where u.courseID == courseID && u.userID == userID
                                     select u).FirstOrDefault();
             return connection;
+        }
+
+        private void SendUserEmail(string userEmail, string userPassword)
+        {
+            MailMessage mail = new MailMessage("mooshakpp@gmail.com", userEmail);
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Host = "smtp.gmail.com";
+            mail.Subject = "Mooshak++ login credentials";
+            mail.Body = "You can login with Mooshak++ using the following login information: " + Environment.NewLine
+                        + "\t UserName: " + userEmail + Environment.NewLine
+                        + "\t Password: " + userPassword + "." + Environment.NewLine
+                        + "You can change your password later when logged in. ";
+            client.Credentials = new System.Net.NetworkCredential("mooshakpp@gmail.com", "ArnarErBestur123");
+            client.EnableSsl = true;
+            client.Send(mail);
         }
     }
 }

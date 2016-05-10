@@ -23,11 +23,7 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ManageCourse(int? courseID)
         {
-            if(courseID == null)
-            {
-                courseID = service.GetFirstCourse().ID;
-            }
-            ManageCourseViewModel model = service.ManageCourse((int)courseID);
+            ManageCourseViewModel model = service.ManageCourse(courseID);
             return View(model);
         }
 
@@ -45,13 +41,12 @@ namespace MooshakPP.Controllers
                 }
                 return RedirectToAction("ManageCourse");
             }
-            ManageCourseViewModel model = service.ManageCourse((int)courseID);
+
             if (!string.IsNullOrEmpty(newCourse.name))
             {
                 service.CreateCourse(newCourse);
-                return RedirectToAction("ManageCourse", model);
             }
-            return View(model);
+            return RedirectToAction("ManageCourse");
         }
 
         
@@ -78,7 +73,8 @@ namespace MooshakPP.Controllers
                 {
                     if (!string.IsNullOrEmpty(collection.newUsers[i].Email))
                     {
-                        service.CreateUser(collection.newUsers[i].Email, collection.isTeacher[i]);
+                        if(collection.newUsers[i].Email.IndexOf("@") != -1)
+                            service.CreateUser(collection.newUsers[i].Email, collection.isTeacher[i]);
                     }
                 }
             }
@@ -91,9 +87,6 @@ namespace MooshakPP.Controllers
         {
             if (courseID == null)
             {   
-                //ID is made 0 so the connected user list will be empty but not connected and course lists will still be full
-                courseID = 0;
-
                 //This is not an error message
                 ViewData["selectedCourse"] = "No course selected";
 
@@ -101,7 +94,7 @@ namespace MooshakPP.Controllers
                 ViewData["error"] = TempData["connError"];         
             }
 
-            AddConnectionsViewModel model = service.GetConnections((int)courseID);
+            AddConnectionsViewModel model = service.GetConnections(courseID);
             return View(model);
         }
 
@@ -109,25 +102,24 @@ namespace MooshakPP.Controllers
         //users is an int array of users you are performing an action on
         //action specifies whether you are adding or removing students, defined by which button you pressed
         [HttpPost]
-        public ActionResult ConnectUser(int? ID, string[] users, string action)
+        public ActionResult ConnectUser(int? courseID, string[] users, string action)
         {
-            if(ID == null)
+            if(courseID == null || courseID == 0)
             {
                 TempData["connError"] = "No course is selected";
                 return RedirectToAction("ConnectUser");
             }
 
-            int courseID = Convert.ToInt32(ID); //int? to int
             List<string> userIDs = users.ToList(); //string[] to List<string>
             if (action == "add")
             {
-                service.AddConnections(courseID, userIDs);
+                service.AddConnections((int)courseID, userIDs);
             }
             else if (action == "remove")
             {
-                service.RemoveConnections(courseID, userIDs);
+                service.RemoveConnections((int)courseID, userIDs);
             }
-            return RedirectToAction("ConnectUser");
+            return RedirectToAction("ConnectUser", new { courseid = courseID });
         }
     }
 }

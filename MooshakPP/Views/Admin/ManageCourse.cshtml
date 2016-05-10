@@ -29,7 +29,7 @@
         <h3>All courses</h3>
         <h5>Click a course to select</h5>
         
-        @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @id = "coursetableform" }))
+        @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @id = "coursetableform" }))
         {
             <div class="courselist">
                 <table>
