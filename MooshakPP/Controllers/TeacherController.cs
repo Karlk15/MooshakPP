@@ -157,8 +157,8 @@ namespace MooshakPP.Controllers
             if (ModelState.IsValid)
             {
                 newMilestone.assignmentID = (int)assignmentID;
-                newMilestone.name = model.newMilestone.name;
-                newMilestone.description = model.newMilestone.description;
+                newMilestone.name = model.currentMilestone.name;
+                newMilestone.description = model.currentMilestone.description;
 
                 service.CreateMilestones(newMilestone);
 
