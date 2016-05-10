@@ -12,11 +12,11 @@
             {
                 if (User.IsInRole("student"))
                 {
-                    @Html.ActionLink(@course.name, "Index", "Student", new { courseid = course.ID }, new { @class = "btn btn-default" }) 
+                    @Html.ActionLink(@course.name, "Index", "Student", new { courseid = course.ID }, new { @class = "btn btn-default" })
                 }
                 else if (User.IsInRole("teacher"))
                 {
-                    @Html.ActionLink(@course.name, "Index", "Teacher", new { courseid = course.ID }, new { @class = "btn btn-default" }) 
+                    @Html.ActionLink(@course.name, "Index", "Teacher", new { courseid = course.ID }, new { @class = "btn btn-default" })
                 }
             }
         }
@@ -27,17 +27,19 @@
     </div>
 </div>
 
-@if (Model.courses != null)
-{
-    <h2>@Model.currentCourse.name</h2>
-}
-else
-{
-    <h2>You are not registered in a course</h2>
-}
+<div class="col-md-10">
+    @if (Model.courses != null)
+    {
+        <h2>@Model.currentCourse.name</h2>
+    }
+    else
+    {
+        <h2>You are not registered in a course</h2>
+    }
+</div>
 
-
-<div class="col-md-2">
+<div class="row">
+    <div class="col-md-10">
         <a class="btn btn-default dropdown-togglee" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
             Assignments<span class="caret"></span>
         </a>
@@ -57,9 +59,45 @@ else
                 }
             }
         </ul>
+
+        @if (Model.currentCourse != null)
+        {
+            if (User.IsInRole("teacher"))
+            {
+                @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
+            }
+        }
+    </div>
 </div>
 
-<div class="col-md-6">
+
+<div class="col-md-10">
+    @if (Model.milestones != null && Model.currentMilestone != null)
+    {
+        using (Html.BeginForm("IndexPartial", "Shared", new { assignID = Model.currentAssignment.ID, milestoneID = (int?)Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+        {
+            <div class="courselist">
+                <table>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var m in Model.milestones)
+                            {
+                                <tr>
+                                    <td>@Html.ActionLink(@m.name, "IndexPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+</div>
+
+
+
+<div class="col-md-10">
     @using (Html.BeginForm("Submit", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
     {
         <input name="file" type="file" />
@@ -67,37 +105,9 @@ else
     }
 </div>
 
-@if (Model.currentCourse != null)
-{
-    if (User.IsInRole("teacher"))
-    {
-        @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
-    }
-}
 
-<div class="col-md-6">
-        @if (Model.milestones != null && Model.currentMilestone != null)
-        {
-            using (Html.BeginForm("IndexPartial", "Shared", new { assignID = Model.currentAssignment.ID, milestoneID = (int?)Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
-            {
-                <div class="courselist">
-                    <table>
-                        <tbody>
-                            @if (Model != null)
-                            {
-                                foreach (var m in Model.milestones)
-                                {
-                                    <tr>
-                                        <td>@Html.ActionLink(@m.name, "IndexPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-        }
-    </div>
+
+
 
 <div class="col-lg-10">
     <ul class="nav nav-tabs" role="tablist">
