@@ -36,14 +36,23 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-group">
-                    @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", @placeholder = "Enter assignment name" })
-                    <!--@Html.TextBoxFor(d => d.due, new { @class = "form-control datepicker", @placeholder = "Enter due date" })-->
-                    <input class="form-control datepicker" data-val="true" id="start" name="start" placeholder="Enter opening date" type="text" value="" >
-                    <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="">
+                    @Html.EditorFor(m => m.currentAssignment.title, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter assignment name" } })
+                    @Html.EditorFor(s => s.start, new { htmlattributes = new { @class = "form-control datepicker", @placeholder = "Enter due date" } }) 
+                    @Html.EditorFor(s => s.due, new { htmlattributes = new { @class = "form-control datepicker", @placeholder = "Enter due date" } })
+                    <!--<input class="form-control datepicker" data-val="true" id="start" name="start" placeholder="Enter opening date" type="text" value="" >
+                    <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="">-->
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" class="btn btn-default" value="Create assignment" />
+                    @if (Model.currentAssignment.ID == 0)
+                    {
+                        <button name="action" value="create" class="btn btn-primary">Create assignment</button>
+                    }
+                    else
+                    {
+                        <button name="action" value="edit" class="btn btn-primary">Finish edit</button>
+                        @Html.ActionLink("Create new", "Create", "Teacher", new { courseid = Model.currentCourse.ID}, new { @class="btn btn-default"})
+                    }
                 </div>
                 }
         </div>
@@ -72,7 +81,8 @@
             </div>
 
             <hr />
-            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Manage milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
+                <button name="action" value="delete" class="btn btn-danger">Delete selected assignment</button>
         }
         }
     </div>

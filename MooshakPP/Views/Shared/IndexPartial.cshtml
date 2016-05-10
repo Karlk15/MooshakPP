@@ -12,11 +12,11 @@
             {
                 if (User.IsInRole("student"))
                 {
-                    @Html.ActionLink(@course.name, "Index", "Student", new { courseid = course.ID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(@course.name, "Index", "Student", new { courseid = course.ID }, new { @class = "btn btn-default" }) 
                 }
                 else if (User.IsInRole("teacher"))
                 {
-                    @Html.ActionLink(@course.name, "Index", "Teacher", new { courseid = course.ID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(@course.name, "Index", "Teacher", new { courseid = course.ID }, new { @class = "btn btn-default" }) 
                 }
             }
         }
@@ -28,14 +28,15 @@
 </div>
 
 <div class="col-md-10">
-    @if (Model.courses != null)
-    {
-        <h2>@Model.currentCourse.name</h2>
-    }
-    else
-    {
-        <h2>You are not registered in a course</h2>
-    }
+@if (Model.courses != null)
+{
+    <h2>@Model.currentCourse.name</h2>
+}
+else
+{
+    <h2>You are not registered in a course</h2>
+    <h4>Please contact an administrator or a teacher</h4>
+}
 </div>
 
 <div class="row">
@@ -64,6 +65,7 @@
         {
             if (User.IsInRole("teacher"))
             {
+                @Html.ActionLink("Recover deleted assignments", "RecoverAssignments", "Teacher", null, new { @class = "btn btn-default"})
                 @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
             }
         }
@@ -84,7 +86,7 @@
                             foreach (var m in Model.milestones)
                             {
                                 <tr>
-                                    <td>@Html.ActionLink(@m.name, "IndexPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                    <td>@Html.ActionLink(@m.name, "DescriptionPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
                                 </tr>
                             }
                         }
@@ -118,7 +120,8 @@
 
     <div class="tab-content">
         <div id="mysubmissions" class="tab-pane fade">
-            @{ Html.RenderPartial("SubmitPartial", Model);}
+            <!--@{ Html.RenderPartial("SubmitPartial", Model);}-->
+            <h3>Krisi liktar eins og pikuprump</h3>
         </div>
         <div id="allsubmissions" class="tab-pane fade">
             <h3>DickButt</h3>

@@ -27,8 +27,15 @@ namespace MooshakPP.Services
             allAssignments.courses = GetCourses(userID);
             allAssignments.assignments = new List<Assignment>(GetAssignments(courseID));
             allAssignments.currentCourse = GetCourseByID(courseID);
-            if(assignmentID != null)
+            if(assignmentID != null && assignmentID != 0)
+            {
                 allAssignments.currentAssignment = GetAssignmentByID((int)assignmentID);
+                string startDate = allAssignments.currentAssignment.startDate.ToString();
+                allAssignments.start = startDate.Substring(0, startDate.IndexOf(" "));
+
+                string dueDate = allAssignments.currentAssignment.dueDate.ToString();
+                allAssignments.due = dueDate.Substring(0, dueDate.IndexOf(" "));
+            }
 
             return allAssignments;
         }
@@ -70,10 +77,22 @@ namespace MooshakPP.Services
         {   //Only zip uploads are accepted
             if (milestone != null && upload.FileName.EndsWith(".zip"))
             {
+                // Save the zip file to the server
                 SaveZip(milestone, ref upload);
+                // Unpack the zip file on the server
                 SaveUnpackedZip(milestone, ref upload);
+                // Create milestone before test cases so you have an ID for the test cases
                 db.Milestones.Add(milestone);
                 db.SaveChanges();
+                // List every unpacked test case
+                List<TestCase> testCases = GenerateTestCases(milestone);
+                // Create test cases
+                foreach (TestCase test in testCases)
+                {
+                    CreateTestCase(test);
+                }
+
+                
                 return true;
             }
             else
@@ -104,7 +123,7 @@ namespace MooshakPP.Services
         public bool SaveUnpackedZip(Milestone milestone, ref HttpPostedFileBase upload)
         {
             // Saving zip file to server
-            // Get zipDirectory
+            // Get test case directories
             string saveDir = ConfigurationManager.AppSettings["TestCases"];
             string zipDir = ConfigurationManager.AppSettings["ZippedTestCases"];
             // Use a helper function that finds your subfolder
@@ -122,12 +141,58 @@ namespace MooshakPP.Services
             
         }
 
+        public List<TestCase> GenerateTestCases(Milestone milestone)
+        {
+            // Load path to relevant test case directory
+            string testCaseDir = ConfigurationManager.AppSettings["testCases"];
+            testCaseDir = GetTestCasePath(testCaseDir, milestone);
+
+            // Find all relevant test cases
+            string[] directories = Directory.GetDirectories(testCaseDir);
+
+            // List of function results
+            List<TestCase> testCases = new List<TestCase>();
+            foreach (string dir in directories )
+            {   // Get test case information
+                TestCase newCase = new TestCase();
+                newCase.inputUrl = dir + "\\input.txt";
+                newCase.outputUrl = dir + "\\output.txt";
+                newCase.milestoneID = milestone.ID;
+                testCases.Add(newCase);
+            }
+            return testCases;
+        }
+
         public bool CreateTestCase(TestCase testcase)
         {
-            if(testcase != null)
-            {
+            if (testcase != null)
+        {
                 db.Testcases.Add(testcase);
                 db.SaveChanges();
+            return true;
+        }
+
+            return false;
+        }
+        public RecoverAssignmentsViewModel RecoverAssignments(string teacherID, int courseID, int? currentAssignmentID)
+        {
+            RecoverAssignmentsViewModel recoverAssignments = new RecoverAssignmentsViewModel();
+            recoverAssignments.deletedAssignments = GetDeletedAssignments(teacherID);
+            recoverAssignments.courses = GetCourses(teacherID);
+            recoverAssignments.currentCourse = GetCourseByID(courseID);
+            if (currentAssignmentID != null)
+                recoverAssignments.currentSelected = GetAssignmentByID((int)currentAssignmentID);
+            return recoverAssignments;
+        }
+        public bool RemoveAssignment(int assignmentID)
+        {
+            Assignment assignment = GetAssignmentByID(assignmentID);
+            if (assignment != null)
+            {
+                Assignment toRemove = assignment;
+                toRemove.isDeleted = true;
+                toRemove.courseID = 0;
+                updateAssignment(toRemove);
                 return true;
             }
             else
@@ -136,20 +201,58 @@ namespace MooshakPP.Services
             }
         }
 
-        public bool RemoveAssignment(int assignmentID)
+        public bool EditAssignment(int courseID, int assignmentID, string assignmentName, DateTime startDate, DateTime dueDate)
         {
             Assignment assignment = GetAssignmentByID(assignmentID);
-            if (assignment != null)
+            if(assignment != null)
             {
-                assignment.isDeleted = true;
-                assignment.courseID = 0;
-                db.SaveChanges();
+                Assignment toEdit = assignment;
+                toEdit.title = assignmentName;
+                toEdit.startDate = startDate;
+                toEdit.dueDate = dueDate;
+                updateAssignment(toEdit);
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+
+        public bool RecoverAssignment(int courseID, int assignmentID)
+        {
+            Assignment assignment = GetAssignmentByID(assignmentID);
+            if(assignment != null)
+            {
+                Assignment toRecover = assignment;
+                toRecover.isDeleted = true;
+                toRecover.courseID = courseID;
+                updateAssignment(toRecover);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        
+
+        private void updateAssignment (Assignment updatedAssignment)
+        {
+            Assignment prev = (from a in db.Assignments
+                               where a.ID == updatedAssignment.ID
+                               select a).FirstOrDefault();
+            db.Entry(prev).CurrentValues.SetValues(updatedAssignment);
+            db.SaveChanges();
+        }
+
+        private List<Assignment> GetDeletedAssignments(string teacherID)
+        {
+            List<Assignment> deletedAssignments = (from a in db.Assignments
+                                                   where a.teacherID == teacherID && a.courseID == 0
+                                                   select a).ToList();
+            return deletedAssignments;
         }
     }
 }
