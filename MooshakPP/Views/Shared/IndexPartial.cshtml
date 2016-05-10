@@ -118,8 +118,7 @@ else
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
         <div id="description" class="tab-pane fade">
-            <h3>Maus</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            @{ Html.RenderPartial("DescriptionPartial", Model);}
         </div>
     </div>
 </div>
