@@ -26,17 +26,17 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-            if (assignmentID == null)
+            if (assignmentID == null && courseID != null)
             {
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            if (milestoneID == null)
+            if (milestoneID == null && assignmentID != null)
             {
                 milestoneID = service.GetFirstMilestone((int)assignmentID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
+            model = service.Index(User.Identity.GetUserId(), courseID, assignmentID/*, (int)milestoneID*/);
 
             return View(model);
         }
