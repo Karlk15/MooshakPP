@@ -64,6 +64,7 @@ namespace MooshakPP.Controllers
         public ActionResult Create(CreateAssignmentViewModel collection, int? courseID,  int? assignmentID, string action)
         {
             Assignment model = new Assignment();
+
             if (ModelState.IsValid)
             {
 
@@ -73,7 +74,7 @@ namespace MooshakPP.Controllers
                     {
                         //service.RemoveAssignment((int)assignmentID);
                     }
-                    //getting the new list of assignments with the new assignment added ton the database
+
                     return RedirectToAction("Create");
 
                 }
@@ -89,11 +90,9 @@ namespace MooshakPP.Controllers
                     model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
                     //adding the new assignment to the database through the TeacherService
-
                     service.CreateAssignment(model);
 
-                    CreateAssignmentViewModel allAssignments = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, model.ID);
-                    //getting the new list of assignments with the new assignment added ton the database
+                    
                     return RedirectToAction("Create", new { courseid = (int)courseID, assignmentid = model.ID});
                 }
 
