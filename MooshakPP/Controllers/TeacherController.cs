@@ -26,17 +26,17 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-            if (assignmentID == null)
+            if (assignmentID == null && courseID != null)
             {
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            if(milestoneID == null)
+            if (milestoneID == null && assignmentID != null)
             {
-                milestoneID = service.GetFirstMilestone(assignmentID);
+                milestoneID = service.GetFirstMilestone((int)assignmentID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
+                model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
             return View(model);
         }
@@ -56,6 +56,14 @@ namespace MooshakPP.Controllers
             }
 
             CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
+            if(assignmentID == null)
+            {
+                Assignment noAssignment = new Assignment();
+                noAssignment.title = "No assignment";
+                noAssignment.ID = 0;
+                noAssignment.courseID = (int)courseID;
+                model.currentAssignment = noAssignment;
+            }
             return View(model);
         
         }

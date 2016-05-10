@@ -268,8 +268,8 @@ namespace MooshakPP.Services
             client.Host = "smtp.gmail.com";
             mail.Subject = "Mooshak++ login credentials";
             mail.Body = "You can login with Mooshak++ using the following login information: " + Environment.NewLine
-                        + "\t UserName: " + userEmail + Environment.NewLine
-                        + "\t Password: " + userPassword + "." + Environment.NewLine
+                        + "UserName: " + userEmail + Environment.NewLine
+                        + "Password: " + userPassword + Environment.NewLine
                         + "You can change your password later when logged in. ";
             client.Credentials = new System.Net.NetworkCredential("mooshakpp@gmail.com", "ArnarErBestur123");
             client.EnableSsl = true;
