@@ -46,7 +46,7 @@
                 <div class="form-group">
                     @if (Model.currentAssignment.ID == 0)
                     {
-                        <button name="action" value="create" class="btn btn-success">Create assignment</button>
+                        <button name="action" value="create" class="btn btn-default">Create assignment</button>
                     }
                     else
                     {
@@ -81,7 +81,7 @@
             </div>
 
             <hr />
-                @Html.ActionLink("Manage milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-success" })
+                @Html.ActionLink("Manage milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
                 <button name="action" value="delete" class="btn btn-danger">Delete selected assignment</button>
         }
         }
