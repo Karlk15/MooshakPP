@@ -77,15 +77,15 @@ namespace MooshakPP.Services
         {   //Only zip uploads are accepted
             if (milestone != null && upload.FileName.EndsWith(".zip"))
             {
-                // Save the zip file to the server
-                SaveZip(milestone, ref upload);
-                // Unpack the zip file on the server
-                SaveUnpackedZip(milestone, ref upload);
                 // Create milestone before test cases so you have an ID for the test cases
                 db.Milestones.Add(milestone);
                 db.SaveChanges();
+                // Save the zip file to the server
+                SaveZip(milestone.ID, ref upload);
+                // Unpack the zip file on the server
+                SaveUnpackedZip(milestone.ID, ref upload);
                 // List every unpacked test case
-                List<TestCase> testCases = GenerateTestCases(milestone);
+                List<TestCase> testCases = GenerateTestCases(milestone.ID);
                 // Create test cases
                 foreach (TestCase test in testCases)
                 {
@@ -102,14 +102,14 @@ namespace MooshakPP.Services
         }
 
         // The function assumes that upload is a zip file
-        public bool SaveZip(Milestone milestone, ref HttpPostedFileBase upload)
+        public bool SaveZip(int mileID, ref HttpPostedFileBase upload)
         {
             // Saving zip file to server
             // Get zipDirectory
             string zipDir = ConfigurationManager.AppSettings["zippedTestCases"];
 
             //Use a helper function that finds your subfolder
-            zipDir = GetTestCasePath(zipDir, milestone);
+            zipDir = GetMilestonePath(zipDir, mileID);
             if (!Directory.Exists(zipDir))
                 Directory.CreateDirectory(zipDir);
 
@@ -120,15 +120,15 @@ namespace MooshakPP.Services
 
         // The function assumes that upload is a zip file
         // finds the correct filepath and saves upload zip contents there
-        public bool SaveUnpackedZip(Milestone milestone, ref HttpPostedFileBase upload)
+        public bool SaveUnpackedZip(int mileID, ref HttpPostedFileBase upload)
         {
             // Saving zip file to server
             // Get test case directories
             string saveDir = ConfigurationManager.AppSettings["TestCases"];
             string zipDir = ConfigurationManager.AppSettings["ZippedTestCases"];
             // Use a helper function that finds your subfolder
-            saveDir = GetTestCasePath(saveDir, milestone);
-            zipDir = GetTestCasePath(zipDir, milestone);
+            saveDir = GetMilestonePath(saveDir, mileID);
+            zipDir = GetMilestonePath(zipDir, mileID);
             // Zip file doesn't exist
             if (!Directory.Exists(zipDir))
                 return false;
@@ -141,11 +141,11 @@ namespace MooshakPP.Services
             
         }
 
-        public List<TestCase> GenerateTestCases(Milestone milestone)
+        public List<TestCase> GenerateTestCases(int mileID)
         {
             // Load path to relevant test case directory
             string testCaseDir = ConfigurationManager.AppSettings["testCases"];
-            testCaseDir = GetTestCasePath(testCaseDir, milestone);
+            testCaseDir = GetMilestonePath (testCaseDir, mileID);
 
             // Find all relevant test cases
             string[] directories = Directory.GetDirectories(testCaseDir);
@@ -157,7 +157,7 @@ namespace MooshakPP.Services
                 TestCase newCase = new TestCase();
                 newCase.inputUrl = dir + "\\input.txt";
                 newCase.outputUrl = dir + "\\output.txt";
-                newCase.milestoneID = milestone.ID;
+                newCase.milestoneID = mileID;
                 testCases.Add(newCase);
             }
             return testCases;

@@ -79,22 +79,11 @@ namespace MooshakPP.Services
             //Get the submission directory relative location from AppSettings
             string submissionDir = ConfigurationManager.AppSettings["SubmissionDir"];
 
-            //Make relative path absolute
-            submissionDir = HttpContext.Current.Server.MapPath(submissionDir);
-
             //Get working directory information
-            //Milestone milestone = GetMilestoneByID(mileID); uncomment me when milestones exist
+            submissionDir = GetMilestonePath(submissionDir, mileID);
 
-            //PLACEHOLDER
-            Milestone milestone = new Milestone();
-            milestone.name = "Gagnaskipan";
-            milestone.assignmentID = 55;
-            //END OF PLACEHOLDER
-            Assignment assignment = GetAssignmentByID(milestone.assignmentID);
-            Course course = GetCourseByID(assignment.courseID);
-            List<TestCase> testCases = GetTestCasesByMilestoneID(1); //PLACEHOLDER
-            submissionDir += "\\" +course.name+"\\" +assignment.title+"\\" +milestone.name+"\\";
-            
+            List<TestCase> testCases = GetTestCasesByMilestoneID(mileID);
+
             string userSubmission = submissionDir + userName + "\\Submission ";
 
             //Find an unused submission number
@@ -151,7 +140,7 @@ namespace MooshakPP.Services
             //TODO, MAKE SURE CRASHES ARE NOT ACCEPTED, PROBABLY WITH TRY/CATCH
             Submission submission = new Submission();
             submission.fileURL = userSubmission;
-            submission.milestoneID = milestone.ID;
+            submission.milestoneID = mileID;
             //not yet rated
             submission.status = result.none;
             submission.userID = userID;
@@ -189,13 +178,15 @@ namespace MooshakPP.Services
             return testCases;
         }
 
-        // Enter a testCaseRoot read from ApplicationManager.config and a milestone and get
-        // the correct subdirectory for your test case
-        public string GetTestCasePath(string testCaseRoot, Milestone milestone)
+        // Enter a folder root from ConfigurationManager.AppSettings and a milestone ID to generate an absolute
+        // directory path to the milestone folder
+        public string GetMilestonePath(string testCaseRoot, int mileID)
         {
             // Assign subdirectories
-            string assignmentTitle = GetAssignmentByID(milestone.assignmentID).title;
-            string caseDir = testCaseRoot + "\\" + assignmentTitle + "\\" + milestone.name + "\\";
+            Milestone milestone = GetMilestoneByID(mileID);
+            Assignment assignment = GetAssignmentByID(milestone.assignmentID);
+            Course course = GetCourseByID(assignment.courseID);
+            string caseDir = testCaseRoot + "\\" + course.name + "\\" + assignment.title + "\\" + milestone.name + "\\";
 
             // Make the path absolute
             caseDir = HttpContext.Current.Server.MapPath(caseDir);

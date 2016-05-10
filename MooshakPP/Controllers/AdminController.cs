@@ -12,7 +12,7 @@ namespace MooshakPP.Controllers
     [Authorize(Roles = "admin")]
     public class AdminController : BaseController
     {
-        private AdminService service = new AdminService();
+        private AdminService service = new AdminService(null);
         
         [HttpGet]
         public ActionResult Index()
