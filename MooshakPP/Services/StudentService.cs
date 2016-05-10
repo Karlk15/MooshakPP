@@ -21,7 +21,7 @@ namespace MooshakPP.Services
             db = new Models.ApplicationDbContext();
         }
 
-        public IndexViewModel Index(string userId, int? courseId, int? assignmentId/*, int milestoneId*/)
+        public IndexViewModel Index(string userId, int? courseId, int? assignmentId, int? milestoneId)
         {
             IndexViewModel newIndex = new IndexViewModel();
             if (courseId != null)
@@ -29,8 +29,14 @@ namespace MooshakPP.Services
                 newIndex.courses = GetCourses(userId);
                 newIndex.assignments = GetAssignments((int)courseId);
                 if (assignmentId != null)
+                {
                     newIndex.milestones = GetMilestones((int)assignmentId);
+                    newIndex.currentAssignment = GetAssignmentByID((int)assignmentId);
+                    if(milestoneId != null)
+                        newIndex.currentMilestone = GetMilestoneByID((int)milestoneId);
+                }
                 newIndex.currentCourse = GetCourseByID((int)courseId);
+                
                 //newIndex.studentSubmissions = GetSubmissions(userId);
             }
             return newIndex;
@@ -181,6 +187,20 @@ namespace MooshakPP.Services
             return testCases;
         }
 
+        // Enter a testCaseRoot read from ApplicationManager.config and a milestone and get
+        // the correct subdirectory for your test case
+        public string GetTestCasePath(string testCaseRoot, Milestone milestone)
+        {
+            // Assign subdirectories
+            string assignmentTitle = GetAssignmentByID(milestone.assignmentID).title;
+            string caseDir = testCaseRoot + "\\" + assignmentTitle + "\\" + milestone.name + "\\";
+
+            // Make the path absolute
+            caseDir = HttpContext.Current.Server.MapPath(caseDir);
+            return caseDir;
+
+        }
+
         public int? GetFirstCourse(string userId)
         {
             List<Course> courses = GetCourses(userId);
@@ -221,15 +241,27 @@ namespace MooshakPP.Services
             return theCourse;
         }
 
-        public void unpackZip(ZipArchive zipFile, string extractPath)
+        public bool unpackZip(string zipPath, string extractPath)
         {
-            foreach (ZipArchiveEntry entry in zipFile.Entries)
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
-                if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    entry.ExtractToFile(Path.Combine(extractPath, entry.FullName));
+                    if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // create the subdirectories inside the zip
+                        string newDir = Directory.GetParent(extractPath + "\\" + entry.FullName).FullName;
+                        if (!Directory.Exists(newDir))
+                        {
+                            Directory.CreateDirectory(newDir);
+                        }
+                        // Save the zipped file
+                        entry.ExtractToFile(Path.Combine(extractPath, entry.FullName));
+                    }
                 }
             }
+            return true;
+
         }
 
         protected List<Course> GetCourses(string userId)
