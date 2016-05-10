@@ -22,12 +22,17 @@ namespace MooshakPP.Services
             manager = new IdentityManager();
         }
 
-        public ManageCourseViewModel ManageCourse(int courseId)
+        public ManageCourseViewModel ManageCourse(int? courseId)
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
             allCourses.courses = new List<Course>(GetAllCourses());
-            allCourses.currentCourse = GetCourseByID(courseId);
+            if(courseId == null)
+            {
+                allCourses.currentCourse = new Course();
+            }
+            else
+                allCourses.currentCourse = GetCourseByID((int)courseId);
 
             return allCourses;
         }
@@ -133,14 +138,22 @@ namespace MooshakPP.Services
                 manager.RemoveUser(user);   //FIX ME
         }
 
-        public AddConnectionsViewModel GetConnections(int courseID)
+        public AddConnectionsViewModel GetConnections(int? courseID)
         {
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
 
             connections.courses = new List<Course>(GetAllCourses());
-            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers(courseID));
-            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(courseID));
-            connections.currentCourse = GetCourseByID(courseID);
+            if (courseID == null)
+            {
+                connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(0));
+                connections.connectedUser = new List<ApplicationUser>();
+                connections.currentCourse = new Course();
+                connections.currentCourse.name = "No course selected";
+                return connections;
+            }
+            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers((int)courseID));
+            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected((int)courseID));
+            connections.currentCourse = GetCourseByID((int)courseID);
 
             return connections;
         }
@@ -149,15 +162,16 @@ namespace MooshakPP.Services
         {
             foreach (string ID in userIDs)
             {
-                if(!IsConnected(courseID, ID))
+                if(!IsConnected(courseID, ID) && courseID != 0)
                 {
                     UsersInCourse entry = new UsersInCourse();
                     entry.courseID = courseID;
                     entry.userID = ID;
                     db.UsersInCourses.Add(entry);
+                    db.SaveChanges();
                 }
             }
-            db.SaveChanges();
+            
         }
 
         public void RemoveConnections(int courseID, List<string> userIDs)

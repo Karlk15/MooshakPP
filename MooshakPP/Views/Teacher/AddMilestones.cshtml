@@ -13,6 +13,8 @@
     @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
+
+        </div>
             <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
