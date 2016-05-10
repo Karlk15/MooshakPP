@@ -53,7 +53,7 @@ namespace MooshakPP.Controllers
 
                 //userID, mileID, HttpPostedFileBase
                 //username must be passed because User is tied to http
-                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, 1, file);
+                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, 17, file);
             }
 
             return RedirectToAction("Index");
