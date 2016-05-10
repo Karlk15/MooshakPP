@@ -65,8 +65,8 @@ else
         {
             if (User.IsInRole("teacher"))
             {
-                @Html.ActionLink("Recover deleted assignments", "RecoverAssignments", "Teacher", null, new { @class = "btn btn-default"})
-                @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Recover deleted assignments", "RecoverAssignments", "Teacher", null, new { @class = "btn btn-primary"})
+                @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-primary" })
             }
         }
     </div>
