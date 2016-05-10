@@ -76,21 +76,27 @@ else
 }
 
 <div class="col-md-6">
-        <div class="userlist">
-            <table>
-                <tbody>
-                    <tr>
-                    <td><label>1 Palindromde</label></td>
-                    </tr>
-                    <tr>
-                    <td><label>2 BankAccount</label></td>
-                    </tr>
-                    <tr>
-                    <td><label>3 TikTakToe</label></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        @if (Model.milestones != null && Model.currentMilestone != null)
+        {
+            using (Html.BeginForm("IndexPartial", "Shared", new { assignID = Model.currentAssignment.ID, milestoneID = (int?)Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+            {
+                <div class="courselist">
+                    <table>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var m in Model.milestones)
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(@m.name, "IndexPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
     </div>
 
 <div class="col-lg-10">

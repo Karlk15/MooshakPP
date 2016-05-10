@@ -56,9 +56,7 @@ namespace MooshakPP.Services
             }
             else
             {
-                model.currentMilestone = (from Milestone m in model.milestones
-                                          where m.ID == currMilestoneId
-                                          select m).FirstOrDefault();
+                model.currentMilestone = GetMilestoneByID((int)currMilestoneId);
             }
             model.currentAssignment = GetAssignmentByID(assId);
             
