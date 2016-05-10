@@ -97,6 +97,10 @@ namespace MooshakPP.Controllers
                     tempDueDate = tempDueDate + " 23:59:59";
                     model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
+                    //adding a default time to the start date of the assignment and parsing the right format to avoid errors
+                    string tempStartDate = collection.start;
+                    tempDueDate = tempStartDate + " 00:01:00";
+                    model.startDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                     model.teacherID = User.Identity.GetUserId();
 
                     //adding the new assignment to the database through the TeacherService

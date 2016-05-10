@@ -16,7 +16,8 @@ namespace MooshakPP.Models.ViewModels
         public Course currentCourse { get; set; }
         public Assignment currentAssignment { get; set; }
 
-        //temporary string for duedate
+        //temporary string for duedate and startDate
         public string due { get; set; }
+        public string start { get; set; }
     }
 }
