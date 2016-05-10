@@ -242,6 +242,14 @@
     <Compile Include="Migrations\201605091551054_AddedEnumResultToSubmissionsEntity.Designer.cs">
       <DependentUpon>201605091551054_AddedEnumResultToSubmissionsEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605100939018_AddedShitToTheAssignmentEntity.cs" />
+    <Compile Include="Migrations\201605100939018_AddedShitToTheAssignmentEntity.Designer.cs">
+      <DependentUpon>201605100939018_AddedShitToTheAssignmentEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605100941584_AddedStartDateToAssignment.cs" />
+    <Compile Include="Migrations\201605100941584_AddedStartDateToAssignment.Designer.cs">
+      <DependentUpon>201605100941584_AddedStartDateToAssignment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Assignment.cs" />
@@ -284,7 +292,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\custom.js" />
+    <Content Include="Scripts\datepicker.js" />
+    <Content Include="Scripts\interactivelist.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -382,6 +391,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605091551054_AddedEnumResultToSubmissionsEntity.resx">
       <DependentUpon>201605091551054_AddedEnumResultToSubmissionsEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605100939018_AddedShitToTheAssignmentEntity.resx">
+      <DependentUpon>201605100939018_AddedShitToTheAssignmentEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605100941584_AddedStartDateToAssignment.resx">
+      <DependentUpon>201605100941584_AddedStartDateToAssignment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
