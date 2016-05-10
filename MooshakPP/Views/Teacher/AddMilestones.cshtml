@@ -17,29 +17,29 @@
 
             
         <div class="col-md-1">
-            <div class="form-group">
-                @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
-            </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
+                </div>
 
-            <div class="form-group">
-            @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
-            </div>
+                <div class="form-group">
+                @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
+                </div>
 
             <button type="submit" class="plusbutton btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
 
-            <div class="form-group">
-                @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    <input id="fileupload" type="file" />
-                }
-            </div>
+                <div class="form-group">
+                    @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <input id="fileupload" type="file" />
+                    }
+                </div>
 
             <button type="submit" class="btn btn-primary" value="Done">Done</button>
-        </div>
+            </div>
     }
  
 
-<div class="col-md-6">
+            <div class="col-md-6">
 
     <h2>Milestones in @Model.currentAssignment.title</h2>
 
@@ -61,8 +61,8 @@
                         }
                     </tbody>
                 </table>
-            </div>
-        }
+        </div>
+    }
     }
 </div>
 
