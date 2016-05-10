@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
@@ -33,15 +33,8 @@
             <div class="form-group">
                 <!--<label for="fileupload">Input.zip</label>
                 <input id="fileupload" type="file" />-->
-                <label for="fileupload">Input.zip</label>
-                @Html.TextBoxFor(m => m.testCase.inputUrl, new { type = "file" })
-            </div>
-
-            <div class="form-group">
-                <!--<label for="fileupload2">Output.zip</label>
-                <input id="fileupload2" type="file" />-->
-                <label for="fileupload2">Output.zip</label>
-                @Html.TextBoxFor(o => o.testCase.outputUrl, new { type = "file" })
+                <label for="fileupload">TestCases.zip</label>
+                @Html.TextBoxFor(m => m.testCaseZip, new { type = "file" })
             </div>
 
             <button type="submit" class="btn btn-primary" value="Done">Done</button>

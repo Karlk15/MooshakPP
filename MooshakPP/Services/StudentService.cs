@@ -204,10 +204,14 @@ namespace MooshakPP.Services
 
         public int? GetFirstMilestone(int? assignmentId)
         {
-            if(assignmentId != null)
+            if (assignmentId != null)
             {
                 List<Milestone> milestones = GetMilestones((int)assignmentId);
-                return milestones.FirstOrDefault().ID;
+                if (milestones.Count != 0)
+                {
+                    return milestones.FirstOrDefault().ID;
+
+                }
             }
             return null;
         }

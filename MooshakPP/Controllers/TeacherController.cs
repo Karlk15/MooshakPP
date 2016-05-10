@@ -154,20 +154,14 @@ namespace MooshakPP.Controllers
         public ActionResult AddMilestones(CreateMilestoneViewModel model, int? assignmentID)
         {
             Milestone newMilestone = new Milestone();
-            TestCase newTestCase = new TestCase();
+
             if (ModelState.IsValid)
             {
                 newMilestone.assignmentID = (int)assignmentID;
                 newMilestone.name = model.currentMilestone.name;
                 newMilestone.description = model.currentMilestone.description;
 
-                service.CreateMilestones(newMilestone);
-
-                newTestCase.milestoneID = model.currentMilestone.ID;
-                newTestCase.inputUrl = model.testCase.inputUrl;
-                newTestCase.outputUrl = model.testCase.outputUrl;
-
-                service.CreateTestCase(newTestCase);
+                service.CreateMilestones(newMilestone, model.testCaseZip);
 
                 return RedirectToAction("AddMilestones", new { assignid = (int)assignmentID, milestoneid = newMilestone.ID });
             }
