@@ -88,7 +88,7 @@ else
                                 foreach (var m in Model.milestones)
                                 {
                                     <tr>
-                                        <td>@Html.ActionLink(@m.name, "IndexPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                        <td>@Html.ActionLink(@m.name, "DescriptionPartial", "Shared", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
                                     </tr>
                                 }
                             }
@@ -108,7 +108,8 @@ else
 
     <div class="tab-content">
         <div id="mysubmissions" class="tab-pane fade">
-            @{ Html.RenderPartial("SubmitPartial", Model);}
+            <!--@{ Html.RenderPartial("SubmitPartial", Model);}-->
+            <h3>Krisi liktar eins og pikuprump</h3>
         </div>
         <div id="allsubmissions" class="tab-pane fade">
             <h3>DickButt</h3>
