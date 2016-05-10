@@ -53,7 +53,7 @@
         <h3>Existing assignments</h3>
         @if (Model.currentAssignment != null)
         {
-            using (Html.BeginForm("Create", "Teacher", new { courseID = Model.currentCourse.ID, assignmentID = (int?)Model.currentAssignment.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+            using (Html.BeginForm("Create", "Teacher", new { courseID = Model.currentCourse.ID, assignmentID = (int?)Model.currentAssignment.ID }, FormMethod.Post, new { @class = "interactivelist" }))
         {
             <div class="courselist">
                 <table>
@@ -77,8 +77,9 @@
         }
     </div>
 </div>
-<!--THIS LINE IS TEMPORARY SCRIPT SECTION-->
+
 @section scripts
 {
-    <script src="@Url.Content("~/Scripts/custom.js")"></script>
+    <script src="@Url.Content("~/Scripts/datepicker.js")"></script>
+    <script src="@Url.Content("~/Scripts/interactivelist.js")"></script>
 }
