@@ -70,10 +70,22 @@ namespace MooshakPP.Services
         {   //Only zip uploads are accepted
             if (milestone != null && upload.FileName.EndsWith(".zip"))
             {
+                // Save the zip file to the server
                 SaveZip(milestone, ref upload);
+                // Unpack the zip file on the server
                 SaveUnpackedZip(milestone, ref upload);
+                // Create milestone before test cases so you have an ID for the test cases
                 db.Milestones.Add(milestone);
                 db.SaveChanges();
+                // List every unpacked test case
+                List<TestCase> testCases = GenerateTestCases(milestone);
+                // Create test cases
+                foreach (TestCase test in testCases)
+                {
+                    CreateTestCase(test);
+                }
+
+                
                 return true;
             }
             else
@@ -104,7 +116,7 @@ namespace MooshakPP.Services
         public bool SaveUnpackedZip(Milestone milestone, ref HttpPostedFileBase upload)
         {
             // Saving zip file to server
-            // Get zipDirectory
+            // Get test case directories
             string saveDir = ConfigurationManager.AppSettings["TestCases"];
             string zipDir = ConfigurationManager.AppSettings["ZippedTestCases"];
             // Use a helper function that finds your subfolder
@@ -122,18 +134,38 @@ namespace MooshakPP.Services
             
         }
 
+        public List<TestCase> GenerateTestCases(Milestone milestone)
+        {
+            // Load path to relevant test case directory
+            string testCaseDir = ConfigurationManager.AppSettings["testCases"];
+            testCaseDir = GetTestCasePath(testCaseDir, milestone);
+
+            // Find all relevant test cases
+            string[] directories = Directory.GetDirectories(testCaseDir);
+
+            // List of function results
+            List<TestCase> testCases = new List<TestCase>();
+            foreach (string dir in directories )
+            {   // Get test case information
+                TestCase newCase = new TestCase();
+                newCase.inputUrl = dir + "\\input.txt";
+                newCase.outputUrl = dir + "\\output.txt";
+                newCase.milestoneID = milestone.ID;
+                testCases.Add(newCase);
+            }
+            return testCases;
+        }
+
         public bool CreateTestCase(TestCase testcase)
         {
-            if(testcase != null)
+            if (testcase != null)
             {
                 db.Testcases.Add(testcase);
                 db.SaveChanges();
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public bool RemoveAssignment(int assignmentID)
