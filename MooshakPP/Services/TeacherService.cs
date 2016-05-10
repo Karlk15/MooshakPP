@@ -24,8 +24,15 @@ namespace MooshakPP.Services
             allAssignments.courses = GetCourses(userID);
             allAssignments.assignments = new List<Assignment>(GetAssignments(courseID));
             allAssignments.currentCourse = GetCourseByID(courseID);
-            if(assignmentID != null)
+            if(assignmentID != null && assignmentID != 0)
+            {
                 allAssignments.currentAssignment = GetAssignmentByID((int)assignmentID);
+                string startDate = allAssignments.currentAssignment.startDate.ToString();
+                allAssignments.start = startDate.Substring(0, startDate.IndexOf(" "));
+
+                string dueDate = allAssignments.currentAssignment.dueDate.ToString();
+                allAssignments.due = dueDate.Substring(0, dueDate.IndexOf(" "));
+            }
 
             return allAssignments;
         }
@@ -65,6 +72,17 @@ namespace MooshakPP.Services
             return model;
         }
 
+        public RecoverAssignmentsViewModel RecoverAssignments(string teacherID, int courseID, int? currentAssignmentID)
+        {
+            RecoverAssignmentsViewModel recoverAssignments = new RecoverAssignmentsViewModel();
+            recoverAssignments.deletedAssignments = GetDeletedAssignments(teacherID);
+            recoverAssignments.courses = GetCourses(teacherID);
+            recoverAssignments.currentCourse = GetCourseByID(courseID);
+            if (currentAssignmentID != null)
+                recoverAssignments.currentSelected = GetAssignmentByID((int)currentAssignmentID);
+            return recoverAssignments;
+        }
+
         public bool CreateMilestones(List<Milestone> milestones)
         {
             return true;
@@ -75,15 +93,70 @@ namespace MooshakPP.Services
             Assignment assignment = GetAssignmentByID(assignmentID);
             if (assignment != null)
             {
-                assignment.isDeleted = true;
-                assignment.courseID = 0;
-                db.SaveChanges();
+                Assignment toRemove = assignment;
+                toRemove.isDeleted = true;
+                toRemove.courseID = 0;
+                updateAssignment(toRemove);
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+
+        public bool EditAssignment(int courseID, int assignmentID, string assignmentName, DateTime startDate, DateTime dueDate)
+        {
+            Assignment assignment = GetAssignmentByID(assignmentID);
+            if(assignment != null)
+            {
+                Assignment toEdit = assignment;
+                toEdit.title = assignmentName;
+                toEdit.startDate = startDate;
+                toEdit.dueDate = dueDate;
+                updateAssignment(toEdit);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool RecoverAssignment(int courseID, int assignmentID)
+        {
+            Assignment assignment = GetAssignmentByID(assignmentID);
+            if(assignment != null)
+            {
+                Assignment toRecover = assignment;
+                toRecover.isDeleted = true;
+                toRecover.courseID = courseID;
+                updateAssignment(toRecover);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        
+
+        private void updateAssignment (Assignment updatedAssignment)
+        {
+            Assignment prev = (from a in db.Assignments
+                               where a.ID == updatedAssignment.ID
+                               select a).FirstOrDefault();
+            db.Entry(prev).CurrentValues.SetValues(updatedAssignment);
+            db.SaveChanges();
+        }
+
+        private List<Assignment> GetDeletedAssignments(string teacherID)
+        {
+            List<Assignment> deletedAssignments = (from a in db.Assignments
+                                                   where a.teacherID == teacherID && a.courseID == 0
+                                                   select a).ToList();
+            return deletedAssignments;
         }
     }
 }
