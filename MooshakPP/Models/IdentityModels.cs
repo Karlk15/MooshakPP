@@ -21,16 +21,33 @@ namespace MooshakPP.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public interface IAppDataContext
     {
-        public DbSet<Assignment> Assignments { get; set; }
+        IDbSet<Assignment> Assignments { get; set; }
+        IDbSet<Course> Courses { get; set; }
+        IDbSet<Milestone> Milestones { get; set; }
+        IDbSet<Submission> Submissions { get; set; }
+        IDbSet<TestCase> Testcases { get; set; }
+        IDbSet<UsersInCourse> UsersInCourses { get; set; }
+
+        int SaveChanges();
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IAppDataContext
+    {
+        /*public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Milestone> Milestones { get; set; }
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<TestCase> Testcases { get; set; }
-        //public virtual ICollection<UsersInCourse> UsersInCourses { get; set; }
-        public DbSet<UsersInCourse> UsersInCourses { get; set; }
-        
+        public DbSet<UsersInCourse> UsersInCourses { get; set; }*/
+
+        public IDbSet<Assignment> Assignments { get; set; }
+        public IDbSet<Course> Courses { get; set; }
+        public IDbSet<Milestone> Milestones { get; set; }
+        public IDbSet<Submission> Submissions { get; set; }
+        public IDbSet<TestCase> Testcases { get; set; }
+        public IDbSet<UsersInCourse> UsersInCourses { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
