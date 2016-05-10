@@ -21,7 +21,7 @@ namespace MooshakPP.Services
             db = new Models.ApplicationDbContext();
         }
 
-        public IndexViewModel Index(string userId, int? courseId, int? assignmentId/*, int milestoneId*/)
+        public IndexViewModel Index(string userId, int? courseId, int? assignmentId, int? milestoneId)
         {
             IndexViewModel newIndex = new IndexViewModel();
             if (courseId != null)
@@ -29,8 +29,14 @@ namespace MooshakPP.Services
                 newIndex.courses = GetCourses(userId);
                 newIndex.assignments = GetAssignments((int)courseId);
                 if (assignmentId != null)
+                {
                     newIndex.milestones = GetMilestones((int)assignmentId);
+                    newIndex.currentAssignment = GetAssignmentByID((int)assignmentId);
+                    if(milestoneId != null)
+                        newIndex.currentMilestone = GetMilestoneByID((int)milestoneId);
+                }
                 newIndex.currentCourse = GetCourseByID((int)courseId);
+                
                 //newIndex.studentSubmissions = GetSubmissions(userId);
             }
             return newIndex;
