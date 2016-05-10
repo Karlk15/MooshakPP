@@ -81,7 +81,7 @@ namespace MooshakPP.Services
             Assignment assignment = GetAssignmentByID(milestone.assignmentID);
             Course course = GetCourseByID(assignment.courseID);
             List<TestCase> testCases = GetTestCasesByMilestoneID(1); //PLACEHOLDER
-            submissionDir += "\\" +course.name+ "\\" + "\\"+assignment.title+"\\" + "\\"+milestone.name+"\\";
+            submissionDir += "\\" +course.name+"\\" +assignment.title+"\\" +milestone.name+"\\";
             
             string userSubmission = submissionDir + userName + "\\Submission ";
 
