@@ -161,7 +161,7 @@ namespace MooshakPP.Controllers
                 newMilestone.name = model.currentMilestone.name;
                 newMilestone.description = model.currentMilestone.description;
 
-                service.CreateMilestones(newMilestone, model.testCaseZip);
+                service.CreateMilestone(newMilestone, model.testCaseZip);
 
                 return RedirectToAction("AddMilestones", new { assignid = (int)assignmentID, milestoneid = newMilestone.ID });
             }

@@ -187,6 +187,20 @@ namespace MooshakPP.Services
             return testCases;
         }
 
+        // Enter a testCaseRoot read from ApplicationManager.config and a milestone and get
+        // the correct subdirectory for your milestone
+        public string GetTestCasePath(string testCaseRoot, Milestone milestone)
+        {
+            // Assign subdirectories
+            string assignmentTitle = GetAssignmentByID(milestone.assignmentID).title;
+            string caseDir = testCaseRoot + "\\" + assignmentTitle + "\\" + milestone.name + "\\";
+
+            // Make the path absolute
+            caseDir = HttpContext.Current.Server.MapPath(caseDir);
+            return caseDir;
+
+        }
+
         public int? GetFirstCourse(string userId)
         {
             List<Course> courses = GetCourses(userId);
@@ -227,15 +241,20 @@ namespace MooshakPP.Services
             return theCourse;
         }
 
-        public void unpackZip(ZipArchive zipFile, string extractPath)
+        public bool unpackZip(string zipPath, string extractPath)
         {
-            foreach (ZipArchiveEntry entry in zipFile.Entries)
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
-                if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    entry.ExtractToFile(Path.Combine(extractPath, entry.FullName));
+                    if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        entry.ExtractToFile(Path.Combine(extractPath, entry.FullName));
+                    }
                 }
             }
+            return true;
+
         }
 
         protected List<Course> GetCourses(string userId)
