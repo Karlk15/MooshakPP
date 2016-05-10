@@ -58,7 +58,6 @@ namespace MooshakPP.Services
         //mileID is milestone ID
         public bool CreateSubmission(string userID, string userName, int mileID, HttpPostedFileBase file)
         {
-            unpackZip("C:\test.zip");
 
             string code;
             string fileName = file.FileName;
@@ -81,7 +80,7 @@ namespace MooshakPP.Services
             //PLACEHOLDER
             Milestone milestone = new Milestone();
             milestone.name = "Gagnaskipan";
-            milestone.assignmentID = 2;
+            milestone.assignmentID = 55;
             //END OF PLACEHOLDER
             Assignment assignment = GetAssignmentByID(milestone.assignmentID);
             Course course = GetCourseByID(assignment.courseID);
@@ -218,13 +217,15 @@ namespace MooshakPP.Services
             return theCourse;
         }
 
-        public bool unpackZip(string zipPath)
+        public void unpackZip(ZipArchive zipFile, string extractPath)
         {
-            string extractPath = @"c:\example\extract";
-            
-            ZipFile.ExtractToDirectory(zipPath, extractPath);
-            return true;
-
+            foreach (ZipArchiveEntry entry in zipFile.Entries)
+            {
+                if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                {
+                    entry.ExtractToFile(Path.Combine(extractPath, entry.FullName));
+                }
+            }
         }
 
         protected List<Course> GetCourses(string userId)
