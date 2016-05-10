@@ -84,7 +84,8 @@ namespace MooshakPP.Services
             Assignment assignment = GetAssignmentByID(assignmentID);
             if (assignment != null)
             {
-                db.Assignments.Remove(assignment);
+                assignment.isDeleted = true;
+                assignment.courseID = 0;
                 db.SaveChanges();
                 return true;
             }
