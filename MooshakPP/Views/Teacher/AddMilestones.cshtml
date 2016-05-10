@@ -26,9 +26,6 @@
                 @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
                 </div>
             </div>
-            <div class="col-md-6">
-                <button type="submit" class="plusbutton btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
-            </div>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -38,9 +35,10 @@
                         <input id="fileupload" type="file" />
                     }
                 </div>
+                <button type="submit" class="btn btn-primary" value="Done">Done</button>
             </div>
             <div class="col-md-6">
-                <button type="submit" class="btn btn-primary" value="Done">Done</button>
+                
             </div>
         </div>
     }
