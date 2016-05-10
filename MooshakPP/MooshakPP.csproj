@@ -354,6 +354,9 @@
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Shared\IndexPartial.cshtml" />
     <Content Include="Views\Teacher\AddMilestones.cshtml" />
+    <Content Include="Views\Shared\DescriptionPartial.cshtml" />
+    <Content Include="Views\Shared\SubmitPartial.cshtml" />
+    <Content Include="Views\Shared\SubmissionsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
