@@ -1,4 +1,10 @@
 ﻿@model MooshakPP.Models.ViewModels.IndexViewModel
 
-
-@Html.DisplayText(Model.currentMilestone.description)
+@if (Model.currentMilestone != null)
+{
+    <h2>Description for: @Model.currentMilestone.name</h2>
+    <p>
+        @Model.currentMilestone.description
+    </p>
+}
+    

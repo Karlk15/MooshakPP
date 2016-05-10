@@ -33,7 +33,9 @@ namespace MooshakPP.Services
                     newIndex.milestones = GetMilestones((int)assignmentId);
                     newIndex.currentAssignment = GetAssignmentByID((int)assignmentId);
                     if(milestoneId != null)
+                    {
                         newIndex.currentMilestone = GetMilestoneByID((int)milestoneId);
+                    }
                 }
                 newIndex.currentCourse = GetCourseByID((int)courseId);
                 
