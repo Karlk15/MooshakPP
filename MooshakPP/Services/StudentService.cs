@@ -188,7 +188,7 @@ namespace MooshakPP.Services
         }
 
         // Enter a testCaseRoot read from ApplicationManager.config and a milestone and get
-        // the correct subdirectory for your milestone
+        // the correct subdirectory for your test case
         public string GetTestCasePath(string testCaseRoot, Milestone milestone)
         {
             // Assign subdirectories
@@ -249,6 +249,13 @@ namespace MooshakPP.Services
                 {
                     if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
                     {
+                        // create the subdirectories inside the zip
+                        string newDir = Directory.GetParent(extractPath + "\\" + entry.FullName).FullName;
+                        if (!Directory.Exists(newDir))
+                        {
+                            Directory.CreateDirectory(newDir);
+                        }
+                        // Save the zipped file
                         entry.ExtractToFile(Path.Combine(extractPath, entry.FullName));
                     }
                 }

@@ -269,6 +269,7 @@
     <Compile Include="Models\ViewModels\ManageCourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateUserViewModel.cs" />
+    <Compile Include="Models\ViewModels\RecoverAssignmentsViewModel.cs" />
     <Compile Include="Models\ViewModels\SubmissionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminService.cs" />
@@ -355,6 +356,7 @@
     <Content Include="Views\Shared\DescriptionPartial.cshtml" />
     <Content Include="Views\Shared\SubmitPartial.cshtml" />
     <Content Include="Views\Shared\SubmissionsPartial.cshtml" />
+	<Content Include="Views\Teacher\RecoverAssignments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
