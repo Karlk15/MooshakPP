@@ -80,7 +80,7 @@ namespace MooshakPP.Controllers
                 {
                     if (assignmentID != null)
                     {
-                        //service.RemoveAssignment((int)assignmentID);
+                        service.RemoveAssignment((int)assignmentID);
                     }
 
                     return RedirectToAction("Create");
@@ -101,6 +101,7 @@ namespace MooshakPP.Controllers
                     string tempStartDate = collection.start;
                     tempDueDate = tempStartDate + " 00:01:00";
                     model.startDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    model.teacherID = User.Identity.GetUserId();
 
                     //adding the new assignment to the database through the TeacherService
                     service.CreateAssignment(model);
@@ -152,13 +153,18 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult AddMilestones(CreateMilestoneViewModel model, int? assignmentID)
         {
+            Milestone newMilestone = new Milestone();
+            if (ModelState.IsValid)
+            {
+                newMilestone.assignmentID = (int)assignmentID;
+                newMilestone.name = model.currentMilestone.name;
+                newMilestone.description = model.currentMilestone.description;
 
+                service.CreateMilestones(newMilestone);
 
-            //collection.currentAssignment
-
-
-
-            return RedirectToAction("AddMilestones");
+                return RedirectToAction("AddMilestones", new { assignid = (int)assignmentID, milestoneid = newMilestone.ID });
+            }
+            return View("Error");
         }
     }
 }
