@@ -7,41 +7,42 @@
         @Html.ActionLink("Back", "Create", "Teacher", null, new { @class = "btn btn-primary backbutton" })
 </div>
 
+    <div class="row">
+        <div class="col-md-6">
+            <h2>@Model.currentAssignment.title</h2>
+        </div>
+        <div class="col-md-6">
+            <h2>Milestones in @Model.currentAssignment.title</h2>
+        </div>
+    </div>
 
-    <h2>@Model.currentAssignment.title</h2>
-
-
-    @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
             
-        <div class="col-md-1">
-                <div class="form-group">
-                    @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
+            </div>
 
-                <div class="form-group">
+            <div class="form-group">
                 @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
-                </div>
+            </div>
 
-            <button type="submit" class="plusbutton btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
-
-                <div class="form-group">
-                    @using (Html.BeginForm("Submit", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        <input id="fileupload" type="file" />
-                    }
-                </div>
+            <div class="form-group">
+                <!--<label for="fileupload">Input.zip</label>
+                <input id="fileupload" type="file" />-->
+                <label for="fileupload">TestCases.zip</label>
+                @Html.TextBoxFor(m => m.testCaseZip, new { type = "file" })
+            </div>
 
             <button type="submit" class="btn btn-primary" value="Done">Done</button>
-            </div>
+        </div>
     }
  
 
-            <div class="col-md-6">
-
-    <h2>Milestones in @Model.currentAssignment.title</h2>
+<div class="col-md-6">
 
     @if (Model.currentMilestone != null)
     {

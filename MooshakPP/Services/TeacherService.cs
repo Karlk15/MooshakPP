@@ -65,11 +65,25 @@ namespace MooshakPP.Services
             return model;
         }
 
-        public bool CreateMilestones(Milestone milestone)
+        public bool CreateMilestones(Milestone milestone, HttpPostedFileBase zipFile)
         {
             if(milestone != null)
             {
                 db.Milestones.Add(milestone);
+                db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CreateTestCase(TestCase testcase)
+        {
+            if(testcase != null)
+            {
+                db.Testcases.Add(testcase);
                 db.SaveChanges();
                 return true;
             }
