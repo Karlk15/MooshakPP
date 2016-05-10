@@ -128,17 +128,25 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddMilestones(int? assignmentID)
+        public ActionResult AddMilestones(int? assignmentID, int? currMilestoneID)
         {
-            CreateMilestoneViewModel model = new CreateMilestoneViewModel();
-            model = service.AddMilestone((int)assignmentID);
+            if (assignmentID == null)
+                return RedirectToAction("Create");
+
+            CreateMilestoneViewModel model = service.AddMilestone((int)assignmentID, currMilestoneID);
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult AddMilestone(FormCollection collection)
-    {
-            return View();
+        public ActionResult AddMilestones(CreateMilestoneViewModel model, int? assignmentID)
+        {
+
+
+            //collection.currentAssignment
+
+
+
+            return RedirectToAction("AddMilestones");
         }
     }
 }

@@ -34,18 +34,18 @@
             {
                 using (Html.BeginForm("Create", "Teacher", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentAssignment.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                    @Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()
 
-                    <div class="form-group">
-                        @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", @placeholder = "Enter assignment name" })
-                        <!--@Html.TextBoxFor(d => d.due, new { @class = "form-control datepicker", @placeholder = "Enter due date" })-->
-                        <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="" >
-                    </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", @placeholder = "Enter assignment name" })
+                    <!--@Html.TextBoxFor(d => d.due, new { @class = "form-control datepicker", @placeholder = "Enter due date" })-->
+                    <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="" >
+                </div>
 
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-default" value="Create assignment" />
-                    </div>
-                }
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default" value="Create assignment" />
+                </div>
+            }
             }
             else
             {
@@ -57,11 +57,11 @@
                         @Html.TextBoxFor(m => m.newAssignment.title, new { @class = "form-control", @placeholder = "Enter assignment name" })
                         <!--@Html.TextBoxFor(d => d.due, new { @class = "form-control datepicker", @placeholder = "Enter due date" })-->
                         <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="">
-                    </div>
+        </div>
 
                     <div class="form-group">
                         <input type="submit" class="btn btn-default" value="Create assignment" />
-                    </div>
+    </div>
                 }
             }
         </div>
@@ -72,27 +72,26 @@
         @if (Model.currentAssignment != null)
         {
             using (Html.BeginForm("Create", "Teacher", new { courseID = Model.currentCourse.ID, assignmentID = (int?)Model.currentAssignment.ID }, FormMethod.Post, new { @class = "interactiveList" }))
-            {
-                <div class="courselist">
-                    <table>
-                        <tbody>
-                            @if (Model != null)
+        {
+            <div class="courselist">
+                <table>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var assign in Model.assignments)
                             {
-                                foreach (var assign in Model.assignments)
-                                {
-                                    <tr>
+                                <tr>
                                         <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { courseid = @assign.courseID, assignmentid = @assign.ID }, null)</td >
-                                    </tr>
-                                }
+                                </tr>
                             }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
-                <hr />
-                @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
-                <button name="action" value="delete" class="btn btn-danger ">Delete selected assignment</button>
-            }
+            <hr />
+            @Html.ActionLink("Manage Milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
+        }
         }
     </div>
 </div>

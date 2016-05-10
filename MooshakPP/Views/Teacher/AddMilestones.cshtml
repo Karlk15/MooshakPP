@@ -10,20 +10,20 @@
 
     <h2>@Model.currentAssignment.title</h2>
 
-    @using (Html.BeginForm("AddMilestones", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
-        <div class="row">
+            <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.TextBoxFor(m => m.newMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
+                    @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                @Html.TextAreaFor(n => n.newMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
+                @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
                 </div>
             </div>
             <div class="col-md-6">
