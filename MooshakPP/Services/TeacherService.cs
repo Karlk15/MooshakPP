@@ -52,7 +52,7 @@ namespace MooshakPP.Services
             if(currMilestoneId == null)
             {
                 model.currentMilestone = new Milestone();
-                model.currentMilestone.assignmentID = 8; // assId;
+                model.currentMilestone.assignmentID = 8; 
             }
             else
             {

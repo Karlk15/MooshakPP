@@ -240,6 +240,14 @@
     <Compile Include="Migrations\201605091551054_AddedEnumResultToSubmissionsEntity.Designer.cs">
       <DependentUpon>201605091551054_AddedEnumResultToSubmissionsEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605100939018_AddedShitToTheAssignmentEntity.cs" />
+    <Compile Include="Migrations\201605100939018_AddedShitToTheAssignmentEntity.Designer.cs">
+      <DependentUpon>201605100939018_AddedShitToTheAssignmentEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605100941584_AddedStartDateToAssignment.cs" />
+    <Compile Include="Migrations\201605100941584_AddedStartDateToAssignment.Designer.cs">
+      <DependentUpon>201605100941584_AddedStartDateToAssignment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Assignment.cs" />
@@ -380,6 +388,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605091551054_AddedEnumResultToSubmissionsEntity.resx">
       <DependentUpon>201605091551054_AddedEnumResultToSubmissionsEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605100939018_AddedShitToTheAssignmentEntity.resx">
+      <DependentUpon>201605100939018_AddedShitToTheAssignmentEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605100941584_AddedStartDateToAssignment.resx">
+      <DependentUpon>201605100941584_AddedStartDateToAssignment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

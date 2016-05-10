@@ -26,17 +26,17 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-            if (assignmentID == null)
+            if (assignmentID == null && courseID != null)
             {
                 assignmentID = service.GetFirstAssignment((int)courseID);
             }
 
-            if(milestoneID == null)
+            if (milestoneID == null && assignmentID != null)
             {
-                milestoneID = service.GetFirstMilestone(assignmentID);
+                milestoneID = service.GetFirstMilestone((int)assignmentID);
             }
 
-            model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
+                model = service.Index(User.Identity.GetUserId(), (int)courseID, assignmentID/*, (int)milestoneID*/);
 
             return View(model);
         }
@@ -56,6 +56,14 @@ namespace MooshakPP.Controllers
             }
 
             CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
+            if(assignmentID == null)
+            {
+                Assignment noAssignment = new Assignment();
+                noAssignment.title = "No assignment";
+                noAssignment.ID = 0;
+                noAssignment.courseID = (int)courseID;
+                model.currentAssignment = noAssignment;
+            }
             return View(model);
         
         }
@@ -64,6 +72,7 @@ namespace MooshakPP.Controllers
         public ActionResult Create(CreateAssignmentViewModel collection, int? courseID,  int? assignmentID, string action)
         {
             Assignment model = new Assignment();
+
             if (ModelState.IsValid)
             {
 
@@ -73,7 +82,7 @@ namespace MooshakPP.Controllers
                     {
                         //service.RemoveAssignment((int)assignmentID);
                     }
-                    //getting the new list of assignments with the new assignment added ton the database
+
                     return RedirectToAction("Create");
 
                 }
@@ -89,11 +98,9 @@ namespace MooshakPP.Controllers
                     model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
                     //adding the new assignment to the database through the TeacherService
-
                     service.CreateAssignment(model);
 
-                    CreateAssignmentViewModel allAssignments = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, model.ID);
-                    //getting the new list of assignments with the new assignment added ton the database
+                    
                     return RedirectToAction("Create", new { courseid = (int)courseID, assignmentid = model.ID});
                 }
 

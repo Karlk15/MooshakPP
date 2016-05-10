@@ -13,11 +13,7 @@
                 {
                     @Model.currentCourse.name
                 }
-                else
-                {
-                    <span>No course selected</span>
-                }
-                    <span class="caret"></span>
+                <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                 @foreach(var course in Model.courses)
@@ -31,11 +27,11 @@
 </div><br />
 <div class="row">
     <div class="col-md-offset-2 col-md-3">
-        @using (Html.BeginForm("ConnectUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("ConnectUser", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div class="userlist">
+                <h3>Connected users</h3>
                 <table>
-                    <caption>Connected users</caption>
                     <tbody>
                         @foreach (var item in Model.connectedUser)
                         {
@@ -58,8 +54,8 @@
         @using (Html.BeginForm("ConnectUser", "Admin", new { courseid = Model.currentCourse.ID},FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div class="userlist">
+                <h3>All users</h3>
                 <table>
-                    <caption>All users</caption>
                     <tbody>
                         @foreach (var item in Model.notConnectedUser)
                         {
