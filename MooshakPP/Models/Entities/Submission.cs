@@ -12,6 +12,7 @@ namespace MooshakPP.Models.Entities
         compError,
         runError,
         memError,
+        wrongAnswer,
         Accepted
     }
 
