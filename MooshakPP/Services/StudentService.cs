@@ -99,7 +99,6 @@ namespace MooshakPP.Services
 
             var workingFolder = userSubmission;
             var cppFileName = fileName;
-            var exeFilePath = workingFolder + fileName;
 
             // Write the code to a file, such that the compiler
             // can find it:
@@ -115,38 +114,101 @@ namespace MooshakPP.Services
             compiler.StartInfo.RedirectStandardOutput = true;
             compiler.StartInfo.UseShellExecute = false;
 
-            bool failed = false;
-            foreach(TestCase test in testCases)
-            {
-                compiler.Start();
-                compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
-                compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
-                compiler.StandardInput.WriteLine("exit");
-                string output = compiler.StandardOutput.ReadToEnd();
-                compiler.WaitForExit();
-                compiler.Close();
+            compiler.Start();
+            compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
+            compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
+            compiler.StandardInput.WriteLine("exit");
+            string compilerOut = compiler.StandardOutput.ReadToEnd();
+            compiler.WaitForExit();
+            compiler.Close();
 
-                //Read the expected output of current test case
-                using (StreamReader sr = new StreamReader(test.outputUrl))
-                {
-                    string expected = sr.ReadToEnd();
-                    if(expected != output)
-                    {
-                        failed = true;
-                    }
-                }
-            }
-
-            //TODO, MAKE SURE CRASHES ARE NOT ACCEPTED, PROBABLY WITH TRY/CATCH
             Submission submission = new Submission();
             submission.fileURL = userSubmission;
             submission.milestoneID = mileID;
             //not yet rated
             submission.status = result.none;
             submission.userID = userID;
-            if(testCases.Count > 0)
+
+            // Get .exe file path if it exists
+            string exeFilePath = Directory.GetFiles(workingFolder, "*.exe").FirstOrDefault();
+            // If .exe exists
+            if (string.IsNullOrEmpty(exeFilePath))
             {
-                if (!failed)
+                //compilation failed
+                return false;
+            }
+
+            // Run the executable
+            var processInfoExe = new ProcessStartInfo(exeFilePath, "");
+            processInfoExe.UseShellExecute = false;
+            processInfoExe.RedirectStandardOutput = true;
+            processInfoExe.RedirectStandardInput = true;
+            processInfoExe.RedirectStandardError = true;
+            processInfoExe.CreateNoWindow = false;
+
+            //count passed tests
+            int passCount = 0;
+            foreach (TestCase test in testCases)
+            {
+                string input;
+                using (StreamReader sr = new StreamReader(test.inputUrl))
+                {
+                    input = sr.ReadToEnd();
+                }
+                    List<string> output = new List<string>();
+                // Create a new process with a limited lifespan
+                using (Process processExe = new Process())
+                {
+                    processExe.StartInfo = processInfoExe;
+                    processExe.Start();
+                    processExe.StandardInput.WriteLine(input);
+
+                    // Read the program output
+                    while (!processExe.StandardOutput.EndOfStream)
+                    {
+                        output.Add(processExe.StandardOutput.ReadLine());
+                    }
+                }
+
+                
+                //Read the expected output of current test case
+                using (StreamReader sr = new StreamReader(test.outputUrl))
+                {
+                    List<string> expected = new List<string>();
+                    while (!sr.EndOfStream)
+                    {
+                        expected.Add(sr.ReadLine());
+                    }
+
+                    // Compare expected and obtained output
+                    bool mismatchFound = false;
+                    for (int line = 0; line < expected.Count; line++)
+                    {
+                        if(line < output.Count)
+                        {
+                            // Output does not match expected
+                            if(expected[line] != output[line])
+                            {
+                                mismatchFound = true;
+                            }
+                        }
+                        // Output stopped early
+                        else
+                        {
+                            mismatchFound = true;
+                        }
+                    }
+                    // Test passed
+                    if(!mismatchFound)
+                    {
+                        passCount++;
+                    }
+                }
+            }
+            if (testCases.Count > 0)
+            {
+                // All tests passed
+                if (passCount == testCases.Count)
                 {
                     submission.status = result.Accepted;
 
@@ -159,7 +221,6 @@ namespace MooshakPP.Services
                 db.Submissions.Add(submission);
                 db.SaveChanges();
             }
-
             return true;
         }
 
