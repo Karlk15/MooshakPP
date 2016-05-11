@@ -220,6 +220,10 @@ namespace MooshakPP.Services
             {
                 testResult = testResult = st.CompileCS(ref compiler, fileName);
             }
+            else
+            {   //unsupported file format or language
+                return result.compError;
+            }
 
             // Get .exe file path if it exists
             string exeFilePath = Directory.GetFiles(workingFolder, "*.exe").FirstOrDefault();
