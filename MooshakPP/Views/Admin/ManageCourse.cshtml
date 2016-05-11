@@ -16,6 +16,7 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-group">
+                    @Html.ValidationMessageFor(m => m.newCourse.name, "", new { @class = "text-danger" })
                     @Html.TextBoxFor(m => m.newCourse.name, new { @class = "form-control", placeholder = "Enter course name" })
                 </div>
                 <div class="form-group">
@@ -25,10 +26,12 @@
         </div>
     </div>
 
+   @if (Model.currentCourse != null)
+   {
     <div class="col-md-6">
         <h3>All courses</h3>
         <h5>Click a course to select</h5>
-        
+
         @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @class = "interactivelist" }))
         {
             <div class="courselist">
@@ -51,10 +54,13 @@
                 </table>
             </div>
             <hr />
-            @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
-            <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected course</button>
+                @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
+                <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected course</button>
         }
     </div>
+   }
+    
+
 </div>
 
 @section scripts

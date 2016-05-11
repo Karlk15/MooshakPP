@@ -186,3 +186,8 @@ tr{
 .admin-div {
 
 }
+
+#course-assignments {
+    min-width: 200px;
+    max-width: 200px;
+}
