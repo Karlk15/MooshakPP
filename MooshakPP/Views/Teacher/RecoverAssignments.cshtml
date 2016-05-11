@@ -18,11 +18,14 @@
     </div>
 </div>
 
+<div class="row">
+    @Html.ActionLink("Back", "Index", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-primary backbutton" })
+</div>
+
 <div class="col-md-6">
-    <h2>Recover lost assignments</h2>
-    <h5>Click to view milestones</h5>
+    <h3>Recover lost assignments</h3>
     <hr />
-    @using (Html.BeginForm("Create", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = Model.currentSelected.ID }, FormMethod.Post, new { @id = "coursetableform" }))
+    @using (Html.BeginForm("RecoverAssignment", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = Model.currentSelected.ID }, FormMethod.Post, new { @id = "coursetableform" }))
     {
         <div class="courselist">
             <table>
