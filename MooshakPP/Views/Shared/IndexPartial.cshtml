@@ -41,9 +41,9 @@
 <div class="row">
     <div class="col-md-10">
         <a class="btn btn-default dropdown-togglee" id="course-assignments" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-            @if(Model.currentAssignment == null)
+            @if(Model.currentAssignment == null || Model.currentAssignment.ID == 0)
             {
-                <span>Assignments</span>
+                <span>All Assignments</span>
             }
             else
             {
@@ -99,7 +99,7 @@
                 <div class="courselist">
                     <table>
                         <tbody>
-                            @if (Model != null)
+                            @if (Model.milestones != null && Model.currentAssignment.ID != 0)
                             {
                                 foreach (var m in Model.milestones)
                                 {
@@ -107,6 +107,12 @@
                                         <td>@Html.ActionLink(@m.name, "Index", role, new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
                                     </tr>
                                 }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>No assignment chosen</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -147,7 +153,7 @@
 
         <div class="tab-content">
             <div id="mysubmissions" class="tab-pane fade">
-                <!--@{ Html.RenderPartial("SubmitPartial", Model);}-->
+                
                 <h3>Krisi liktar eins og pikuprump</h3>
             </div>
             <div id="allsubmissions" class="tab-pane fade">
