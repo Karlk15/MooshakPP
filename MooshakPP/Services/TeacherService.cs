@@ -15,10 +15,12 @@ namespace MooshakPP.Services
     public class TeacherService : StudentService
     {
         private ApplicationDbContext db;
+        //private readonly IAppDataContext db;
 
         public TeacherService()
         {
             db = new ApplicationDbContext();
+            //db = context ?? new ApplicationDbContext();
         }
 
         public CreateAssignmentViewModel AddAssignment(string userID, int courseID, int? assignmentID)

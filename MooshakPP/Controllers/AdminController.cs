@@ -82,7 +82,7 @@ namespace MooshakPP.Controllers
         {
             if (action == "delete")
             {
-                if (!string.IsNullOrEmpty(userID))
+                if (!string.IsNullOrEmpty(userID)) 
                     service.RemoveUser(userID);
             }
             else if (collection.newUsers.Count > 0)
@@ -130,7 +130,8 @@ namespace MooshakPP.Controllers
                 return RedirectToAction("ConnectUser");
             }
 
-            List<string> userIDs = users.ToList(); //string[] to List<string>
+            //string[] to List<string>
+            List<string> userIDs = users.ToList(); 
             if (action == "add")
             {
                 service.AddConnections((int)courseID, userIDs);
