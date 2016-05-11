@@ -51,8 +51,7 @@ namespace MooshakPP.Controllers
             {
                 file = Request.Files[0];
 
-                //userID, mileID, HttpPostedFileBase
-                //username must be passed because User is tied to http
+                // PLACEHOLDER MILESTONE ID
                 service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, 19, file);
             }
 
