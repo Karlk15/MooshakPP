@@ -145,7 +145,7 @@ namespace MooshakPP.Services
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
 
             connections.courses = new List<Course>(GetAllCourses());
-            if (courseID == null)
+            if (courseID == null || courseID == 0)
             {
                 connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(0));
                 connections.connectedUser = new List<ApplicationUser>();
