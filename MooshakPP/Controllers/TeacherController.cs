@@ -135,7 +135,7 @@ namespace MooshakPP.Controllers
                 }
             }
 
-            return View(collection);
+            return View("Error");
         }
 
         [HttpGet]
