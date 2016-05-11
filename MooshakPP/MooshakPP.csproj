@@ -262,6 +262,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\AddConnectionsViewModel.cs" />
     <Compile Include="Models\ViewModels\AllSubmissionsViewModel.cs" />
+    <Compile Include="Models\ViewModels\CreateAdminViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Models\ViewModels\DetailsViewModel.cs" />
@@ -359,6 +360,7 @@
     <Content Include="Views\Shared\SubmitPartial.cshtml" />
     <Content Include="Views\Shared\SubmissionsPartial.cshtml" />
     <Content Include="Views\Teacher\RecoverAssignments.cshtml" />
+    <Content Include="Views\Admin\CreateAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
