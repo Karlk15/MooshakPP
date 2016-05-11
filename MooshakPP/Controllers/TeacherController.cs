@@ -108,6 +108,9 @@ namespace MooshakPP.Controllers
                 {
                     if(assignmentID != null)
                     {
+                        model.courseID = (int)courseID;
+                        model.ID = (int)assignmentID;
+                        model.title = collection.currentAssignment.title;
                         //adding a default time to the start date of the assignment and parsing the right format to avoid errors
                         string tempDueDate = collection.due;
                         tempDueDate = tempDueDate + " 23:59:59";
@@ -120,7 +123,7 @@ namespace MooshakPP.Controllers
                         //model.startDate = DateTime.ParseExact(tempStartDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                         model.startDate = Convert.ToDateTime(tempStartDate);
 
-                        service.EditAssignment((int)courseID, (int)assignmentID, collection.currentAssignment.title ,model.startDate, model.dueDate);
+                        service.EditAssignment(model);
 
                         return RedirectToAction("Create", new { courseid = courseID, assignmentid = assignmentID });
                     }
@@ -149,7 +152,7 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult RecoverAssignment(int? courseID, int? assignmentID)
         {
-            return RedirectToAction("Create", "Teacher");
+            return RedirectToAction("Create");
         }
 
         [HttpPost]
@@ -177,29 +180,41 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddMilestones(int? assignmentID, int? currMilestoneID)
+        public ActionResult AddMilestones(int? assignmentID, int? milestoneID)
         {
             if (assignmentID == null)
                 return RedirectToAction("Create");
 
-            CreateMilestoneViewModel model = service.AddMilestone((int)assignmentID, currMilestoneID);
+            CreateMilestoneViewModel model = service.AddMilestone((int)assignmentID, milestoneID);
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult AddMilestones(CreateMilestoneViewModel model, int? assignmentID)
+        public ActionResult AddMilestones(CreateMilestoneViewModel model, int? assignmentID, int? milestoneID ,string action)
         {
             Milestone newMilestone = new Milestone();
 
             if (ModelState.IsValid)
             {
-                newMilestone.assignmentID = (int)assignmentID;
-                newMilestone.name = model.currentMilestone.name;
-                newMilestone.description = model.currentMilestone.description;
+                   if(action == "create")
+                   {
+                       newMilestone.assignmentID = (int)assignmentID;
+                       newMilestone.name = model.currentMilestone.name;
+                       newMilestone.description = model.currentMilestone.description;
 
-                service.CreateMilestone(newMilestone, model.testCaseZip);
+                       service.CreateMilestone(newMilestone, model.testCaseZip);
+                   }
+                   else if(action == "edit")
+                   {
+                       newMilestone.ID = (int)milestoneID;
+                       newMilestone.assignmentID = (int)assignmentID;
+                       newMilestone.description = model.currentMilestone.description;
+                       newMilestone.name = model.currentMilestone.name;
 
-                return RedirectToAction("AddMilestones", new { assignid = (int)assignmentID, milestoneid = newMilestone.ID });
+                       service.EditMilestone(newMilestone, model.testCaseZip);
+                   }
+
+                return RedirectToAction("AddMilestones", new { assignmentid = assignmentID, milestoneid = newMilestone.ID });
             }
             return View("Error");
         }

@@ -50,8 +50,8 @@
                     }
                     else
                     {
-                        <button name="action" value="edit" class="btn btn-success">Finish edit</button>
-                        @Html.ActionLink("Create new", "Create", "Teacher", new { courseid = Model.currentCourse.ID}, new { @class="btn btn-default"})
+                        <button name="action" value="edit" class="btn btn-success">Submit edit</button>
+                        @Html.ActionLink("New assignment", "Create", "Teacher", new { courseid = Model.currentCourse.ID}, new { @class="btn btn-default"})
                     }
                 </div>
                 }
