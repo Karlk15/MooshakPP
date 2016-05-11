@@ -33,7 +33,14 @@
                     @foreach (var assignment in Model.deletedAssignments)
                     {
                         <tr>
-                            <td>@Html.ActionLink(@assignment.title, "RecoverAssignments", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID}, null)</td>
+                            @if (assignment.ID == Model.currentSelected.ID)
+                            {
+                                <td>@Html.ActionLink(@assignment.title, "RecoverAssignments", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID }, new { @class = "selected" })</td>
+                            }
+                            else
+                            {
+                                <td>@Html.ActionLink(@assignment.title, "RecoverAssignments", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID }, null)</td>
+                            }
                         </tr>
                     }
                 </tbody>
