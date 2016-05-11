@@ -29,11 +29,14 @@
 
 @if (Model.courses != null)
 {
-    <div class="col-md-10">
+    <div class="row">
+        <div class="col-md-10">
 
-    <h2>@Model.currentCourse.name</h2>
+            <h2>@Model.currentCourse.name</h2>
 
-</div>
+        </div>
+    </div>
+
 
 <div class="row">
     <div class="col-md-10">
@@ -76,13 +79,13 @@
     </div>
 </div>
 
-
-<div class="col-md-10">
+<div class="row">
+    <div class="col-md-5">
         @if (Model.milestones != null && Model.currentMilestone != null)
         {
             //checks if the logged in user is a teacher or student
             string role;
-            if(User.IsInRole("teacher"))
+            if (User.IsInRole("teacher"))
             {
                 role = "teacher";
             }
@@ -109,41 +112,40 @@
                     </table>
                 </div>
             }
-    }
-</div>
+        }
+    </div>
 
 
-<div class="row">
-    <div class="col-md-10">
+    <div class="col-md-5">
         @using (Html.BeginForm("Submit", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
         {
             <input name="file" type="file" />
             <input type="submit" value="submit" id="submit" class="btn btn-default" />
         }
     </div>
+
 </div>
 
-
-
-
-<div class="col-lg-10">
-    <ul class="nav nav-tabs" role="tablist">
+<div class="row">
+    <div class="col-lg-10">
+        <ul class="nav nav-tabs" role="tablist">
             <li><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
             <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
-            <li class="active"><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li class="active">
-    </ul>
+            <li class="active"><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+        </ul>
 
-    <div class="tab-content">
-        <div id="mysubmissions" class="tab-pane fade">
-            <!--@{ Html.RenderPartial("SubmitPartial", Model);}-->
-            <h3>Krisi liktar eins og pikuprump</h3>
-        </div>
-        <div id="allsubmissions" class="tab-pane fade">
-            <h3>DickButt</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
+        <div class="tab-content">
+            <div id="mysubmissions" class="tab-pane fade">
+                <!--@{ Html.RenderPartial("SubmitPartial", Model);}-->
+                <h3>Krisi liktar eins og pikuprump</h3>
+            </div>
+            <div id="allsubmissions" class="tab-pane fade">
+                <h3>DickButt</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
             <div id="description" class="tab-pane fade in active">
-            @{ Html.RenderPartial("DescriptionPartial", Model);}
+                @{ Html.RenderPartial("DescriptionPartial", Model);}
+            </div>
         </div>
     </div>
 </div>
