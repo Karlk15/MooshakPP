@@ -219,7 +219,7 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult AddMilestones(int? assignmentID, int? milestoneID)
         {
-            if (assignmentID == null)
+            if (assignmentID == null || assignmentID == 0)
                 return RedirectToAction("Create");
 
             CreateMilestoneViewModel model = service.AddMilestone((int)assignmentID, milestoneID);
@@ -230,6 +230,9 @@ namespace MooshakPP.Controllers
         public ActionResult AddMilestones(CreateMilestoneViewModel model, int? assignmentID, int? milestoneID ,string action)
         {
             Milestone newMilestone = new Milestone();
+
+            if (assignmentID == null || assignmentID == 0)
+                return RedirectToAction("Create");
 
             if (ModelState.IsValid)
             {
