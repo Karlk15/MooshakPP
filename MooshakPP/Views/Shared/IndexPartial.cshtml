@@ -105,7 +105,7 @@ else
                                 foreach (var m in Model.milestones)
                                 {
                                     <tr>
-                                        <td>@Html.ActionLink(@m.name, "Index", role, new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                        <td> <a @Html.ActionLink(@m.name, "Index", role, new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, new { @class = "myButton btnNext" })></td>
                                     </tr>
                                 }
                             }
@@ -117,24 +117,20 @@ else
 </div>
 
 
-
 <div class="col-md-10">
     @using (Html.BeginForm("Submit", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
     {
         <input name="file" type="file" />
         <input type="submit" value="submit" id="submit" class="btn btn-default" />
-        }
-    </div>
+    }
+</div>
 
 
-
-
-
-<div class="col-lg-10">
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
-        <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
-        <li><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+<div class="col-lg-10 tabs">
+       <ul class="nav nav-tabs" role="tablist">
+        <li><a href="#mysubmissions" role="tab" data-toggle="tab" style="cursor:pointer;">MySubmission</a></li>
+        <li><a href="#allsubmissions" role="tab" data-toggle="tab" style="cursor:pointer;">AllSubmission</a></li>
+        <li><a href="#description" role="tab" data-toggle="tab" style="cursor:pointer;">Description</a></li>
     </ul>
 
     <div class="tab-content">
@@ -150,4 +146,5 @@ else
             @{ Html.RenderPartial("DescriptionPartial", Model);}
         </div>
     </div>
-</div>
+    </div>
+
