@@ -186,7 +186,7 @@ namespace MooshakPP.Controllers
         }
 
         [HttpPost]
-        public ActionResult RecoverAssignment(RecoverAssignmentsViewModel model, int? courseID, int? assignmentID)
+        public ActionResult RecoverAssignment(int? courseID, int? assignmentID)
         {
             if (assignmentID != null && assignmentID != 0)
             {
