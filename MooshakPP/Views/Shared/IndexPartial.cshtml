@@ -128,9 +128,9 @@
 
     <div class="col-lg-10">
         <ul class="nav nav-tabs" role="tablist">
-            <li class="active"><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
+            <li><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
             <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
-            <li><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+            <li class="active"><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li class="active">
         </ul>
 
         <div class="tab-content">
@@ -142,7 +142,7 @@
                 <h3>DickButt</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
-            <div id="description" class="tab-pane fade">
+            <div id="description" class="tab-pane fade in active">
                 @{ Html.RenderPartial("DescriptionPartial", Model);}
             </div>
         </div>
