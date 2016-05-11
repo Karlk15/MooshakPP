@@ -46,11 +46,11 @@
                 <div class="form-group">
                     @if (Model.currentAssignment.ID == 0)
                     {
-                        <button name="action" value="create" class="btn btn-primary">Create assignment</button>
+                        <button name="action" value="create" class="btn btn-default">Create assignment</button>
                     }
                     else
                     {
-                        <button name="action" value="edit" class="btn btn-primary">Finish edit</button>
+                        <button name="action" value="edit" class="btn btn-success">Finish edit</button>
                         @Html.ActionLink("Create new", "Create", "Teacher", new { courseid = Model.currentCourse.ID}, new { @class="btn btn-default"})
                     }
                 </div>

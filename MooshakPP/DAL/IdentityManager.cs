@@ -11,7 +11,6 @@ namespace MooshakPP.DAL
 {
     public class IdentityManager
     {
-
         public bool RoleExists(string name)
         {
             var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));

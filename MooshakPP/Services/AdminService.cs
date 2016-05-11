@@ -73,13 +73,13 @@ namespace MooshakPP.Services
         }
 
         // n represents how many new users can be accepted
-        public CreateUserViewModel GetUserViewModel(int n)
+        public CreateUserViewModel GetUserViewModel(int number, string currentUserId)
         {
             CreateUserViewModel newUserView = new CreateUserViewModel();
             newUserView.allUsers = GetAllUsers();
             newUserView.newUsers = new List<ApplicationUser>();
-
-            for (int i = 0; i < n && i >= 0; i++)
+            newUserView.currentUser = GetUserByID(currentUserId);
+            for (int i = 0; i < number && i >= 0; i++)
             {
                 newUserView.newUsers.Add(new ApplicationUser());
             }
@@ -133,13 +133,11 @@ namespace MooshakPP.Services
         }
 
         // hashed IDs are strings
-        public void RemoveUser(string ID)
+        public void RemoveUser(string userID)
         {
-            ApplicationUser user = (from u in GetAllUsers()
-                                    where u.Id == ID
-                                    select u).FirstOrDefault();
+            ApplicationUser user = GetUserByID(userID);
             if(user != null)
-                manager.RemoveUser(user);   //FIX ME
+                RemoveUser(user);   //FIX ME
         }
 
         public AddConnectionsViewModel GetConnections(int? courseID)
@@ -198,6 +196,12 @@ namespace MooshakPP.Services
             return allCourses[0];
         }
 
+        public ApplicationUser GetFirstUser()
+        {
+            List<ApplicationUser> allUsers = GetAllUsers();
+            return allUsers.FirstOrDefault();
+        }
+
         private List<Course> GetAllCourses()
         {
             var courses = (from course in db.Courses
@@ -244,6 +248,14 @@ namespace MooshakPP.Services
             return result;
         }
 
+        private ApplicationUser GetUserByID(string userID)
+        {
+            ApplicationUser user = (from u in GetAllUsers()
+                                    where u.Id == userID
+                                    select u).FirstOrDefault();
+            return user;
+        }
+
         private bool IsConnected(int courseID, string userID)
         {
             var getConnected = (from user in db.UsersInCourses
@@ -278,6 +290,34 @@ namespace MooshakPP.Services
             client.Credentials = new System.Net.NetworkCredential("mooshakpp@gmail.com", "ArnarErBestur123");
             client.EnableSsl = true;
             client.Send(mail);
+        }
+
+        private bool RemoveUser(ApplicationUser userToRemove)
+        {
+            List<UsersInCourse> selectedUserCourses = (from con in db.UsersInCourses
+                                                       where con.userID == userToRemove.Id
+                                                       select con).ToList();
+            
+            manager.ClearUserRoles(userToRemove.Id);
+            if(selectedUserCourses.Count == 0)
+            {
+                manager.RemoveUser(userToRemove);
+                return true;
+            }
+            else
+            {
+                for(int i = 0; i < selectedUserCourses.Count(); i++)
+                {
+                    
+                    if(selectedUserCourses[i] != null)
+                    {
+                        db.UsersInCourses.Remove(selectedUserCourses[i]);
+                        db.SaveChanges();
+                    }
+                    manager.RemoveUser(userToRemove);
+                }
+                return true;
+            }
         }
     }
 }
