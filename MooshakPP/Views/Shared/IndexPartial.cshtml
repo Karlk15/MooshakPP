@@ -117,10 +117,21 @@
 
 
     <div class="col-md-5">
-        @using (Html.BeginForm("Submit", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        @if (User.IsInRole("student"))
         {
-            <input name="file" type="file" />
-            <input type="submit" value="submit" id="submit" class="btn btn-default" />
+            using (Html.BeginForm("Submit", "student", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            {
+                <input name="file" type="file" />
+                <input type="submit" value="submit" id="submit" class="btn btn-default" />
+            }
+        }
+        else if (User.IsInRole("teacher"))
+        {
+            using (Html.BeginForm("Submit", "teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            {
+                <input name="file" type="file" />
+                <input type="submit" value="submit" id="submit" class="btn btn-default" />
+            }
         }
     </div>
 

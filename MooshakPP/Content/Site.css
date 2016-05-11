@@ -61,6 +61,7 @@ textarea {
 
 .backbutton {
     float: right;
+    margin-right: 10px
 }
 
 .courselist {
@@ -135,6 +136,55 @@ tr .form-control {
 
 .row .col-md-10 h2 {
     padding-bottom: 14px;
+}
+
+.connect-line {
+    margin: 5px;
+}
+
+.connect-bold {
+    font-weight: bold;
+}
+
+.connect-students {
+    min-height: 200px;
+    max-height: 200px;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+}
+
+.connect-teachers {
+    min-height: 95px;
+    max-height: 95px;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+tr{
+    width: 262px;
+}
+
+.tr-on-hover:hover {
+    background-color: #f5f5f5;
+}
+
+#all-courses {
+    min-height: 250px;
+    max-height: 250px;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.btn-admin {
+
+}
+
+.admin-div {
+
 }
 
 #course-assignments {

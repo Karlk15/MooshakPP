@@ -4,25 +4,21 @@
 }
 
 
-
-<div class="row">
-    <div class="col-md-offset-2 col-md-4">
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @if (Model.currentCourse != null)
+<div class="collapse collapseExample">
+    <div class="well">
+        @if (Model.courses != null)
                 {
-                    @Model.currentCourse.name
-                }
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                @foreach(var course in Model.courses)
+            foreach (var course in Model.courses)
                 {
-                    <li>@Html.ActionLink(@course.name, "ConnectUser", "Admin", new { courseid = course.ID }, null)</li>
+                @Html.ActionLink(@course.name, "ConnectUser", new { courseid = course.ID }, new { @class = "btn btn-default" })
                 }
-            </ul>
+        }
         </div>
     </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-3">
+                <h2>@Model.currentCourse.name</h2>
+            </div>
     @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
 </div><br />
 
@@ -31,14 +27,34 @@
         @using (Html.BeginForm("ConnectUser", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div class="userlist">
-                <h3>Connected users</h3>
+                        <h3 class="connect-bold">Connected users</h3>
+                        <hr class="connect-line" />
+                        <h4 class="connect-bold">Teachers:</h4>
+                        <hr class="connect-line" />
+                        <table>
+                            <tbody class="connect-teachers">
+                                @foreach (var item in Model.connectedTeachers)
+                                {
+                                    if (item != null)
+                                    {
+                                        <tr class="tr-on-hover checkbox">
+                                            <td><input type="checkbox" name=users id="@item.Id" value="@item.Id" /><label for="@item.Id">@item.Email</label></td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                        <hr class="connect-line" />
+                        <h4 class="connect-bold">Students:</h4>
+                        <hr class="connect-line" />
                 <table>
-                    <tbody>
-                        @foreach (var item in Model.connectedUser)
+                            <tbody class="connect-students">
+                                @foreach (var item in Model.connectedStudents)
                         {
                             if (item != null)
                             {
-                                <tr>
+                                        <tr class="tr-on-hover checkbox">
                                     <td><input type="checkbox" name=users id="@item.Id" value="@item.Id" /><label for="@item.Id">@item.Email</label></td>
                                 </tr>
                             }
@@ -46,23 +62,44 @@
 
                     </tbody>
                 </table>
+
             </div>
             <hr />
-            <button name="action" value="remove" class="btn btn-default">Remove selected users</button>
+                    <button name="action" value="remove" class="btn btn-danger">Remove selected users</button>
         }
     </div>
     <div class="col-md-offset-2 col-md-3">
-        @using (Html.BeginForm("ConnectUser", "Admin", new { courseid = Model.currentCourse.ID},FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                @using (Html.BeginForm("ConnectUser", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div class="userlist">
-                <h3>All users</h3>
+                        <h3 class="connect-bold">All users</h3>
+                        <hr class="connect-line" />
+                        <h4 class="connect-bold">Teachers: </h4>
+                        <hr class="connect-line" />
+                        <table>
+                            <tbody class="connect-teachers">
+                                @foreach (var item in Model.notConnectedTeachers)
+                                {
+                                    if (item != null)
+                                    {
+                                        <tr class="tr-on-hover checkbox">
+                                            <td><input type="checkbox" name=users id="n @item.Id" value="@item.Id" /><label for="n @item.Id">@item.Email</label> </td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <hr class="connect-line" />
+                        <h4 class="connect-bold">Students:</h4>
+                        <hr class="connect-line" />
                 <table>
-                    <tbody>
-                        @foreach (var item in Model.notConnectedUser)
+                            <tbody class="connect-students">
+                                @foreach (var item in Model.notConnectedStudents)
                         {
                             if (item != null)
                             {
-                                <tr>
+                                        <tr class="tr-on-hover checkbox">
                                     <td><input type="checkbox" name=users id="n @item.Id" value="@item.Id" /><label for="n @item.Id">@item.Email</label> </td>
                                 </tr>
 
