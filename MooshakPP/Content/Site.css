@@ -119,3 +119,8 @@ tr .form-control {
     font-size: 60px;
 }
 
+.col-md-10 .courselist {
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
