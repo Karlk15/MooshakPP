@@ -125,10 +125,15 @@ tr .form-control {
 
 .col-md-10 .courselist {
     padding-top: 10px;
-    padding-bottom: 18px;
+    padding-bottom: 8px;
 }
 
-.row .col-md-10 {
-    padding-left: 10px;
+.row .col-md-5 {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.row .col-md-10 h2 {
+    padding-bottom: 20px;
 }
 
