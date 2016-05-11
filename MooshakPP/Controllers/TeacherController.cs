@@ -26,16 +26,6 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-            if (assignmentID == null && courseID != null)
-            {
-                assignmentID = service.GetFirstAssignment((int)courseID);
-            }
-
-            if (milestoneID == null && assignmentID != null)
-            {
-                milestoneID = service.GetFirstMilestone((int)assignmentID);
-            }
-
                 model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
 
             return View(model);
@@ -180,8 +170,7 @@ namespace MooshakPP.Controllers
         {
             if (courseID == null)
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
-            if (assignmentID == null)
-                assignmentID = service.GetFirstAssignment(0);
+            
             RecoverAssignmentsViewModel recover = service.RecoverAssignments(User.Identity.GetUserId(),(int)courseID ,assignmentID);
             return View(recover);
         }
@@ -189,7 +178,16 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult RecoverAssignment(int? courseID, int? assignmentID)
         {
-            return RedirectToAction("Create");
+            if (assignmentID != null && assignmentID != 0)
+            {
+                service.RecoverAssignment((int)courseID, (int)assignmentID);
+                return RedirectToAction("Create", new { courseid = courseID, assignmentid = assignmentID });
+            }
+            else
+            {
+                ModelState.AddModelError("", "Nothing selected");
+            }
+            return RedirectToAction("RecoverAssignments", new { courseid = courseID, assignmentid = assignmentID });
         }
 
         [HttpPost]

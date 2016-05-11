@@ -14,7 +14,6 @@
             @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-
                 <div class="form-group">
                     @Html.ValidationMessageFor(m => m.newCourse.name, "", new { @class = "text-danger" })
                     @Html.TextBoxFor(m => m.newCourse.name, new { @class = "form-control", placeholder = "Enter course name" })
@@ -32,7 +31,7 @@
         <h3>All courses</h3>
         <h5>Click a course to select</h5>
 
-        @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @class = "interactivelist" }))
+        @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, null))
         {
             <div class="courselist">
                 <table>
@@ -68,4 +67,3 @@
     <script src="@Url.Content("~/Scripts/interactivelist.js")"></script>
     <script src="~/Scripts/ErrorWarning.js"></script>
 }
-

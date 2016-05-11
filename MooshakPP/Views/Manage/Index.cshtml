@@ -3,6 +3,22 @@
     ViewBag.Title = "Manage";
 }
 
+<div class="row">
+    @if (User.IsInRole("admin"))
+    {
+        @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+    }
+    else if (User.IsInRole("teacher"))
+    {
+        @Html.ActionLink("Back", "Index", "teacher", null, new { @class = "btn btn-primary backbutton" })
+    }
+    else if (User.IsInRole("student"))
+    {
+        @Html.ActionLink("Back", "Index", "student", null, new { @class = "btn btn-primary backbutton" })
+    }
+
+</div>
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
