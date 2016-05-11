@@ -132,7 +132,7 @@ namespace MooshakPP.Controllers
                 }
             }
 
-            return View("Error");
+            return View(collection);
         }
 
         [HttpGet]
