@@ -151,6 +151,7 @@ namespace MooshakPP.Services
             foreach (TestCase test in testCases)
             {
                 string input;
+                // Load test case input file
                 using (StreamReader sr = new StreamReader(test.inputUrl))
                 {
                     input = sr.ReadToEnd();
@@ -168,6 +169,7 @@ namespace MooshakPP.Services
                     {
                         output.Add(processExe.StandardOutput.ReadLine());
                     }
+                    processExe.Close();
                 }
 
                 

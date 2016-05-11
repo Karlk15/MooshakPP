@@ -137,3 +137,7 @@ tr .form-control {
     padding-bottom: 14px;
 }
 
+#course-assignments {
+    min-width: 200px;
+    max-width: 200px;
+}
