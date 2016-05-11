@@ -105,7 +105,7 @@ else
                                 foreach (var m in Model.milestones)
                                 {
                                     <tr>
-                                        <td> <a @Html.ActionLink(@m.name, "Index", role, new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, new { @class = "myButton btnNext" })></td>
+                                        <td> @Html.ActionLink(@m.name, "Index", role, new { assignmentid = @m.assignmentID, milestoneid = @m.ID },null)</td>
                                     </tr>
                                 }
                             }
