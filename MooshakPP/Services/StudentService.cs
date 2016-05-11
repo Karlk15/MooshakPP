@@ -16,12 +16,13 @@ namespace MooshakPP.Services
     {
         private Models.ApplicationDbContext db;
         private SubmissionTester st;
-        //private readonly IAppDataContext db;
+        //private readonly Models.IAppDataContext db;
 
+        //Models.IAppDataContext context <----- should be a parameter for unit testing
         public StudentService()
         {
             db = new Models.ApplicationDbContext();
-            //db = context ?? new ApplicationDbContext();
+            //db = context ?? new Models.ApplicationDbContext();
             st = new SubmissionTester();
         }
 
