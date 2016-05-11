@@ -39,7 +39,7 @@ namespace MooshakPP.Services
 
             return allCourses;
         }
-        
+
         // n represents how many new users can be accepted
         public CreateUserViewModel GetUserViewModel(int number, string currentUserId)
         {
@@ -60,7 +60,7 @@ namespace MooshakPP.Services
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
 
             connections.courses = new List<Course>(GetAllCourses());
-            if (courseID == null)
+            if (courseID == null || courseID == 0)
             {
                 connections.notConnectedTeachers = new List<ApplicationUser>(GetNotConnectedTeachers(0));
                 connections.notConnectedStudents = new List<ApplicationUser>(GetNotConnectedStudents(0));
@@ -97,7 +97,7 @@ namespace MooshakPP.Services
         public bool CreateCourse(Course newCourse)
         {
             try
-            {
+            { 
                 db.Courses.Add(newCourse);
                 db.SaveChanges();
                 return true;
@@ -111,8 +111,8 @@ namespace MooshakPP.Services
         public bool RemoveCourse(int ID)
         {
             Course course = (from c in GetAllCourses()
-                             where c.ID == ID
-                             select c).FirstOrDefault();
+                            where c.ID == ID
+                            select c).FirstOrDefault();
 
             if (course != null)
             {
@@ -148,7 +148,7 @@ namespace MooshakPP.Services
                             manager.AddUserToRole(teacher.Id, role);
                         }
                     }
-                    else 
+                    else
                     {
                         var student = manager.GetUser(nUser.UserName);
                         if (!manager.UserIsInRole(student.Id, "student"))
@@ -258,8 +258,8 @@ namespace MooshakPP.Services
         private List<ApplicationUser> GetConnectedStudents(int courseID)
         {
             List<ApplicationUser> connectedUsers = (from users in db.UsersInCourses
-                                                    where users.courseID == courseID
-                                                    select users.user).ToList();
+                                  where users.courseID == courseID
+                                  select users.user).ToList();
 
             List<ApplicationUser> connectedStudents = new List<ApplicationUser>();
             foreach (ApplicationUser user in connectedUsers)
@@ -302,7 +302,7 @@ namespace MooshakPP.Services
                 if (!connectedStudents.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
                 {
                     if (manager.UserIsInRole(user.Id, "student"))
-                    {
+                {
                         notConnectedStudents.Add(user);
                     }
                 }
@@ -357,7 +357,7 @@ namespace MooshakPP.Services
                                     select u).FirstOrDefault();
             return connection;
         }
-        
+
         private bool RemoveUser(ApplicationUser userToRemove)
         {
             List<UsersInCourse> selectedUserCourses = (from con in db.UsersInCourses
@@ -397,7 +397,7 @@ namespace MooshakPP.Services
                 {
                     allAdmins.Add(user);
                 }
-            }
+        }
             return allAdmins;
         }
 

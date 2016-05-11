@@ -1,0 +1,46 @@
+﻿@model MooshakPP.Models.ViewModels.RecoverAssignmentsViewModel
+@{
+    ViewBag.Title = "RecoverAssignment";
+}
+
+
+<div class="collapse collapseExample">
+    <div class="well">
+        
+        @foreach (var course in Model.courses)
+        {
+            {
+                @Html.ActionLink(@course.name, "RecoverAssignment", "Teacher", new { courseid = course.ID, assignmentid = Model.currentSelected.ID }, new { @class = "btn btn-default" })
+            }
+        }
+
+        
+    </div>
+</div>
+
+<div class="row">
+    @Html.ActionLink("Back", "Index", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-primary backbutton" })
+</div>
+
+<div class="col-md-6">
+    <h3>Recover lost assignments</h3>
+    <hr />
+    @using (Html.BeginForm("RecoverAssignment", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = Model.currentSelected.ID }, FormMethod.Post, new { @id = "coursetableform" }))
+    {
+        <div class="courselist">
+            <table>
+                <tbody>
+                    @foreach (var assignment in Model.deletedAssignments)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(@assignment.title, "RecoverAssignment", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID}, null)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <h4>@Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })</h4><br />
+        <button name="action" value="recover" class="btn btn-primary">Add selected assignment to @Model.currentCourse.name</button>
+    }
+</div>

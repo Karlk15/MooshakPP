@@ -35,18 +35,22 @@
 
                 @using (Html.BeginForm("Create", "Teacher", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentAssignment.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                @Html.AntiForgeryToken()
+                    @Html.AntiForgeryToken()
 
-                <div class="form-group">
-                    @Html.EditorFor(m => m.currentAssignment.title, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter assignment title" } })
-                    @Html.ValidationMessageFor(m => m.currentAssignment.title, "", new { @class = "text-danger" } )
-                    @Html.EditorFor(s => s.start, new { htmlattributes = new { @class = "form-control datepicker", @placeholder = "Enter start date" } })
-                    @Html.ValidationMessageFor(s => s.start, "", new { @class = "text-danger" }) 
-                    @Html.EditorFor(s => s.due, new { htmlattributes = new { @class = "form-control datepicker", @placeholder = "Enter due date" } })
-                    @Html.ValidationMessageFor(s => s.due, "", new { @class = "text-danger" })
-                    <!--<input class="form-control datepicker" data-val="true" id="start" name="start" placeholder="Enter opening date" type="text" value="" >
-                    <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="">-->
-                </div>
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.currentAssignment.title, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter assignment title" } })
+                        @Html.ValidationMessageFor(m => m.currentAssignment.title, "", new { @class = "text-danger" } )
+                    </div>
+                    <div class="form-group">
+                            @Html.EditorFor(s => s.start, new { htmlattributes = new { @class = "form-control datepicker", @placeholder = "Enter start date" } })
+                            @Html.ValidationMessageFor(s => s.start, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                                @Html.EditorFor(s => s.due, new { htmlattributes = new { @class = "form-control datepicker", @placeholder = "Enter due date" } })
+                                @Html.ValidationMessageFor(s => s.due, "", new { @class = "text-danger" })
+                                <!--<input class="form-control datepicker" data-val="true" id="start" name="start" placeholder="Enter opening date" type="text" value="" >
+                                <input class="form-control datepicker" data-val="true" id="due" name="due" placeholder="Enter due date" type="text" value="">-->
+                    </div>
 
                 <div class="form-group">
                     @if (Model.currentAssignment.ID == 0)
@@ -87,8 +91,8 @@
 
             <hr />
                 @Html.ActionLink("Manage milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
-                <button name="action" value="delete" class="btn btn-danger">Delete selected assignment</button>
-        }
+                <button name="action" value="delete" class="btn btn-danger"data-confirm="Are you sure you want to delete selected assignment?">Delete selected assignment</button>
+            }
         }
     </div>
 </div>
@@ -97,4 +101,5 @@
 {
     <script src="@Url.Content("~/Scripts/datepicker.js")"></script>
     <script src="@Url.Content("~/Scripts/interactivelist.js")"></script>
+    <script src="~/Scripts/ErrorWarning.js"></script>
 }

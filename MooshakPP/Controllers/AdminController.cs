@@ -23,12 +23,7 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ManageCourse(int? courseID)
         {
-            if(courseID == null)
-            {
-                courseID = service.GetFirstCourse().ID;
-            }
             ManageCourseViewModel model = service.ManageCourse(courseID);
-
             return View(model);
         }
 
@@ -37,14 +32,12 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult ManageCourse(Course newCourse, int? courseID, string action)
         {
-            bool hasErrors = false;
-
+            
             if (action == "delete")
             {
-                if (courseID != null)
+                if (courseID != null|| courseID != 0)
                 {
-                    service.RemoveCourse((int)courseID);
-                    
+                    service.RemoveCourse((int)courseID); 
                 }
                 return RedirectToAction("ManageCourse");
             }
@@ -56,12 +49,7 @@ namespace MooshakPP.Controllers
 
             else
             {
-                hasErrors = true;
                 ModelState.AddModelError("newCourse.name", "You must enter a title");
-            }
-
-            if(hasErrors == true)
-            {
                 ManageCourseViewModel model = service.ManageCourse(courseID);
                 return View(model);
             }
@@ -88,7 +76,7 @@ namespace MooshakPP.Controllers
         {
             if (action == "delete")
             {
-                if (!string.IsNullOrEmpty(userID))
+                if (!string.IsNullOrEmpty(userID)) 
                     service.RemoveUser(userID);
             }
             else if (collection.newUsers.Count > 0)
@@ -109,6 +97,11 @@ namespace MooshakPP.Controllers
                             }
 
                         }
+                        else
+                        {
+                            ModelState.AddModelError("newUsers[i].Email", "Invalid email account");
+                            return RedirectToAction("CreateUser", new { userid = userID });
+                        }
                     }
                 }
             }
@@ -119,14 +112,6 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ConnectUser(int? courseID)
         {
-            if (courseID == null)
-            {   
-                //This is not an error message
-                ViewData["selectedCourse"] = "No course selected";
-
-                //This is an error message, only appears after a POST on course.ID == null
-                ViewData["error"] = TempData["connError"];         
-            }
 
             AddConnectionsViewModel model = service.GetConnections(courseID);
             return View(model);
@@ -144,7 +129,8 @@ namespace MooshakPP.Controllers
                 return RedirectToAction("ConnectUser");
             }
 
-            List<string> userIDs = users.ToList(); //string[] to List<string>
+            //string[] to List<string>
+            List<string> userIDs = users.ToList(); 
             if (action == "add")
             {
                 service.AddConnections((int)courseID, userIDs);

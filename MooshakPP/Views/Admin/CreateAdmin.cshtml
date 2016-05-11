@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+    @Html.ActionLink("Back to Homepage", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
 </div>
 
 @using (Html.BeginForm("CreateAdmin", "Admin", new { adminid = Model.currentlySelected.Id},FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -50,7 +50,12 @@
                 </table>
             </div>
             <hr />
-            <button name="action" value="delete" class="btn btn-danger col-md-offset-6">Delete selected admin</button>
+            <button name="action" value="delete" class="btn btn-danger col-md-offset-6" data-confirm="Are you sure you want to delete this admin?">Delete selected admin</button>
         }
     }
 </div>
+
+@section scripts
+{
+    <script src="~/Scripts/ErrorWarning.js"></script>
+}

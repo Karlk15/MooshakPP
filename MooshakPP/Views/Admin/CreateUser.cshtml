@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+    @Html.ActionLink("Back to Homepage", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
 </div>
 
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -25,6 +25,7 @@
             <tbody>
                 @for (int i = 0; i < Model.newUsers.Count; i++)
                 {
+                    @Html.ValidationMessageFor(m => m.newUsers[i].Email, "", new { @class = "text-danger" })
                     <tr>
                         <td>@Html.LabelFor(x => x.newUsers[i].Email, (i+1) + ":", new { @class = "control-label" })</td>
                         <td>@Html.TextBoxFor(x => x.newUsers[i].Email, new { @class = "form-control", @placeholder = "example@example.com"})</td>
@@ -68,7 +69,7 @@
                 </table>
             </div>
             <hr />
-            <button name="action" value="delete" class="btn btn-danger col-md-offset-6">Delete selected user</button>
+            <button name="action" value="delete" class="btn btn-danger col-md-offset-6"data-confirm="Are you sure you want delete this user?">Delete selected user</button>
         }
     }
 </div>
@@ -76,3 +77,7 @@
 
 
 
+@section scripts
+{
+    <script src="~/Scripts/ErrorWarning.js"></script>
+}

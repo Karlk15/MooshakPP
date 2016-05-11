@@ -180,11 +180,9 @@ tr{
 }
 
 .btn-admin {
-
-}
-
-.admin-div {
-
+    margin-top: 70px;
+    margin-bottom: 35px;
+    font-size: 20px;
 }
 
 #course-assignments {

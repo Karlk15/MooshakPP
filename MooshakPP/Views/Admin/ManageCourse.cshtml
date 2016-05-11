@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+    @Html.ActionLink("Back to Homepage", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
 </div>
 
 <div class="row">
@@ -14,7 +14,6 @@
             @using (Html.BeginForm("ManageCourse", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-
                 <div class="form-group">
                     @Html.ValidationMessageFor(m => m.newCourse.name, "", new { @class = "text-danger" })
                     @Html.TextBoxFor(m => m.newCourse.name, new { @class = "form-control", placeholder = "Enter course name" })
@@ -32,7 +31,7 @@
         <h3>All courses</h3>
         <h5>Click a course to select</h5>
 
-        @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, new { @class = "interactivelist" }))
+        @using (Html.BeginForm("ManageCourse", "Admin", new { courseid = Model.currentCourse.ID }, FormMethod.Post, null))
         {
             <div class="courselist">
                 <table>
@@ -55,7 +54,7 @@
             </div>
             <hr />
                 @Html.ActionLink("Connect users", "ConnectUser", "Admin", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
-                <button name="action" value="delete" class="btn btn-danger col-md-offset-5">Delete selected course</button>
+                <button name="action" value="delete" class="btn btn-danger col-md-offset-5"data-confirm="Are you sure you want to delete selected course?">Delete selected course</button>
         }
     </div>
    }
@@ -66,4 +65,5 @@
 @section scripts
 {
     <script src="@Url.Content("~/Scripts/interactivelist.js")"></script>
+    <script src="~/Scripts/ErrorWarning.js"></script>
 }

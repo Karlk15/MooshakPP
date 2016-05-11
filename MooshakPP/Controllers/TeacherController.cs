@@ -26,16 +26,6 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-            if (assignmentID == null && courseID != null)
-            {
-                assignmentID = service.GetFirstAssignment((int)courseID);
-            }
-
-            if (milestoneID == null && assignmentID != null)
-            {
-                milestoneID = service.GetFirstMilestone((int)assignmentID);
-            }
-
                 model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
 
             return View(model);
@@ -176,20 +166,30 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult RecoverAssignments(int? courseID, int? assignmentID)
+        public ActionResult RecoverAssignment(int? courseID, int? assignmentID)
         {
             if (courseID == null)
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
-            if (assignmentID == null)
-                assignmentID = service.GetFirstAssignment(0);
+            
             RecoverAssignmentsViewModel recover = service.RecoverAssignments(User.Identity.GetUserId(),(int)courseID ,assignmentID);
             return View(recover);
         }
 
         [HttpPost]
-        public ActionResult RecoverAssignment(int? courseID, int? assignmentID)
+        public ActionResult RecoverAssignment(int? courseID, int? assignmentID,string action)
         {
-            return RedirectToAction("Create");
+            if (assignmentID != null && assignmentID != 0)
+            {
+                service.RecoverAssignment((int)courseID, (int)assignmentID);
+                return RedirectToAction("Create", new { courseid = courseID, assignmentid = assignmentID });
+            }
+            else
+            {
+                ModelState.AddModelError("", "No assignment selected!");
+            }
+            RecoverAssignmentsViewModel model = service.RecoverAssignments(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+            return View(model);
+            //return RedirectToAction("RecoverAssignment", new { courseid = courseID, assignmentid = assignmentID });
         }
 
         [HttpPost]

@@ -16,10 +16,13 @@ namespace MooshakPP.Services
     {
         private Models.ApplicationDbContext db;
         private SubmissionTester st;
+        //private readonly Models.IAppDataContext db;
 
+        //Models.IAppDataContext context <----- should be a parameter for unit testing
         public StudentService()
         {
             db = new Models.ApplicationDbContext();
+            //db = context ?? new Models.ApplicationDbContext();
             st = new SubmissionTester();
         }
 
@@ -30,15 +33,26 @@ namespace MooshakPP.Services
             {
                 newIndex.courses = GetCourses(userId);
                 newIndex.assignments = GetAssignments((int)courseId);
-                if (assignmentId != null)
+                if (assignmentId != null && assignmentId != 0)
                 {
                     newIndex.milestones = GetMilestones((int)assignmentId);
                     newIndex.currentAssignment = GetAssignmentByID((int)assignmentId);
-                    if(milestoneId != null)
+                    if (milestoneId != null && milestoneId != 0)
                     {
                         newIndex.currentMilestone = GetMilestoneByID((int)milestoneId);
                     }
+                    else
+                    {
+                        newIndex.currentMilestone = new Milestone();
+                    }
                 }
+                else
+                {
+                    newIndex.currentAssignment = new Assignment();
+                    newIndex.milestones = new List<Milestone>();
+                    newIndex.currentMilestone = new Milestone();
+                }
+                
                 newIndex.currentCourse = GetCourseByID((int)courseId);
                 
                 //newIndex.studentSubmissions = GetSubmissions(userId);
