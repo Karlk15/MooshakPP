@@ -16,28 +16,39 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID, milestoneid = Model.currentMilestone.ID },FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
             
         <div class="col-md-6">
             <div class="form-group">
-                @Html.TextBoxFor(m => m.currentMilestone.name, new { @class = "form-control", placeholder = "Enter name for part" })
+                @Html.EditorFor(m => m.currentMilestone.name, new { htmlattributes = new { @class = "form-control", placeholder = "Enter name for part" } })
             </div>
 
             <div class="form-group">
-                @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part" , rows="9"})
+                @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part", rows = "9" })
             </div>
 
             <div class="form-group">
                 <!--<label for="fileupload">Input.zip</label>
                 <input id="fileupload" type="file" />-->
-                <label for="fileupload">TestCases.zip</label>
-                @Html.TextBoxFor(m => m.testCaseZip, new { type = "file" })
+                <label for="fileupload">Please upload a zip file with your testcases</label>
+                @Html.TextBoxFor(m => m.testCaseZip, new { type = "file", accept = "application/zip, application/x-zip, application/x-zip-compressed" } )
             </div>
 
-            <button type="submit" class="btn btn-default" value="Done">Done</button>
+            <div class="form-group">
+                @if (Model.currentMilestone.ID == 0)
+                {
+                    <button name="action" value="create" class="btn btn-default">Create Milestone</button>
+                }
+                else
+                {
+                    <button name="action" value="edit" class="btn btn-success">Submit edit</button>
+                    @Html.ActionLink("New Milestone", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
+                }
+            </div>
+
         </div>
     }
  
@@ -46,7 +57,7 @@
 
     @if (Model.currentMilestone != null)
     {
-        using (Html.BeginForm("AddMilestones", "Teacher", new { assignID = Model.currentAssignment.ID, milestoneID = (int?)Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+        using (Html.BeginForm("AddMilestones", "Teacher", new { assignID = Model.currentAssignment.ID, milestoneID = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
         {
             <div class="courselist">
                 <table>

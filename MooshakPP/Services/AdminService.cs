@@ -40,6 +40,60 @@ namespace MooshakPP.Services
             return allCourses;
         }
 
+        // n represents how many new users can be accepted
+        public CreateUserViewModel GetUserViewModel(int number, string currentUserId)
+        {
+            CreateUserViewModel newUserView = new CreateUserViewModel();
+            newUserView.allUsers = GetAllExceptAdmin();
+            newUserView.newUsers = new List<ApplicationUser>();
+            newUserView.currentUser = GetUserByID(currentUserId);
+            for (int i = 0; i < number && i >= 0; i++)
+            {
+                newUserView.newUsers.Add(new ApplicationUser());
+            }
+            
+            return newUserView;
+        }
+        
+        public AddConnectionsViewModel GetConnections(int? courseID)
+        {
+            AddConnectionsViewModel connections = new AddConnectionsViewModel();
+
+            connections.courses = new List<Course>(GetAllCourses());
+            if (courseID == null || courseID == 0)
+            {
+                connections.notConnectedTeachers = new List<ApplicationUser>(GetNotConnectedTeachers(0));
+                connections.notConnectedStudents = new List<ApplicationUser>(GetNotConnectedStudents(0));
+                connections.connectedTeachers = new List<ApplicationUser>();
+                connections.connectedStudents = new List<ApplicationUser>();
+                connections.currentCourse = new Course();
+                connections.currentCourse.name = "No course selected";
+                return connections;
+            }
+            connections.connectedTeachers = new List<ApplicationUser>(GetConnectedTeachers((int)courseID));
+            connections.connectedStudents = new List<ApplicationUser>(GetConnectedStudents((int)courseID));
+            connections.notConnectedTeachers = new List<ApplicationUser>(GetNotConnectedTeachers((int)courseID));
+            connections.notConnectedStudents = new List<ApplicationUser>(GetNotConnectedStudents((int)courseID));
+            connections.currentCourse = GetCourseByID((int)courseID);
+
+            return connections;
+        }
+
+        public CreateAdminViewModel GetAdmins(string adminId)
+        {
+            CreateAdminViewModel model = new CreateAdminViewModel();
+            model.allAdmins = GetAllAdmins();
+            if(!string.IsNullOrEmpty(adminId))
+            {
+                model.currentlySelected = GetUserByID(adminId);
+            }
+            else
+            {
+                model.currentlySelected = manager.GetUser("admin@admin.com");
+            }
+            return model;
+        }
+
         public bool CreateCourse(Course newCourse)
         {
             try
@@ -48,7 +102,7 @@ namespace MooshakPP.Services
                 db.SaveChanges();
                 return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -72,22 +126,7 @@ namespace MooshakPP.Services
             }
         }
 
-        // n represents how many new users can be accepted
-        public CreateUserViewModel GetUserViewModel(int number, string currentUserId)
-        {
-            CreateUserViewModel newUserView = new CreateUserViewModel();
-            newUserView.allUsers = GetAllUsers();
-            newUserView.newUsers = new List<ApplicationUser>();
-            newUserView.currentUser = GetUserByID(currentUserId);
-            for (int i = 0; i < number && i >= 0; i++)
-            {
-                newUserView.newUsers.Add(new ApplicationUser());
-            }
-            
-            return newUserView;
-        }
-
-        public bool CreateUser(string name, bool isTeacher)
+        public bool CreateUser(string name, string role)
         {
 
             if (!manager.UserExists(name))
@@ -101,12 +140,12 @@ namespace MooshakPP.Services
                 if (wasCreated)
                 {
                     SendUserEmail(name, password);
-                    if (isTeacher == true)
+                    if (role == "teacher" || role == "student" || role == "admin")
                     {
                         var teacher = manager.GetUser(nUser.UserName);
-                        if (!manager.UserIsInRole(teacher.Id, "teacher"))
+                        if (!manager.UserIsInRole(teacher.Id, role))
                         {
-                            manager.AddUserToRole(teacher.Id, "teacher");
+                            manager.AddUserToRole(teacher.Id, role);
                         }
                     }
                     else
@@ -117,6 +156,7 @@ namespace MooshakPP.Services
                             manager.AddUserToRole(student.Id, "student");
                         }
                     }
+                   
                     return true;
                 }
                 else
@@ -136,28 +176,8 @@ namespace MooshakPP.Services
         public void RemoveUser(string userID)
         {
             ApplicationUser user = GetUserByID(userID);
-            if(user != null)
+            if (user != null)
                 RemoveUser(user);   //FIX ME
-        }
-
-        public AddConnectionsViewModel GetConnections(int? courseID)
-        {
-            AddConnectionsViewModel connections = new AddConnectionsViewModel();
-
-            connections.courses = new List<Course>(GetAllCourses());
-            if (courseID == null)
-            {
-                connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected(0));
-                connections.connectedUser = new List<ApplicationUser>();
-                connections.currentCourse = new Course();
-                connections.currentCourse.name = "No course selected";
-                return connections;
-            }
-            connections.connectedUser = new List<ApplicationUser>(GetConnectedUsers((int)courseID));
-            connections.notConnectedUser = new List<ApplicationUser>(GetNotConnected((int)courseID));
-            connections.currentCourse = GetCourseByID((int)courseID);
-
-            return connections;
         }
 
         public void AddConnections(int courseID, List<string> userIDs)
@@ -218,34 +238,97 @@ namespace MooshakPP.Services
             return theCourse;
         }
 
-        private List<ApplicationUser> GetConnectedUsers(int courseID)
+        private List<ApplicationUser> GetConnectedTeachers(int courseID)
         {
-            var connectedUsers = (from users in db.UsersInCourses
+            List<ApplicationUser> connectedUsers = (from users in db.UsersInCourses
                                   where users.courseID == courseID
                                   select users.user).ToList();
-            return connectedUsers;
+
+            List<ApplicationUser> connectedTeachers = new List<ApplicationUser>();
+            foreach(ApplicationUser user in connectedUsers)
+            {
+                if(manager.UserIsInRole(user.Id, "teacher"))
+                {
+                    connectedTeachers.Add(user);
+                }
+            }
+            return connectedTeachers;
         }
 
-        private List<ApplicationUser> GetNotConnected(int courseID)
+        private List<ApplicationUser> GetConnectedStudents(int courseID)
+        {
+            List<ApplicationUser> connectedUsers = (from users in db.UsersInCourses
+                                  where users.courseID == courseID
+                                  select users.user).ToList();
+
+            List<ApplicationUser> connectedStudents = new List<ApplicationUser>();
+            foreach (ApplicationUser user in connectedUsers)
+            {
+                if (manager.UserIsInRole(user.Id, "student"))
+                {
+                    connectedStudents.Add(user);
+                }
+            }
+            return connectedStudents;
+        }
+
+        private List<ApplicationUser> GetNotConnectedTeachers(int courseID)
         {
             List<ApplicationUser> allUsers = GetAllUsers();
-            List<ApplicationUser> connectedUsers = GetConnectedUsers(courseID);
-            List<ApplicationUser> notConnectedUsers = new List<ApplicationUser>();
+            List<ApplicationUser> connectedTeachers = GetConnectedTeachers(courseID);
+            List<ApplicationUser> notConnectedTeachers = new List<ApplicationUser>();
 
             foreach (ApplicationUser user in allUsers)
             {
-                if(!connectedUsers.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
+                if(!connectedTeachers.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
                 {
-                    notConnectedUsers.Add(user);
+                    if(manager.UserIsInRole(user.Id, "teacher"))
+                    {
+                        notConnectedTeachers.Add(user);
+                    }
                 }
             }
-            return notConnectedUsers;
+            return notConnectedTeachers;
+        }
+
+        private List<ApplicationUser> GetNotConnectedStudents(int courseID)
+        {
+            List<ApplicationUser> allUsers = GetAllUsers();
+            List<ApplicationUser> connectedStudents = GetConnectedTeachers(courseID);
+            List<ApplicationUser> notConnectedStudents = new List<ApplicationUser>();
+
+            foreach (ApplicationUser user in allUsers)
+            {
+                if (!connectedStudents.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
+                {
+                    if (manager.UserIsInRole(user.Id, "student"))
+                {
+                        notConnectedStudents.Add(user);
+                    }
+                }
+            }
+            return notConnectedStudents;
         }
 
         private List<ApplicationUser> GetAllUsers()
         {
             List<ApplicationUser> result = manager.GetAllUsers();
             return result;
+        }
+
+        private List<ApplicationUser> GetAllExceptAdmin()
+        {
+            List<ApplicationUser> ex = manager.GetAllUsers();
+
+            List<ApplicationUser> all = new List<ApplicationUser>();
+            foreach(ApplicationUser user in ex)
+            {
+                if(!manager.UserIsInRole(user.Id, "admin"))
+                {
+                    all.Add(user);
+                }
+            }
+            return all;
         }
 
         private ApplicationUser GetUserByID(string userID)
@@ -275,23 +358,6 @@ namespace MooshakPP.Services
             return connection;
         }
 
-        private void SendUserEmail(string userEmail, string userPassword)
-        {
-            MailMessage mail = new MailMessage("mooshakpp@gmail.com", userEmail);
-            SmtpClient client = new SmtpClient();
-            client.Port = 587;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Host = "smtp.gmail.com";
-            mail.Subject = "Mooshak++ login credentials";
-            mail.Body = "You can login with Mooshak++ using the following login information: " + Environment.NewLine
-                        + "UserName: " + userEmail + Environment.NewLine
-                        + "Password: " + userPassword + Environment.NewLine
-                        + "You can change your password later when logged in. ";
-            client.Credentials = new System.Net.NetworkCredential("mooshakpp@gmail.com", "ArnarErBestur123");
-            client.EnableSsl = true;
-            client.Send(mail);
-        }
-
         private bool RemoveUser(ApplicationUser userToRemove)
         {
             List<UsersInCourse> selectedUserCourses = (from con in db.UsersInCourses
@@ -318,6 +384,38 @@ namespace MooshakPP.Services
                 }
                 return true;
             }
+        }
+
+        private List<ApplicationUser> GetAllAdmins()
+        {
+            List<ApplicationUser> allUsers = GetAllUsers();
+
+            List<ApplicationUser> allAdmins = new List<ApplicationUser>();
+            foreach(ApplicationUser user in allUsers)
+            {
+                if(manager.UserIsInRole(user.Id, "admin"))
+                {
+                    allAdmins.Add(user);
+                }
+        }
+            return allAdmins;
+        }
+
+        private void SendUserEmail(string userEmail, string userPassword)
+        {
+            MailMessage mail = new MailMessage("mooshakpp@gmail.com", userEmail);
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Host = "smtp.gmail.com";
+            mail.Subject = "Mooshak++ login credentials";
+            mail.Body = "You can login with Mooshak++ using the following login information: " + Environment.NewLine
+                        + "UserName: " + userEmail + Environment.NewLine
+                        + "Password: " + userPassword + Environment.NewLine
+                        + "You can change your password later when logged in. ";
+            client.Credentials = new System.Net.NetworkCredential("mooshakpp@gmail.com", "ArnarErBestur123");
+            client.EnableSsl = true;
+            client.Send(mail);
         }
     }
 }

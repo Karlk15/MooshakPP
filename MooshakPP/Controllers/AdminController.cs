@@ -32,12 +32,13 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult ManageCourse(Course newCourse, int? courseID, string action)
         {
+            bool hasErrors = false;
+
             if (action == "delete")
             {
-                if (courseID != null)
+                if (courseID != null|| courseID != 0)
                 {
-                    service.RemoveCourse((int)courseID);
-                    
+                    service.RemoveCourse((int)courseID); 
                 }
                 return RedirectToAction("ManageCourse");
             }
@@ -46,6 +47,19 @@ namespace MooshakPP.Controllers
             {
                 service.CreateCourse(newCourse);
             }
+
+            else
+            {
+                hasErrors = true;
+                ModelState.AddModelError("newCourse.name", "You must enter a title");
+            }
+
+            if(hasErrors == true)
+            {
+                ManageCourseViewModel model = service.ManageCourse(courseID);
+                return View(model);
+            }
+
             return RedirectToAction("ManageCourse");
         }
 
@@ -77,8 +91,18 @@ namespace MooshakPP.Controllers
                 {
                     if (!string.IsNullOrEmpty(collection.newUsers[i].Email))
                     {
-                        if(collection.newUsers[i].Email.IndexOf("@") != -1) 
-                            service.CreateUser(collection.newUsers[i].Email, collection.isTeacher[i]);
+                        if(collection.newUsers[i].Email.IndexOf("@") != -1)
+                        {
+                            if(collection.isTeacher[i])
+                            {
+                                service.CreateUser(collection.newUsers[i].Email, "teacher");
+                            }
+                            else
+                            {
+                                service.CreateUser(collection.newUsers[i].Email, "student");
+                            }
+
+                        }
                     }
                 }
             }
@@ -89,14 +113,6 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ConnectUser(int? courseID)
         {
-            if (courseID == null)
-            {   
-                //This is not an error message
-                ViewData["selectedCourse"] = "No course selected";
-
-                //This is an error message, only appears after a POST on course.ID == null
-                ViewData["error"] = TempData["connError"];         
-            }
 
             AddConnectionsViewModel model = service.GetConnections(courseID);
             return View(model);
@@ -125,6 +141,34 @@ namespace MooshakPP.Controllers
                 service.RemoveConnections((int)courseID, userIDs);
             }
             return RedirectToAction("ConnectUser", new { courseid = courseID });
+        }
+
+        [HttpGet]
+        public ActionResult CreateAdmin(string adminId)
+        {
+            CreateAdminViewModel model = service.GetAdmins(adminId);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreateAdmin(CreateAdminViewModel model, string action, string userId)
+        {
+            if (action == "delete")
+            {
+                if (!string.IsNullOrEmpty(userId))
+                    service.RemoveUser(userId);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(model.newAdmin.Email))
+                {
+                    if (model.newAdmin.Email.IndexOf("@") != -1)
+                    {
+                        service.CreateUser(model.newAdmin.Email, "admin");
+                    }
+                }
+            }
+            return RedirectToAction("CreateAdmin");
         }
     }
 }

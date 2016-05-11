@@ -15,12 +15,14 @@ namespace MooshakPP.Services
     public class StudentService
     {
         private Models.ApplicationDbContext db;
+        private SubmissionTester st;
         //private readonly IAppDataContext db;
 
         public StudentService()
         {
             db = new Models.ApplicationDbContext();
             //db = context ?? new ApplicationDbContext();
+            st = new SubmissionTester();
         }
 
         public IndexViewModel Index(string userId, int? courseId, int? assignmentId, int? milestoneId)
@@ -66,103 +68,50 @@ namespace MooshakPP.Services
         }
 
         //mileID is milestone ID
-        public bool CreateSubmission(string userID, string userName, int mileID, HttpPostedFileBase file)
+        public result CreateSubmission(string userID, string userName, int mileID, HttpPostedFileBase file)
         {
-
-            string code;
-            string fileName = file.FileName;
-
-            //produce uploaded code
-            using (StreamReader sr = new StreamReader(file.InputStream))
-            {
-                code = sr.ReadToEnd();
-            }
-
+            List<TestCase> testCases = GetTestCasesByMilestoneID(mileID);
             //Get the submission directory relative location from AppSettings
             string submissionDir = ConfigurationManager.AppSettings["SubmissionDir"];
 
             //Get working directory information
-            submissionDir = GetMilestonePath(submissionDir, mileID);
-
-            List<TestCase> testCases = GetTestCasesByMilestoneID(mileID);
-
-            string userSubmission = submissionDir + userName + "\\Submission ";
-
+            string userSubmission = GetMilestonePath(submissionDir, mileID) + userName + "\\Submission ";
             //Find an unused submission number
             int i = 1;
             while (Directory.Exists(userSubmission + i))
             {
                 i++;
             }
-            // the "\\" is vital
+            // Append submission number and "\\" to end directory path
             userSubmission += i + "\\";
-
             Directory.CreateDirectory(userSubmission);
 
-            var workingFolder = userSubmission;
-            var cppFileName = fileName;
-            var exeFilePath = workingFolder + fileName;
+            string workingFolder = userSubmission;
+            string fileName = file.FileName;
+            string cppFileName = fileName;
 
-            // Write the code to a file, such that the compiler
-            // can find it:
-            System.IO.File.WriteAllText(workingFolder + cppFileName, code);
+            // Save submission
+            file.SaveAs(workingFolder + cppFileName);
+            
+            // Run tests on the given file using testCases
+            result testResult = TestSubmission(workingFolder, cppFileName, ref testCases);
 
-            var compilerFolder = ConfigurationManager.AppSettings["compilerFolder"];
-
-
-            Process compiler = new Process();
-            compiler.StartInfo.FileName = "cmd.exe";
-            compiler.StartInfo.WorkingDirectory = workingFolder;
-            compiler.StartInfo.RedirectStandardInput = true;
-            compiler.StartInfo.RedirectStandardOutput = true;
-            compiler.StartInfo.UseShellExecute = false;
-
-            bool failed = false;
-            foreach(TestCase test in testCases)
+            if (testCases.Count > 0)
             {
-                compiler.Start();
-                compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
-                compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
-                compiler.StandardInput.WriteLine("exit");
-                string output = compiler.StandardOutput.ReadToEnd();
-                compiler.WaitForExit();
-                compiler.Close();
+                Submission submission = new Submission();
+                submission.fileURL = userSubmission;
+                submission.milestoneID = mileID;
+                submission.status = testResult;
+                submission.userID = userID;
 
-                //Read the expected output of current test case
-                using (StreamReader sr = new StreamReader(test.outputUrl))
-                {
-                    string expected = sr.ReadToEnd();
-                    if(expected != output)
-                    {
-                        failed = true;
-                    }
-                }
-            }
-
-            //TODO, MAKE SURE CRASHES ARE NOT ACCEPTED, PROBABLY WITH TRY/CATCH
-            Submission submission = new Submission();
-            submission.fileURL = userSubmission;
-            submission.milestoneID = mileID;
-            //not yet rated
-            submission.status = result.none;
-            submission.userID = userID;
-            if(testCases.Count > 0)
-            {
-                if (!failed)
-                {
-                    submission.status = result.Accepted;
-
-                }
-                else
-                {
-                    submission.status = result.wrongAnswer;
-                }
                 //save submission
                 db.Submissions.Add(submission);
                 db.SaveChanges();
+                return testResult;
             }
 
-            return true;
+            // Can only happen if the milestone has no test cases
+            return result.none;
         }
 
         public List<TestCase> GetTestCasesByMilestoneID(int milestoneID)
@@ -257,6 +206,29 @@ namespace MooshakPP.Services
             }
             return true;
 
+        }
+
+        protected result TestSubmission(string workingFolder, string cppFileName, ref List<TestCase> testCases)
+        {
+            // Create a new compiler process
+            Process compiler = new Process();
+            // Initialize compiler in workingFolder
+            st.InitCompiler(ref compiler, workingFolder);
+
+            // Compile .cpp file
+            result testResult = st.CompileCPP(ref compiler, cppFileName);
+            // Get .exe file path if it exists
+            string exeFilePath = Directory.GetFiles(workingFolder, "*.exe").FirstOrDefault();
+            // If compiler didn't throw an exception and it's .exe has been found
+            if (testResult != result.compError && !string.IsNullOrEmpty(exeFilePath))
+            {
+                // Initialize executable process
+                ProcessStartInfo processInfoExe = new ProcessStartInfo(exeFilePath, "");
+                st.InitTester(ref processInfoExe);
+                // Run program on test cases
+                testResult = st.TestSubmission(ref processInfoExe, ref testCases);
+            }
+            return testResult;
         }
 
         protected List<Course> GetCourses(string userId)
