@@ -166,7 +166,7 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult RecoverAssignments(int? courseID, int? assignmentID)
+        public ActionResult RecoverAssignment(int? courseID, int? assignmentID)
         {
             if (courseID == null)
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
@@ -176,7 +176,7 @@ namespace MooshakPP.Controllers
         }
 
         [HttpPost]
-        public ActionResult RecoverAssignment(int? courseID, int? assignmentID)
+        public ActionResult RecoverAssignment(int? courseID, int? assignmentID,string action)
         {
             if (assignmentID != null && assignmentID != 0)
             {
@@ -185,9 +185,11 @@ namespace MooshakPP.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Nothing selected");
+                ModelState.AddModelError("", "No assignment selected!");
             }
-            return RedirectToAction("RecoverAssignments", new { courseid = courseID, assignmentid = assignmentID });
+            RecoverAssignmentsViewModel model = service.RecoverAssignments(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+            return View(model);
+            //return RedirectToAction("RecoverAssignment", new { courseid = courseID, assignmentid = assignmentID });
         }
 
         [HttpPost]

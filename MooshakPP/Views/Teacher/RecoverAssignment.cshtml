@@ -1,6 +1,6 @@
 ﻿@model MooshakPP.Models.ViewModels.RecoverAssignmentsViewModel
 @{
-    ViewBag.Title = "RecoverAssignments";
+    ViewBag.Title = "RecoverAssignment";
 }
 
 
@@ -10,7 +10,7 @@
         @foreach (var course in Model.courses)
         {
             {
-                @Html.ActionLink(@course.name, "RecoverAssignments", "Teacher", new { courseid = course.ID, assignmentid = Model.currentSelected.ID }, new { @class = "btn btn-default" })
+                @Html.ActionLink(@course.name, "RecoverAssignment", "Teacher", new { courseid = course.ID, assignmentid = Model.currentSelected.ID }, new { @class = "btn btn-default" })
             }
         }
 
@@ -33,15 +33,14 @@
                     @foreach (var assignment in Model.deletedAssignments)
                     {
                         <tr>
-                            <td>@Html.ActionLink(@assignment.title, "RecoverAssignments", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID}, null)</td>
+                            <td>@Html.ActionLink(@assignment.title, "RecoverAssignment", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID}, null)</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
         <hr />
+        <h4>@Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })</h4><br />
         <button name="action" value="recover" class="btn btn-primary">Add selected assignment to @Model.currentCourse.name</button>
-
-        
     }
 </div>

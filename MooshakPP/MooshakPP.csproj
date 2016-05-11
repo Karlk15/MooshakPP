@@ -359,7 +359,7 @@
     <Content Include="Views\Shared\DescriptionPartial.cshtml" />
     <Content Include="Views\Shared\SubmitPartial.cshtml" />
     <Content Include="Views\Shared\SubmissionsPartial.cshtml" />
-    <Content Include="Views\Teacher\RecoverAssignments.cshtml" />
+    <Content Include="Views\Teacher\RecoverAssignment.cshtml" />
     <Content Include="Views\Admin\CreateAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
