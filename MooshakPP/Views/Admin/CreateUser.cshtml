@@ -68,7 +68,7 @@
                 </table>
             </div>
             <hr />
-            <button name="action" value="delete" class="btn btn-danger col-md-offset-6">Delete selected user</button>
+            <button name="action" value="delete" class="btn btn-danger col-md-offset-6"data-confirm="Are you sure you want delete this user?">Delete selected user</button>
         }
     }
 </div>
@@ -76,3 +76,7 @@
 
 
 
+@section scripts
+{
+    <script src="~/Scripts/ErrorWarning.js"></script>
+}
