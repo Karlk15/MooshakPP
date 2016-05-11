@@ -52,7 +52,7 @@ namespace MooshakPP.Controllers
         
 
         [HttpGet]
-        public ActionResult CreateUser(int? ID)
+        public ActionResult CreateUser(int? userID)
         {
             // 10 is how many new users can be entered
             CreateUserViewModel model = service.GetUserViewModel(10);

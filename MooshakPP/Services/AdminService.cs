@@ -59,6 +59,7 @@ namespace MooshakPP.Services
             Course course = (from c in GetAllCourses()
                             where c.ID == ID
                             select c).FirstOrDefault();
+
             if (course != null)
             {
                 db.Courses.Remove(course);
