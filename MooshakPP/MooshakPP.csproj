@@ -294,6 +294,7 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datepicker.js" />
+    <Content Include="Scripts\Index.js" />
     <Content Include="Scripts\interactivelist.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -356,7 +357,7 @@
     <Content Include="Views\Shared\DescriptionPartial.cshtml" />
     <Content Include="Views\Shared\SubmitPartial.cshtml" />
     <Content Include="Views\Shared\SubmissionsPartial.cshtml" />
-	<Content Include="Views\Teacher\RecoverAssignments.cshtml" />
+    <Content Include="Views\Teacher\RecoverAssignments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
