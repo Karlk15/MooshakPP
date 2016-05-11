@@ -9,16 +9,17 @@ using System.IO;
 using System.IO.Compression;
 using System.Diagnostics;
 
-
 namespace MooshakPP.Services
 {
     public class StudentService
     {
         private Models.ApplicationDbContext db;
+        //private readonly IAppDataContext db;
 
         public StudentService()
         {
             db = new Models.ApplicationDbContext();
+            //db = context ?? new ApplicationDbContext();
         }
 
         public IndexViewModel Index(string userId, int? courseId, int? assignmentId, int? milestoneId)
