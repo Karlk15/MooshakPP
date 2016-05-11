@@ -54,7 +54,14 @@
                         @foreach (var user in Model.allUsers)
                         {
                             <tr>
-                                <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { userid = @user.Id }, null)</td>
+                                @if (user.Id == Model.currentUser.Id)
+                                {
+                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { userid = @user.Id }, new { @class="selected"})</td>
+                                }
+                                else
+                                {
+                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { userid = @user.Id }, null)</td>
+                                }
                             </tr>
                         }
                     </tbody>

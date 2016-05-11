@@ -33,11 +33,18 @@
         {
             <div class="courselist">
                 <table>
-                    <tbody>
+                    <tbody id="all-courses">
                         @foreach (var course in Model.courses)
                         {
                             <tr>
-                                <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { courseid = @course.ID }, null)</td>
+                                @if (course.ID == Model.currentCourse.ID)
+                                {
+                                    <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { courseid = @course.ID }, new { @class = "selected" })</td>
+                                }
+                                else
+                                {
+                                    <td>@Html.ActionLink(@course.name, "ManageCourse", "Admin", new { courseid = @course.ID }, null)</td>
+                                }
                             </tr>
                         }
                     </tbody>

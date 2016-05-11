@@ -78,7 +78,17 @@ namespace MooshakPP.Controllers
                     if (!string.IsNullOrEmpty(collection.newUsers[i].Email))
                     {
                         if(collection.newUsers[i].Email.IndexOf("@") != -1)
-                            service.CreateUser(collection.newUsers[i].Email, collection.isTeacher[i]);
+                        {
+                            if(collection.isTeacher[i])
+                            {
+                                service.CreateUser(collection.newUsers[i].Email, "teacher");
+                            }
+                            else
+                            {
+                                service.CreateUser(collection.newUsers[i].Email, "student");
+                            }
+
+                        }
                     }
                 }
             }
@@ -124,6 +134,34 @@ namespace MooshakPP.Controllers
                 service.RemoveConnections((int)courseID, userIDs);
             }
             return RedirectToAction("ConnectUser", new { courseid = courseID });
+        }
+
+        [HttpGet]
+        public ActionResult CreateAdmin(string adminId)
+        {
+            CreateAdminViewModel model = service.GetAdmins(adminId);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreateAdmin(CreateAdminViewModel model, string action, string userId)
+        {
+            if (action == "delete")
+            {
+                if (!string.IsNullOrEmpty(userId))
+                    service.RemoveUser(userId);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(model.newAdmin.Email))
+                {
+                    if (model.newAdmin.Email.IndexOf("@") != -1)
+                    {
+                        service.CreateUser(model.newAdmin.Email, "admin");
+                    }
+                }
+            }
+            return RedirectToAction("CreateAdmin");
         }
     }
 }
