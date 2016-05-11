@@ -14,7 +14,6 @@
     @Html.AntiForgeryToken()
     <div class="col-md-6">
         <h3>Create User</h3>
-        
         <table>
             <thead>
                 <tr>
@@ -32,7 +31,6 @@
                         <td class="teachercheck">@Html.CheckBoxFor(x => x.isTeacher[i])</td>
                     </tr>
                 }
-
             </tbody>
         </table>
         <div class="form-group">
@@ -40,33 +38,33 @@
         </div>
     </div>
 }
-    <div class="col-md-6">
-        <h3>All users</h3>
-        <h5>Click a user to select</h5>
-        @if (Model.currentUser != null)
+
+<div class="col-md-6">
+    <h3>All users</h3>
+    <h5>Click a user to select</h5>
+    @if (Model.currentUser != null)
+    {
+        using (Html.BeginForm("CreateUser", "Admin", new { userid = Model.currentUser.Id }, FormMethod.Post, new { @id = "coursetableform" }))
         {
-            using (Html.BeginForm("CreateUser", "Admin", new { userid = Model.currentUser.Id }, FormMethod.Post, new { @id = "coursetableform" }))
-            {
-                <div class="courselist">
-                    <table>
-                        <tbody>
-                            @Html.ValidationSummary()
+            <div class="courselist">
+                <table>
+                    <tbody>
+                        @Html.ValidationSummary()
 
-                            @foreach (var user in Model.allUsers)
-                            {
-                                <tr>
-                                    <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { userid = @user.Id }, null)</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                <hr />
-                <button name="action" value="delete" class="btn btn-danger col-md-offset-6">Delete selected user</button>
-            }
+                        @foreach (var user in Model.allUsers)
+                        {
+                            <tr>
+                                <td>@Html.ActionLink(@user.UserName, "CreateUser", "Admin", new { userid = @user.Id }, null)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <button name="action" value="delete" class="btn btn-danger col-md-offset-6">Delete selected user</button>
         }
-    </div>
+    }
+</div>
         
 
 
