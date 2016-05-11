@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    @Html.ActionLink("Back", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
+    @Html.ActionLink("Back to Homepage", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
 </div>
 
 @using (Html.BeginForm("CreateAdmin", "Admin", new { adminid = Model.currentlySelected.Id},FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

@@ -32,8 +32,7 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult ManageCourse(Course newCourse, int? courseID, string action)
         {
-            bool hasErrors = false;
-
+            
             if (action == "delete")
             {
                 if (courseID != null|| courseID != 0)
@@ -50,12 +49,7 @@ namespace MooshakPP.Controllers
 
             else
             {
-                hasErrors = true;
                 ModelState.AddModelError("newCourse.name", "You must enter a title");
-            }
-
-            if(hasErrors == true)
-            {
                 ManageCourseViewModel model = service.ManageCourse(courseID);
                 return View(model);
             }
@@ -102,6 +96,11 @@ namespace MooshakPP.Controllers
                                 service.CreateUser(collection.newUsers[i].Email, "student");
                             }
 
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("newUsers[i].Email", "Invalid email account");
+                            return RedirectToAction("CreateUser", new { userid = userID });
                         }
                     }
                 }
