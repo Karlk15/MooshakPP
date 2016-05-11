@@ -120,7 +120,11 @@ tr .form-control {
 }
 
 .col-md-10 .courselist {
-    padding-top: 5px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 18px;
+}
+
+.row .col-md-10 {
+    padding-left: 10px;
 }
 
