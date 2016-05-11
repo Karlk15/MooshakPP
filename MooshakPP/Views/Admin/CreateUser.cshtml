@@ -19,7 +19,7 @@
             <thead>
                 <tr>
                     <td>#</td>
-                    <td>Name:</td>
+                    <td>Email:</td>
                     <td id="teachercheckheader">Is a teacher:</td>
                 </tr>
             </thead>
@@ -28,7 +28,7 @@
                 {
                     <tr>
                         <td>@Html.LabelFor(x => x.newUsers[i].Email, (i+1) + ":", new { @class = "control-label" })</td>
-                        <td>@Html.TextBoxFor(x => x.newUsers[i].Email, new { @class = "form-control", @placheholder = "example@example.com"})</td>
+                        <td>@Html.TextBoxFor(x => x.newUsers[i].Email, new { @class = "form-control", @placeholder = "example@example.com"})</td>
                         <td class="teachercheck">@Html.CheckBoxFor(x => x.isTeacher[i])</td>
                     </tr>
                 }
