@@ -91,8 +91,8 @@
 
             <hr />
                 @Html.ActionLink("Manage milestones", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
-                <button name="action" value="delete" class="btn btn-danger">Delete selected assignment</button>
-        }
+                <button name="action" value="delete" class="btn btn-danger"data-confirm="Are you sure you want to delete selected assignment?">Delete selected assignment</button>
+            }
         }
     </div>
 </div>
@@ -101,4 +101,5 @@
 {
     <script src="@Url.Content("~/Scripts/datepicker.js")"></script>
     <script src="@Url.Content("~/Scripts/interactivelist.js")"></script>
+    <script src="~/Scripts/ErrorWarning.js"></script>
 }
