@@ -26,16 +26,6 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-            if (assignmentID == null && courseID != null)
-            {
-                assignmentID = service.GetFirstAssignment((int)courseID);
-            }
-
-            if (milestoneID == null && assignmentID != null)
-            {
-                milestoneID = service.GetFirstMilestone((int)assignmentID);
-            }
-
                 model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
 
             return View(model);
