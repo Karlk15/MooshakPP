@@ -60,7 +60,8 @@ namespace MooshakPP.DAL
         public bool RemoveUser(ApplicationUser user)
         {
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var idResult = um.Delete(user);
+            ApplicationUser userToDelete = um.FindById(user.Id);
+            var idResult = um.Delete(userToDelete);
             return idResult.Succeeded;
         }
 

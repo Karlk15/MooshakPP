@@ -35,11 +35,11 @@
                         <tr>
                             @if (assignment.ID == Model.currentSelected.ID)
                             {
-                                <td>@Html.ActionLink(@assignment.title, "RecoverAssignments", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID }, new { @class = "selected" })</td>
+                                <td>@Html.ActionLink(@assignment.title, "RecoverAssignment", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID }, new { @class = "selected" })</td>
                             }
                             else
                             {
-                                <td>@Html.ActionLink(@assignment.title, "RecoverAssignments", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID }, null)</td>
+                                <td>@Html.ActionLink(@assignment.title, "RecoverAssignment", "Teacher", new { courseid = Model.currentCourse.ID, assignmentid = @assignment.ID }, null)</td>
                             }
                         </tr>
                     }

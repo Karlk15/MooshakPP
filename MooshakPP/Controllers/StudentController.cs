@@ -1,5 +1,4 @@
-﻿using MooshakPP.Models.Entities;//   ÞARF AÐ TAKA ÚT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"!#$%&/(&%$#"!"#$%&/(&%$#"!#$%&/()&%$#"!#$%&/()/&%$#"
-using MooshakPP.Services;
+﻿using MooshakPP.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +32,19 @@ namespace MooshakPP.Controllers
 
 
         [HttpPost]
-        public ActionResult Submit(int? milestoneID)
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID, string action)
         {
             HttpPostedFileBase file = null;
             //if file submission is valid
+
+            if (milestoneID == null || milestoneID == 0)
+            {
+                ModelState.AddModelError("", "You need to pick a milestone!");
+                IndexViewModel model = new IndexViewModel();
+                model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+                return View(model);
+            }
+
             if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
             {
                 file = Request.Files[0];
@@ -45,12 +53,8 @@ namespace MooshakPP.Controllers
                 //username must be passed because User is tied to http
                 service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
             }
-            else
-            {
-                ModelState.AddModelError("", "You need to upload a submission!");
-            }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { courseid = courseID, assignmentid = assignmentID, milestoneid = milestoneID });
         }
 
         [HttpGet]

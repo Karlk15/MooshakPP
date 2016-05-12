@@ -13,6 +13,7 @@
     <div class="col-md-6">
         <h3>Create User</h3>
         <div class="form-group">
+            @Html.ValidationSummary("", new { @class = "text-danger" })
             @Html.TextBoxFor(x => x.newAdmin.Email, new { @class="form-control", placeholder="Enter email for admin"})
         </div>
         <div class="form-group">
@@ -26,13 +27,11 @@
     <h5>Click a user to select</h5>
     @if (Model.currentlySelected != null)
     {
-        using (Html.BeginForm("CreateUser", "Admin", new { userid = Model.currentlySelected.Id }, FormMethod.Post, new { @id = "coursetableform" }))
+        using (Html.BeginForm("CreateAdmin", "Admin", new { userid = Model.currentlySelected.Id }, FormMethod.Post, new { @id = "coursetableform" }))
         {
             <div class="courselist">
                 <table>
                     <tbody>
-                        @Html.ValidationSummary()
-
                         @foreach (var user in Model.allAdmins)
                         {
                             <tr>

@@ -1,10 +1,12 @@
-﻿body {
+﻿body
+{
     padding-top: 50px;
     padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
+.body-content
+{
     margin-top: 50px;
     margin-bottom: 30px;
     padding-left: 15px;
@@ -14,29 +16,34 @@
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-.dl-horizontal dt {
+.dl-horizontal dt
+{
     white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
-textarea {
+textarea
+{
     max-width: 280px;
 }
 
-#copyright{
+#copyright
+{
     margin:15px 20px;
     float: right;
     color:#555
 }
 
-.m-barborder {
+.m-barborder
+{
     padding:3px;
     background:#ce2015;
 }
 
-.navbar {
+.navbar
+{
     background: #1a1a1a; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(#555, #1a1a1a); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#555, #1a1a1a); /* For Opera 11.1 to 12.0 */
@@ -112,7 +119,8 @@ textarea {
 #dickbutt 
 {
     line-height: 50%;
-    letter-spacing: 3px;
+    letter-spacing: 1.5px;
+    font-family: monospace;
 }
 
 .highlightWrong 
@@ -199,7 +207,7 @@ tr
 }
 
 #all-courses
- {
+{
     min-height: 250px;
     max-height: 250px;
     display: block;
@@ -225,3 +233,24 @@ tr
     width: 70%;
     margin: auto;
 }
+
+
+.Accepted
+{
+   font-weight: bold;
+   color: #28f326 !important;
+}
+
+.WrongAnswer
+{
+   font-weight: bold;
+   color: #e21d1d !important;
+}
+
+.submission-table
+{
+    max-height: 300px;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+

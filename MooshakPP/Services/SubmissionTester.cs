@@ -39,10 +39,12 @@ namespace MooshakPP.Services
                 // Any uncaught exception in the compilation process will be caught here
                 return result.compError;
             }
+            // No error so far
             return result.none;
         }
 
         // Compile C# code
+        // Currently incompatible with System.Linq
         public result CompileCS(ref Process compiler, string csFileName)
         {
             try
@@ -64,7 +66,7 @@ namespace MooshakPP.Services
                 // Any uncaught exception in the compilation process will be caught here
                 return result.compError;
             }
-            
+            // No error so far
             return result.none;
         }
 
@@ -77,21 +79,23 @@ namespace MooshakPP.Services
             processInfoExe.CreateNoWindow = false;
         }
 
-        public result TestSubmission(ref ProcessStartInfo processInfoExe, ref List<TestCase> testCases)
+        public result TestSubmission(ref ProcessStartInfo processInfoExe, ref List<TestCase> testCases, string workingDir)
         {
-            //count passed tests
             try
             {
+                //count all tests and passed tests
                 int passCount = 0;
+                int testCount = 0;
                 foreach (TestCase test in testCases)
                 {
+                    testCount++;
                     string input;
                     // Load test case input file
                     using (StreamReader sr = new StreamReader(test.inputUrl))
                     {
                         input = sr.ReadToEnd();
                     }
-                    List<string> output = new List<string>();
+                    string output = "";
                     // Create a new process with a limited lifespan
                     using (Process processExe = new Process())
                     {
@@ -102,49 +106,31 @@ namespace MooshakPP.Services
                         // Read the program output
                         while (!processExe.StandardOutput.EndOfStream)
                         {
-                            output.Add(processExe.StandardOutput.ReadLine());
+                            output = processExe.StandardOutput.ReadToEnd();
                         }
-
-                        // End process
+                        // Close the process
                         processExe.Close();
                     }
-
 
                     //Read the expected output of current test case
                     using (StreamReader sr = new StreamReader(test.outputUrl))
                     {
-                        List<string> expected = new List<string>();
+                        string expected = "";
                         while (!sr.EndOfStream)
                         {
-                            expected.Add(sr.ReadLine());
+                            expected = sr.ReadToEnd();
                         }
 
                         // Compare expected and obtained output
-                        bool mismatchFound = false;
-                        for (int line = 0; line < expected.Count; line++)
-                        {
-                            if (line < output.Count)
-                            {
-                                // Output does not match expected
-                                if (expected[line] != output[line])
-                                {
-                                    mismatchFound = true;
-                                }
-                            }
-                            // Output stopped early
-                            else
-                            {
-                                mismatchFound = true;
-                            }
-                        }
-                        // Test passed
-                        if (!mismatchFound)
-                        {
+                        if (expected == output)
+                        {   // Test passed
                             passCount++;
                         }
                         else
-                        {
-                            return result.wrongAnswer;
+                        {   // Save all wrong outputs
+                            string outputDir = workingDir + "\\Wrong outputs\\";
+                            Directory.CreateDirectory(outputDir);
+                            File.WriteAllText(outputDir + "test " + testCount + " output.txt", output);
                         }
                     }
                 }
@@ -154,8 +140,8 @@ namespace MooshakPP.Services
                     return result.Accepted;
                 }
                 else
-                {   //Safeguard, should never happen
-                    return result.runError;
+                {
+                    return result.wrongAnswer;
                 }
             }
             catch(Exception)

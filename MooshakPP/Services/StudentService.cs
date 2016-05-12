@@ -61,18 +61,6 @@ namespace MooshakPP.Services
                             newIndex.allSubmissions = new SubmissionViewModel();
                             newIndex.allSubmissions.submissions = new List<Submission>();
                         }
-                        //will call a different function when ready
-                        //DOES NOTHING DON'T TRY TO USE IT YET
-                        //List<Submission> tempBest = GetAllSubmissions((int)milestoneId);
-                        if(tempAll != null && tempAll.Count != 0)
-                        {
-                            newIndex.bestSubmissions = bestSubmissions((int)assignmentId);
-                        }
-                        else
-                        {
-                            newIndex.bestSubmissions = new AllSubmissionsViewModel();
-                            newIndex.bestSubmissions.submissions = new List<Submission>();
-                        }
                     }
                     else
                     {
@@ -84,6 +72,7 @@ namespace MooshakPP.Services
                     newIndex.currentAssignment = new Assignment();
                     newIndex.milestones = new List<Milestone>();
                     newIndex.currentMilestone = new Milestone();
+                    newIndex.bestSubmissions = new AllSubmissionsViewModel();
                 }
                 
                 newIndex.currentCourse = GetCourseByID((int)courseId);
@@ -111,13 +100,6 @@ namespace MooshakPP.Services
             }
             
             return mySubmissions;
-        }
-
-        public AllSubmissionsViewModel bestSubmissions(int assignmentId)
-        {
-            AllSubmissionsViewModel bestSubmissions = new AllSubmissionsViewModel();
-            bestSubmissions.users = GetUsersInCourse(GetAssignmentByID(assignmentId).courseID);
-            return bestSubmissions;
         }
 
         public DescriptionViewModel Description(int milestoneId)
@@ -154,12 +136,11 @@ namespace MooshakPP.Services
             string workingFolder = userSubmission;
             // Save submission
             file.SaveAs(workingFolder + file.FileName);
-            
-            // Run tests on the given file using testCases
-            result testResult = TestSubmission(workingFolder, file.FileName, ref testCases);
 
+            // Run tests on the given file using testCases
             if (testCases.Count > 0)
             {
+                result testResult = TestSubmission(workingFolder, file.FileName, ref testCases);
                 Submission submission = new Submission();
                 submission.fileURL = userSubmission;
                 submission.milestoneID = mileID;
@@ -256,11 +237,11 @@ namespace MooshakPP.Services
             result testResult = result.none;
             // find out if program is C++ or C#
             if(fileName.EndsWith(".cpp"))
-            {
+            {   // Compile c++
                 testResult = st.CompileCPP(ref compiler, fileName);
             }
             else if(fileName.EndsWith(".cs"))
-            {
+            {   // Compile C#
                 testResult = st.CompileCS(ref compiler, fileName);
             }
             else
@@ -271,13 +252,17 @@ namespace MooshakPP.Services
             // Get .exe file path if it exists
             string exeFilePath = Directory.GetFiles(workingFolder, "*.exe").FirstOrDefault();
             // If compiler didn't throw an exception and it's .exe has been found
-            if (testResult == result.none && !string.IsNullOrEmpty(exeFilePath))
+            if (testResult != result.compError && !string.IsNullOrEmpty(exeFilePath))
             {
                 // Initialize executable process
                 ProcessStartInfo processInfoExe = new ProcessStartInfo(exeFilePath, "");
                 st.InitTester(ref processInfoExe);
                 // Run program on test cases
-                testResult = st.TestSubmission(ref processInfoExe, ref testCases);
+                testResult = st.TestSubmission(ref processInfoExe, ref testCases, workingFolder);
+            }
+            else
+            {   // Compiler did not successfully create a .exe
+                return result.compError;
             }
             return testResult;
         }
@@ -288,14 +273,6 @@ namespace MooshakPP.Services
                            where c.userID == userId
                            select c.course).ToList();
             return courses;
-        }
-
-        protected List<Models.ApplicationUser> GetUsersInCourse(int courseId)
-        {
-            List<Models.ApplicationUser> users = (from u in db.UsersInCourses
-                                                  where u.courseID == courseId
-                                                  select u.user).ToList();
-            return users;
         }
 
         protected Course GetCourseByID(int courseId)

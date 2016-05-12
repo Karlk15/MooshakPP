@@ -26,9 +26,36 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-                model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+            model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+            model.bestSubmissions = service.bestSubmissions((milestoneID));
 
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID, string action)
+        {
+            HttpPostedFileBase file = null;
+            //if file submission is valid
+
+            if (milestoneID == null || milestoneID == 0)
+            {
+                ModelState.AddModelError("", "You need to pick a milestone!");
+                IndexViewModel model = new IndexViewModel();
+                model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+                return View(model);
+            }
+
+            if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
+            {
+                file = Request.Files[0];
+
+                //userID, mileID, HttpPostedFileBase
+                //username must be passed because User is tied to http
+                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
+            }
+
+            return RedirectToAction("Index", new { courseid = courseID, assignmentid = assignmentID, milestoneid = milestoneID});
         }
 
         [HttpGet]
@@ -59,6 +86,44 @@ namespace MooshakPP.Controllers
             Assignment model = new Assignment();
             bool hasErrors = false;
 
+            if (collection.currentAssignment.title == "" || collection.currentAssignment.title == null)
+            {
+                hasErrors = true;
+                ModelState.AddModelError("currentAssignment.title", "You must give a title");
+            }
+
+            if (collection.start == "" || collection.start == null)
+            {
+                hasErrors = true;
+                ModelState.AddModelError("start", "You must give a start date");
+            }
+
+            if (collection.due == "" || collection.due == null)
+            {
+                hasErrors = true;
+                ModelState.AddModelError("due", "You must give a due date");
+            }
+
+            if (hasErrors == true)
+            {
+                if (courseID == null)
+                {
+                    courseID = service.GetFirstCourse(User.Identity.GetUserId());
+                }
+
+                CreateAssignmentViewModel emptyModel = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
+
+                Assignment noAssignment = new Assignment();
+                noAssignment.title = "";
+                noAssignment.ID = 0;
+                noAssignment.courseID = (int)courseID;
+                emptyModel.currentAssignment = noAssignment;
+                emptyModel.currentCourse.ID = (int)courseID;
+                emptyModel.currentAssignment.ID = (int)assignmentID;
+
+                return View(emptyModel);
+            }
+
             if (action == "delete")
             {
                 if (assignmentID != null)
@@ -71,45 +136,6 @@ namespace MooshakPP.Controllers
             }
             else if (action == "create")
             {
-
-                if (collection.currentAssignment.title == "" || collection.currentAssignment.title == null)
-                {
-                    hasErrors = true;
-                    ModelState.AddModelError("currentAssignment.title", "You must give a title");
-                }
-
-                if (collection.start == "" || collection.start == null)
-                {
-                    hasErrors = true;
-                    ModelState.AddModelError("start", "You must give a start date");
-                }
-
-                if (collection.due == "" || collection.due == null)
-                {
-                    hasErrors = true;
-                    ModelState.AddModelError("due", "You must give a due date");
-                }
-
-                if (hasErrors == true)
-                {
-                    if (courseID == null)
-                    {
-                        courseID = service.GetFirstCourse(User.Identity.GetUserId());
-                    }
-
-                    CreateAssignmentViewModel emptyModel = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
-                    
-                    Assignment noAssignment = new Assignment();
-                    noAssignment.title = "";
-                    noAssignment.ID = 0;
-                    noAssignment.courseID = (int)courseID;
-                    emptyModel.currentAssignment = noAssignment;
-                    emptyModel.currentCourse.ID = (int)courseID;
-                    emptyModel.currentAssignment.ID = (int)assignmentID;
-
-                    return View(emptyModel);
-                }
-
                 model.courseID = (int)courseID;
 
                 model.title = collection.currentAssignment.title;
@@ -188,12 +214,6 @@ namespace MooshakPP.Controllers
             }
             RecoverAssignmentsViewModel model = service.RecoverAssignments(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
             return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Submit(FormCollection collection)
-        {
-            return View();
         }
 
         [HttpGet]
