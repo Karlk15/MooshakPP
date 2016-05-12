@@ -14,14 +14,15 @@
                 }
         }
     </div>
-
+</div>
     <div class="row">
         <div class="col-md-offset-2 col-md-3">
              <h2>@Model.currentCourse.name</h2>
         </div>
+        @Html.ActionLink("Back to Homepage", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
     </div>
-    @Html.ActionLink("Back to Homepage", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
-</div><br />
+    
+<br />
 
 <div class="row">
     <div class="col-md-offset-2 col-md-3">
