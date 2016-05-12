@@ -279,13 +279,13 @@ namespace MooshakPP.Services
 
             result testResult = result.none;
             // find out if program is C++ or C#
-            if(fileName.EndsWith(".c++"))
+            if(fileName.EndsWith(".cpp"))
             {
                 testResult = st.CompileCPP(ref compiler, fileName);
             }
             else if(fileName.EndsWith(".cs"))
             {
-                testResult = testResult = st.CompileCS(ref compiler, fileName);
+                testResult = st.CompileCS(ref compiler, fileName);
             }
             else
             {   //unsupported file format or language
