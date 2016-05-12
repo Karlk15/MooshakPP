@@ -33,10 +33,19 @@ namespace MooshakPP.Controllers
 
 
         [HttpPost]
-        public ActionResult Submit(int? milestoneID)
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID, string action)
         {
             HttpPostedFileBase file = null;
             //if file submission is valid
+
+            if (milestoneID == null || milestoneID == 0)
+            {
+                ModelState.AddModelError("", "You need to pick a milestone!");
+                IndexViewModel model = new IndexViewModel();
+                model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+                return View(model);
+            }
+
             if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
             {
                 file = Request.Files[0];
@@ -44,10 +53,6 @@ namespace MooshakPP.Controllers
                 //userID, mileID, HttpPostedFileBase
                 //username must be passed because User is tied to http
                 service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
-            }
-            else
-            {
-                ModelState.AddModelError("", "You need to upload a submission!");
             }
 
             return RedirectToAction("Index");
