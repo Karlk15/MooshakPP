@@ -13,7 +13,7 @@
     }
     using (Html.BeginForm("Index", role, new { milestoneID = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
     {
-        <table class="table-striped">
+        <table class="table-striped table-hover submission-table">
             <thead>
                 <tr>
                     <th>#</th>
@@ -52,7 +52,14 @@
 
                             <td>@Model.currentMilestone.name</td>
                             <td>C++</td>
-                            <td>@m.status</td>
+                            @if ((int)m.status == 5)
+                            {
+                                <td class="Accepted">@m.status</td>
+                            }
+                            else
+                            {
+                                <td class="WrongAnswer">@m.status</td>
+                            }
                             <td>Details</td>
                         </tr>
                         i++;

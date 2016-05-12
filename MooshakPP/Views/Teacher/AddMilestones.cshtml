@@ -70,7 +70,14 @@
                             foreach (var m in Model.milestones)
                             {
                                 <tr>
-                                    <td>@Html.ActionLink(@m.name , "AddMilestones", "Teacher", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                    @if (m.ID == Model.currentMilestone.ID)
+                                    {
+                                        <td>@Html.ActionLink(@m.name, "AddMilestones", "Teacher", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, new { @class = "selected" })</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@Html.ActionLink(@m.name, "AddMilestones", "Teacher", new { assignmentid = @m.assignmentID, milestoneid = @m.ID }, null)</td>
+                                    }
                                 </tr>
                             }
                         }
