@@ -86,6 +86,44 @@ namespace MooshakPP.Controllers
             Assignment model = new Assignment();
             bool hasErrors = false;
 
+            if (collection.currentAssignment.title == "" || collection.currentAssignment.title == null)
+            {
+                hasErrors = true;
+                ModelState.AddModelError("currentAssignment.title", "You must give a title");
+            }
+
+            if (collection.start == "" || collection.start == null)
+            {
+                hasErrors = true;
+                ModelState.AddModelError("start", "You must give a start date");
+            }
+
+            if (collection.due == "" || collection.due == null)
+            {
+                hasErrors = true;
+                ModelState.AddModelError("due", "You must give a due date");
+            }
+
+            if (hasErrors == true)
+            {
+                if (courseID == null)
+                {
+                    courseID = service.GetFirstCourse(User.Identity.GetUserId());
+                }
+
+                CreateAssignmentViewModel emptyModel = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
+
+                Assignment noAssignment = new Assignment();
+                noAssignment.title = "";
+                noAssignment.ID = 0;
+                noAssignment.courseID = (int)courseID;
+                emptyModel.currentAssignment = noAssignment;
+                emptyModel.currentCourse.ID = (int)courseID;
+                emptyModel.currentAssignment.ID = (int)assignmentID;
+
+                return View(emptyModel);
+            }
+
             if (action == "delete")
             {
                 if (assignmentID != null)
@@ -98,45 +136,6 @@ namespace MooshakPP.Controllers
             }
             else if (action == "create")
             {
-
-                if (collection.currentAssignment.title == "" || collection.currentAssignment.title == null)
-                {
-                    hasErrors = true;
-                    ModelState.AddModelError("currentAssignment.title", "You must give a title");
-                }
-
-                if (collection.start == "" || collection.start == null)
-                {
-                    hasErrors = true;
-                    ModelState.AddModelError("start", "You must give a start date");
-                }
-
-                if (collection.due == "" || collection.due == null)
-                {
-                    hasErrors = true;
-                    ModelState.AddModelError("due", "You must give a due date");
-                }
-
-                if (hasErrors == true)
-                {
-                    if (courseID == null)
-                    {
-                        courseID = service.GetFirstCourse(User.Identity.GetUserId());
-                    }
-
-                    CreateAssignmentViewModel emptyModel = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
-                    
-                    Assignment noAssignment = new Assignment();
-                    noAssignment.title = "";
-                    noAssignment.ID = 0;
-                    noAssignment.courseID = (int)courseID;
-                    emptyModel.currentAssignment = noAssignment;
-                    emptyModel.currentCourse.ID = (int)courseID;
-                    emptyModel.currentAssignment.ID = (int)assignmentID;
-                    
-                    return View(emptyModel);
-                }
-
                 model.courseID = (int)courseID;
 
                 model.title = collection.currentAssignment.title;
@@ -155,8 +154,7 @@ namespace MooshakPP.Controllers
 
                 //adding the new assignment to the database through the TeacherService
                 service.CreateAssignment(model);
-
-                    
+ 
                 return RedirectToAction("Create", new { courseid = courseID, assignmentid = model.ID});
             }
             else if(action == "edit")

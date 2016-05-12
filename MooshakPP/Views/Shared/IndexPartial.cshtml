@@ -139,7 +139,7 @@
             using (Html.BeginForm("Index", "teacher", new { courseid = Model.currentCourse.ID, assignmentid = Model.currentAssignment.ID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
                 <input name="file" type="file" />
-                <input type="submit" value="submit" id="submit" class="btn btn-default" />
+                <input type="submit" value="submit" disabled id="submit" class="btn btn-default" />
             }
         }
     </div>
@@ -151,20 +151,20 @@
         <ul class="nav nav-tabs" role="tablist">
             @if (User.IsInRole("student"))
             {
-                <li><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">My Submissions</a></li>
+                <li class="active"><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">My Submissions</a></li>
             }
             <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">All Submissions</a></li>
-            @if(User.IsInRole("teacher"))
+            @if (User.IsInRole("teacher"))
             {
-                <li><a href="#bestsubmissions" aria-controls="profile" role="tab" data-toggle="tab">Best Submissions</a></li>
+                <li class="active"><a href="#bestsubmissions" aria-controls="profile" role="tab" data-toggle="tab">Best Submissions</a></li>
             }
-            <li class="active"><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+            <li><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
         </ul>
 
         <div class="tab-content table">
             @if (User.IsInRole("student"))
             {
-                <div id="mysubmissions" class="tab-pane fade">
+                <div id="mysubmissions" class="tab-pane fade in active">
                     @if (Model.mySubmissions != null)
                     {
                         { Html.RenderPartial("SubmitPartial", Model.mySubmissions); }
@@ -173,7 +173,7 @@
             }
             @if (User.IsInRole("teacher"))
             {
-                <div id="bestsubmissions" class="tab-pane fade">
+                <div id="bestsubmissions" class="tab-pane fade in active">
                     <h3>Valdimir Putin is Overrated</h3>
                     @{ Html.RenderPartial("BestSubmissions", Model.bestSubmissions);}
                 </div>
@@ -184,7 +184,7 @@
                     { Html.RenderPartial("AllSubmissions", Model.allSubmissions);}
                 }
             </div>
-            <div id="description" class="tab-pane fade in active">
+            <div id="description" class="tab-pane fade">
                 @{ Html.RenderPartial("DescriptionPartial", Model);}
             </div>
         </div>

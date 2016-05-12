@@ -46,7 +46,6 @@ namespace MooshakPP.Controllers
             {
                 service.CreateCourse(newCourse);
             }
-
             else
             {
                 ModelState.AddModelError("newCourse.name", "You must enter a title");
