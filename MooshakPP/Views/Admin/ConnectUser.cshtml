@@ -7,11 +7,11 @@
 <div class="collapse collapseExample">
     <div class="well">
         @if (Model.courses != null)
-                {
+        {
             foreach (var course in Model.courses)
-                {
+            {
                 @Html.ActionLink(@course.name, "ConnectUser", new { courseid = course.ID }, new { @class = "btn btn-default" })
-                }
+            }
         }
     </div>
 
@@ -66,7 +66,10 @@
 
             </div>
             <hr />
-                    <button name="action" value="remove" class="btn btn-danger" data-confirm="Are you sure you want to remove selected users?">Remove selected users</button>
+            if (Model.currentCourse.ID != 0)
+            {
+                <button name="action" value="remove" class="btn btn-danger" data-confirm="Are you sure you want to remove selected users?">Remove selected users</button>
+            }
         }
     </div>
     <div class="col-md-offset-2 col-md-3">
@@ -96,16 +99,16 @@
                         <hr class="connect-line" />
                 <table>
                             <tbody class="connect-students">
-                                @foreach (var item in Model.notConnectedStudents)
-                             {
-                            if (item != null)
+                            @foreach (var item in Model.notConnectedStudents)
                             {
-                                <tr class="tr-on-hover checkbox">
-                                    <td><input type="checkbox" name=users id="n @item.Id" value="@item.Id" /><label for="n @item.Id">@item.Email</label> </td>
-                                </tr>
+                                if (item != null)
+                                {
+                                    <tr class="tr-on-hover checkbox">
+                                        <td><input type="checkbox" name=users id="n @item.Id" value="@item.Id" /><label for="n @item.Id">@item.Email</label> </td>
+                                    </tr>
 
-                            }
-                        }
+                                }
+                           }
                     </tbody>
                 </table>
             </div>
