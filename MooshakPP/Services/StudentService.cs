@@ -217,30 +217,6 @@ namespace MooshakPP.Services
             return null;
         }
 
-        public int? GetFirstAssignment(int courseId)
-        {
-            List<Assignment> assignments = GetAssignments(courseId);
-            if (assignments.Count != 0)
-            {
-                return assignments[0].ID;
-            }
-            return null;
-        }
-
-        public int? GetFirstMilestone(int? assignmentId)
-        {
-            if (assignmentId != null)
-            {
-                List<Milestone> milestones = GetMilestones((int)assignmentId);
-                if (milestones.Count != 0)
-                {
-                    return milestones.FirstOrDefault().ID;
-
-                }
-            }
-            return null;
-        }
-
         public Course GetCourse(int courseID)
         {
             Course theCourse = GetCourseByID(courseID);
