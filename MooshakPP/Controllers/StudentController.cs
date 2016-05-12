@@ -45,6 +45,10 @@ namespace MooshakPP.Controllers
                 //username must be passed because User is tied to http
                 service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
             }
+            else
+            {
+                ModelState.AddModelError("", "You need to upload a submission!");
+            }
 
             return RedirectToAction("Index");
         }

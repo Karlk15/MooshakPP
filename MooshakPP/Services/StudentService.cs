@@ -217,30 +217,6 @@ namespace MooshakPP.Services
             return null;
         }
 
-        public int? GetFirstAssignment(int courseId)
-        {
-            List<Assignment> assignments = GetAssignments(courseId);
-            if (assignments.Count != 0)
-            {
-                return assignments[0].ID;
-            }
-            return null;
-        }
-
-        public int? GetFirstMilestone(int? assignmentId)
-        {
-            if (assignmentId != null)
-            {
-                List<Milestone> milestones = GetMilestones((int)assignmentId);
-                if (milestones.Count != 0)
-                {
-                    return milestones.FirstOrDefault().ID;
-
-                }
-            }
-            return null;
-        }
-
         public Course GetCourse(int courseID)
         {
             Course theCourse = GetCourseByID(courseID);
@@ -285,7 +261,7 @@ namespace MooshakPP.Services
             }
             else if(fileName.EndsWith(".cs"))
             {
-                testResult = testResult = st.CompileCS(ref compiler, fileName);
+                testResult = st.CompileCS(ref compiler, fileName);
             }
             else
             {   //unsupported file format or language
@@ -368,6 +344,7 @@ namespace MooshakPP.Services
         {
             List<Submission> submissions = (from s in db.Submissions
                                where s.userID == userId && s.milestoneID == milestoneId
+                               orderby s.ID descending
                                select s).ToList();
             return submissions;
         }
@@ -376,6 +353,7 @@ namespace MooshakPP.Services
         {
             List<Submission> submissions = (from s in db.Submissions
                                             where s.milestoneID == milestoneId
+                                            orderby s.ID descending
                                             select s).ToList();
             return submissions;
         }
