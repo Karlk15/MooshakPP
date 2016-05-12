@@ -144,12 +144,6 @@ tr .form-control
     margin: 3px;
 }
 
-.plusbutton 
-{
-    padding: 30px 37px;
-    font-size: 60px;
-}
-
 .col-md-10 .courselist 
 {
     padding-top: 10px;
@@ -278,9 +272,19 @@ tr
     margin-top:40px;
 }
 
-.prump
+.assignment-button
 {
     float:right;
-    padding-right:420px;
+    padding-right:416px;
+}
+
+.submit-button
+{
+    padding-top: 75px;
+}
+
+.index-space
+{
+    padding-bottom:15px;
 }
 

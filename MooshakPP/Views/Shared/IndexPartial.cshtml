@@ -41,29 +41,28 @@
         {
             if (User.IsInRole("teacher"))
             {
-                <div class="teacher-links">@Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })</div>
+                <div class="teacher-links recover-button">@Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })</div>
             }
 
-<div class="row">
+            <div class="row">
                 @if (User.IsInRole("teacher"))
-            {
-                    <div class="teacher-links prump">@Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })</div>
-
+                {
+                    <div class="teacher-links assignment-button">@Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })</div>
                 }
                 <div class="row">
                     <div class="col-md-6">
                         <div class="assignment-list">
-                            <a class="btn btn-default" id="course-assignments" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                            <a class="btn btn-default"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
                                 @if (Model.currentAssignment == null || Model.currentAssignment.ID == 0)
                                 {
-                <span>All Assignments</span>
-            }
-            else
-            {
+                                    <span>All Assignments</span>
+                                }
+                                else
+                                {
                                     <span>@Model.currentAssignment.title</span>
-            }
-                                <span class="caret "></span>
-        </a>
+                                }
+                                <span class="caret"></span>
+                            </a>
 
         <ul class="dropdown-menu">
             @if (Model.assignments != null)
@@ -90,7 +89,7 @@
 
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 index-space">
         @if (Model.milestones != null && Model.currentMilestone != null)
         {
             //checks if the logged in user is a teacher or student
@@ -148,7 +147,7 @@
     </div>
 
 
-    <div class="col-md-6">
+    <div class="col-md-6 submit-button">
         @if (User.IsInRole("student"))
         {
             using (Html.BeginForm("Index", "student", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
