@@ -1,0 +1,42 @@
+﻿@model MooshakPP.Models.ViewModels.AllSubmissionsViewModel
+
+@if (Model.currentMilestone != null)
+{
+    using (Html.BeginForm("Index", "Teacher", new { milestoneID = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+    {
+        <table class="table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>Problem</th>
+                    <th>Language</th>
+                    <th>Result</th>
+                    <th>View Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.submissions.Count != 0)
+                {
+                    int i = 0;
+                    foreach (var m in Model.submissions)
+                    {
+                        <tr>
+                            <td>@m.ID</td>
+                            <td>@Model.submittedUser[i].Email</td>
+                            <td>@Model.currentMilestone.name</td>
+                            <td>C++</td>
+                            <td>@m.status</td>
+                            <td>Details</td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+        if (Model.currentMilestone.ID == 0)
+        {
+            <p>No milestone selected</p>
+        }
+    }
+}

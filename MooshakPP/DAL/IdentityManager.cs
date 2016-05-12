@@ -32,8 +32,15 @@ namespace MooshakPP.DAL
 
         public ApplicationUser GetUser(string name)
         {
+            
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             return um.FindByName(name);
+        }
+
+        public ApplicationUser GetUserById(string Id)
+        {
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            return um.FindById(Id);
         }
 
         public List<ApplicationUser> GetAllUsers()

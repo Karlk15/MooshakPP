@@ -8,12 +8,13 @@ using System.Configuration;
 using System.IO;
 using System.IO.Compression;
 using System.Diagnostics;
-
+using MooshakPP.DAL;
 
 namespace MooshakPP.Services
 {
     public class StudentService
     {
+        private IdentityManager manager = new IdentityManager();
         private Models.ApplicationDbContext db;
         private SubmissionTester st;
         //private readonly Models.IAppDataContext db;
@@ -40,6 +41,38 @@ namespace MooshakPP.Services
                     if (milestoneId != null && milestoneId != 0)
                     {
                         newIndex.currentMilestone = GetMilestoneByID((int)milestoneId);
+                        List<Submission> tempSubmissions = GetSubmissions(userId, (int)milestoneId);
+                        if ( tempSubmissions != null && tempSubmissions.Count != 0)
+                        {
+                            newIndex.mySubmissions = mySubmissions(userId, (int)milestoneId);
+                        }
+                        else
+                        {
+                            newIndex.mySubmissions = new SubmissionViewModel();
+                            newIndex.mySubmissions.submissions = new List<Submission>();
+                        }
+                        List<Submission> tempAll = GetAllSubmissions((int)milestoneId);
+                        if(tempAll != null && tempAll.Count != 0)
+                        {
+                            newIndex.allSubmissions = allSubmissions((int)milestoneId);
+                        }
+                        else
+                        {
+                            newIndex.allSubmissions = new SubmissionViewModel();
+                            newIndex.allSubmissions.submissions = new List<Submission>();
+                        }
+                        //will call a different function when ready
+                        //DOES NOTHING DON'T TRY TO USE IT YET
+                        //List<Submission> tempBest = GetAllSubmissions((int)milestoneId);
+                        if(tempAll != null && tempAll.Count != 0)
+                        {
+                            newIndex.bestSubmissions = bestSubmissions((int)assignmentId);
+                        }
+                        else
+                        {
+                            newIndex.bestSubmissions = new AllSubmissionsViewModel();
+                            newIndex.bestSubmissions.submissions = new List<Submission>();
+                        }
                     }
                     else
                     {
@@ -54,17 +87,37 @@ namespace MooshakPP.Services
                 }
                 
                 newIndex.currentCourse = GetCourseByID((int)courseId);
-                
-                //newIndex.studentSubmissions = GetSubmissions(userId);
             }
             return newIndex;
         }
 
-        public SubmissionViewModel Submissions(string userId, int milestoneId)
+        public SubmissionViewModel mySubmissions(string userId, int milestoneId)
         {
             SubmissionViewModel mySubmissions = new SubmissionViewModel();
-            mySubmissions.mySubmissions = GetSubmissions(userId, milestoneId);
+            mySubmissions.submissions = GetSubmissions(userId, milestoneId);
+            mySubmissions.currentMilestone = GetMilestoneByID(milestoneId);
             return mySubmissions;
+        }
+
+        public SubmissionViewModel allSubmissions(int milestoneId)
+        {
+            SubmissionViewModel mySubmissions = new SubmissionViewModel();
+            mySubmissions.submissions = GetAllSubmissions(milestoneId);
+            mySubmissions.currentMilestone = GetMilestoneByID(milestoneId);
+            mySubmissions.submittedUser = new List<Models.ApplicationUser>();
+            foreach (Submission s in mySubmissions.submissions)
+            {
+                mySubmissions.submittedUser.Add(manager.GetUser(manager.GetUserById(s.userID).Email));
+            }
+            
+            return mySubmissions;
+        }
+
+        public AllSubmissionsViewModel bestSubmissions(int assignmentId)
+        {
+            AllSubmissionsViewModel bestSubmissions = new AllSubmissionsViewModel();
+            bestSubmissions.users = GetUsersInCourse(GetAssignmentByID(assignmentId).courseID);
+            return bestSubmissions;
         }
 
         public DescriptionViewModel Description(int milestoneId)
@@ -251,6 +304,14 @@ namespace MooshakPP.Services
             return courses;
         }
 
+        protected List<Models.ApplicationUser> GetUsersInCourse(int courseId)
+        {
+            List<Models.ApplicationUser> users = (from u in db.UsersInCourses
+                                                  where u.courseID == courseId
+                                                  select u.user).ToList();
+            return users;
+        }
+
         protected Course GetCourseByID(int courseId)
         {
             Course theCourse = (from c in db.Courses
@@ -298,6 +359,14 @@ namespace MooshakPP.Services
             List<Submission> submissions = (from s in db.Submissions
                                where s.userID == userId && s.milestoneID == milestoneId
                                select s).ToList();
+            return submissions;
+        }
+
+        protected List<Submission> GetAllSubmissions(int milestoneId)
+        {
+            List<Submission> submissions = (from s in db.Submissions
+                                            where s.milestoneID == milestoneId
+                                            select s).ToList();
             return submissions;
         }
 

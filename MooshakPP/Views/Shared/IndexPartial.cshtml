@@ -54,15 +54,15 @@
         <ul class="dropdown-menu">
             @if (Model.assignments != null)
             {
-                foreach (var assign in Model.assignments)
+                foreach (var assignment in Model.assignments)
                 {
                     if (User.IsInRole("student"))
                     {
-                        <li>@Html.ActionLink(@assign.title, "Index", "Student", new { courseid = assign.courseID, assignmentid = assign.ID }, null)</li>
+                        <li>@Html.ActionLink(@assignment.title, "Index", "Student", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
                     }
                     else if (User.IsInRole("teacher"))
                     {
-                        <li>@Html.ActionLink(@assign.title, "Index", "Teacher", new { courseid = assign.courseID, assignmentid = assign.ID }, null)</li>
+                        <li>@Html.ActionLink(@assignment.title, "Index", "Teacher", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
                     }
                 }
             }
@@ -125,7 +125,7 @@
     <div class="col-md-5">
         @if (User.IsInRole("student"))
         {
-            using (Html.BeginForm("Submit", "student", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            using (Html.BeginForm("Submit", "student", new { milestoneid = Model.currentMilestone.ID},FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
                 <input name="file" type="file" />
                 <input type="submit" value="submit" id="submit" class="btn btn-default" />
@@ -146,20 +146,42 @@
 <div class="row">
     <div class="col-lg-10">
         <ul class="nav nav-tabs" role="tablist">
-            <li><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">MySubmission</a></li>
-            <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">AllSubmission</a></li>
+            @if (User.IsInRole("student"))
+            {
+                <li><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">My Submissions</a></li>
+            }
+            <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">All Submissions</a></li>
+            @if(User.IsInRole("teacher"))
+            {
+                <li><a href="#bestsubmissions" aria-controls="profile" role="tab" data-toggle="tab">Best Submissions</a></li>
+            }
             <li class="active"><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
         </ul>
 
         <div class="tab-content">
-            <div id="mysubmissions" class="tab-pane fade">
-                
-                <h3>Krisi liktar eins og pikuprump</h3>
-            </div>
+            @if (User.IsInRole("student"))
+            {
+                <div id="mysubmissions" class="tab-pane fade">
+                    <h3>Krisi liktar eins og pikuprump</h3>
+                    @if (Model.mySubmissions != null)
+                    {
+                        { Html.RenderPartial("SubmitPartial", Model.mySubmissions); }
+                    }
+                </div>
+            }
             <div id="allsubmissions" class="tab-pane fade">
                 <h3>DickButt</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                @if (Model.allSubmissions != null)
+                {
+                    { Html.RenderPartial("AllSubmissions", Model.allSubmissions);}
+                }
             </div>
+            @if(User.IsInRole("teacher"))
+            {
+                <div id="bestsubmissions" class="tab-pane fade">
+                    <h3>Vladimir Putin is Overrated</h3>
+                </div>
+            }
             <div id="description" class="tab-pane fade in active">
                 @{ Html.RenderPartial("DescriptionPartial", Model);}
             </div>
