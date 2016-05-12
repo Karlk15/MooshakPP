@@ -79,7 +79,7 @@ namespace MooshakPP.Services
             return null;
         }
 
-        //mileID is milestone ID
+        // Save the given file, compile the code, run test cases on it and return the result
         public result CreateSubmission(string userID, string userName, int mileID, HttpPostedFileBase file)
         {
             List<TestCase> testCases = GetTestCasesByMilestoneID(mileID);
@@ -99,14 +99,11 @@ namespace MooshakPP.Services
             Directory.CreateDirectory(userSubmission);
 
             string workingFolder = userSubmission;
-            string fileName = file.FileName;
-            string cppFileName = fileName;
-
             // Save submission
-            file.SaveAs(workingFolder + cppFileName);
+            file.SaveAs(workingFolder + file.FileName);
             
             // Run tests on the given file using testCases
-            result testResult = TestSubmission(workingFolder, cppFileName, ref testCases);
+            result testResult = TestSubmission(workingFolder, file.FileName, ref testCases);
 
             if (testCases.Count > 0)
             {
@@ -220,19 +217,32 @@ namespace MooshakPP.Services
 
         }
 
-        protected result TestSubmission(string workingFolder, string cppFileName, ref List<TestCase> testCases)
+        protected result TestSubmission(string workingFolder, string fileName, ref List<TestCase> testCases)
         {
             // Create a new compiler process
             Process compiler = new Process();
             // Initialize compiler in workingFolder
             st.InitCompiler(ref compiler, workingFolder);
 
-            // Compile .cpp file
-            result testResult = st.CompileCPP(ref compiler, cppFileName);
+            result testResult = result.none;
+            // find out if program is C++ or C#
+            if(fileName.EndsWith(".c++"))
+            {
+                testResult = st.CompileCPP(ref compiler, fileName);
+            }
+            else if(fileName.EndsWith(".cs"))
+            {
+                testResult = testResult = st.CompileCS(ref compiler, fileName);
+            }
+            else
+            {   //unsupported file format or language
+                return result.compError;
+            }
+
             // Get .exe file path if it exists
             string exeFilePath = Directory.GetFiles(workingFolder, "*.exe").FirstOrDefault();
             // If compiler didn't throw an exception and it's .exe has been found
-            if (testResult != result.compError && !string.IsNullOrEmpty(exeFilePath))
+            if (testResult == result.none && !string.IsNullOrEmpty(exeFilePath))
             {
                 // Initialize executable process
                 ProcessStartInfo processInfoExe = new ProcessStartInfo(exeFilePath, "");

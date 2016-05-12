@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using MooshakPP.Models.ViewModels;
+using System.Collections.Generic;
 using MooshakPP.Models.Entities;
 using System.Configuration;
 using System.IO;
-using System.IO.Compression;
 using System.Diagnostics;
-
 
 
 namespace MooshakPP.Services
@@ -24,24 +20,52 @@ namespace MooshakPP.Services
             compiler.StartInfo.UseShellExecute = false;
         }
 
+        // Compile C++ code
         public result CompileCPP(ref Process compiler, string cppFileName)
         {
             try
             {
-                string compilerFolder = ConfigurationManager.AppSettings["compilerFolder"];
+                // Provide the directory containing vcvars32.bat and cl.exe
+                string compilerFolder = ConfigurationManager.AppSettings["C++CompilerFolder"];
                 compiler.Start();
                 compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
                 compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
                 compiler.StandardInput.WriteLine("exit");
-                string compilerOut = compiler.StandardOutput.ReadToEnd();
                 compiler.WaitForExit();
                 compiler.Close();
             }
             catch(Exception)
             {
+                // Any uncaught exception in the compilation process will be caught here
                 return result.compError;
             }
-            return result.Accepted;
+            return result.none;
+        }
+
+        // Compile C# code
+        public result CompileCS(ref Process compiler, string csFileName)
+        {
+            try
+            {
+                // Provide the vsvars32.bat plugin path
+                string vsvarsPath = ConfigurationManager.AppSettings["C#PluginPath"];
+                string cscPath = ConfigurationManager.AppSettings["C#CompilerPathRelative"];
+                // Make the path absolute
+                cscPath = HttpContext.Current.Server.MapPath(cscPath);
+                compiler.Start();
+                compiler.StandardInput.WriteLine("\"" + vsvarsPath + "\"");
+                compiler.StandardInput.WriteLine(cscPath + " /nologo /out:Program.exe " + csFileName);
+                compiler.StandardInput.WriteLine("exit");
+                compiler.WaitForExit();
+                compiler.Close();
+            }
+            catch(Exception)
+            {
+                // Any uncaught exception in the compilation process will be caught here
+                return result.compError;
+            }
+            
+            return result.none;
         }
 
         public void InitTester(ref ProcessStartInfo processInfoExe)
