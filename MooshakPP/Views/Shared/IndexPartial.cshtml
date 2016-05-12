@@ -72,7 +72,7 @@
 {
     if (User.IsInRole("teacher"))
     {
-                @Html.ActionLink("Recover deleted assignments", "RecoverAssignments", "Teacher", null, new { @class = "btn btn-default" })
+                @Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })
                 @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
     }
 }
@@ -179,7 +179,7 @@
             @if(User.IsInRole("teacher"))
             {
                 <div id="bestsubmissions" class="tab-pane fade">
-                    <h3>Vladimir Putin is Overrated</h3>
+                    <h3>Valdimir Putin is Overrated</h3>
                 </div>
             }
             <div id="description" class="tab-pane fade in active">

@@ -44,109 +44,133 @@ textarea {
     background: linear-gradient(#555, #1a1a1a); /* Standard syntax */
 }
 
-.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav {
+.navbar-inverse .navbar-brand,
+ .navbar-inverse .navbar-nav 
+{
     padding-top:8px;
     padding-bottom:8px;
     line-height:60px;
 }
 
-.navbar-header > li > a {
+.navbar-header > li > a 
+{
     margin-top: 14px;
 }
 
 
-.listbox {
+.listbox 
+{
     width: 400px;
 }
 
-.backbutton {
+.backbutton 
+{
     float: right;
     margin-right: 10px
 }
 
-.courselist {
+.courselist 
+{
     font-size: 18px;
     max-height: 25em;
     overflow: auto;
 }
 
-.tablelist {
+.tablelist 
+{
     max-height:300px;
     overflow:auto;
 }
 
-.courselist a:hover {
+.courselist a:hover 
+{
     text-decoration:none;
 }
 
 
-.selected{
+.selected
+{
   color:#ce2015;
 }
 
-.selected:hover {
+.selected:hover 
+{
     color:#ce2015;
     text-decoration:none;
 }
 
-.teachercheck {
+.teachercheck 
+{
     padding-left: 50px;
 }
 
-#teachercheckheader {
+#teachercheckheader 
+{
     padding-left: 20px;
 }
 
-#dickbutt {
+#dickbutt 
+{
     line-height: 50%;
     letter-spacing: 3px;
 }
 
-.highlightWrong {
+.highlightWrong 
+{
     color: white;
     background-color: #ce2015;
 }
 
-.underline {
+.underline 
+{
     text-decoration: underline;
 }
 
-.add {
+.add 
+{
     margin: 3px;
 }
 
-tr .form-control {
+tr .form-control 
+{
     margin: 3px;
 }
 
-.plusbutton {
+.plusbutton 
+{
     padding: 30px 37px;
     font-size: 60px;
 }
 
-.col-md-10 .courselist {
+.col-md-10 .courselist 
+{
     padding-top: 10px;
     padding-bottom: 8px;
 }
 
-.row .col-md-5 {
+.row .col-md-5 
+{
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
-.row .col-md-10 h2 {
+.row .col-md-10 h2 
+{
     padding-bottom: 14px;
 }
 
-.connect-line {
+.connect-line 
+{
     margin: 5px;
 }
 
-.connect-bold {
+.connect-bold 
+{
     font-weight: bold;
 }
 
-.connect-students {
+.connect-students 
+{
     min-height: 200px;
     max-height: 200px;
     display: block;
@@ -155,7 +179,8 @@ tr .form-control {
     
 }
 
-.connect-teachers {
+.connect-teachers 
+{
     min-height: 95px;
     max-height: 95px;
     display: block;
@@ -163,15 +188,18 @@ tr .form-control {
     overflow-x: hidden;
 }
 
-tr{
+tr
+{
     width: 262px;
 }
 
-.tr-on-hover:hover {
+.tr-on-hover:hover 
+{
     background-color: #f5f5f5;
 }
 
-#all-courses {
+#all-courses
+ {
     min-height: 250px;
     max-height: 250px;
     display: block;
@@ -179,13 +207,21 @@ tr{
     overflow-x: hidden;
 }
 
-.btn-admin {
+.btn-admin 
+{
     margin-top: 70px;
     margin-bottom: 35px;
     font-size: 20px;
 }
 
-#course-assignments {
+#course-assignments 
+{
     min-width: 200px;
     max-width: 200px;
+}
+
+#adminIndex
+{
+    width: 70%;
+    margin: auto;
 }

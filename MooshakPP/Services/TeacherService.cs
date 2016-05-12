@@ -66,13 +66,14 @@ namespace MooshakPP.Services
             recoverAssignments.deletedAssignments = GetDeletedAssignments(teacherID);
             recoverAssignments.courses = GetCourses(teacherID);
             recoverAssignments.currentCourse = GetCourseByID(courseID);
-            if (currentAssignmentID != null)
+            if (currentAssignmentID != null && currentAssignmentID != 0)
             {
                 recoverAssignments.currentSelected = GetAssignmentByID((int)currentAssignmentID);
             }
             else
             {
                 recoverAssignments.currentSelected = new Assignment();
+                recoverAssignments.currentSelected.ID = 0;
             }
             return recoverAssignments;
         }
