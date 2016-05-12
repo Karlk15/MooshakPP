@@ -39,6 +39,7 @@ namespace MooshakPP.Services
                 // Any uncaught exception in the compilation process will be caught here
                 return result.compError;
             }
+            // No error so far
             return result.none;
         }
 
@@ -65,7 +66,7 @@ namespace MooshakPP.Services
                 // Any uncaught exception in the compilation process will be caught here
                 return result.compError;
             }
-            
+            // No error so far
             return result.none;
         }
 
