@@ -155,6 +155,11 @@ tr .form-control
     padding-bottom: 8px;
 }
 
+.assignment-list
+{
+    padding: 5px;
+}
+
 .row .col-md-5 
 {
     padding-top: 30px;
@@ -234,13 +239,13 @@ tr
 }
 
 
-.Accepted
+.accepted
 {
    font-weight: bold;
    color: #28f326 !important;
 }
 
-.WrongAnswer
+.wrongAnswer
 {
    font-weight: bold;
    color: #e21d1d !important;
@@ -248,8 +253,33 @@ tr
 
 .submission-table
 {
+    display: block;
     max-height: 300px;
     overflow-y:auto;
     overflow-x:hidden;
+}
+
+.table-custom 
+{
+    min-height: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.teacher-links 
+{
+    margin:4px;
+}
+
+.teacher-margin
+{
+    margin-top:40px;
+}
+
+.prump
+{
+    float:right;
+    padding-right:420px;
 }
 

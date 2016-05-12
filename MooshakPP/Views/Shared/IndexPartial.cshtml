@@ -29,58 +29,68 @@
 
 @if (Model.courses != null)
 {
-    <div class="row">
-        <div class="col-md-10">
+    
+<div class="col-md-6">
 
-            <h2>@Model.currentCourse.name</h2>
+    <h2>@Model.currentCourse.name</h2>
 
-        </div>
-    </div>
-
-
-<div class="row">
-    <div class="col-md-10">
-        <a class="btn btn-default dropdown-togglee" id="course-assignments" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-            @if(Model.currentAssignment == null || Model.currentAssignment.ID == 0)
-            {
-                <span>All Assignments</span>
-            }
-            else
-            {
-                @Model.currentAssignment.title
-            }
-            <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            @if (Model.assignments != null)
-            {
-                foreach (var assignment in Model.assignments)
-                {
-                    if (User.IsInRole("student"))
-                    {
-                        <li>@Html.ActionLink(@assignment.title, "Index", "Student", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
-                    }
-                    else if (User.IsInRole("teacher"))
-                    {
-                        <li>@Html.ActionLink(@assignment.title, "Index", "Teacher", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
-                    }
-                }
-            }
-        </ul>
-
-@if (Model.currentCourse != null)
-{
-    if (User.IsInRole("teacher"))
-    {
-                @Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })
-                @Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })
-    }
-}
-    </div>
 </div>
 
+    <div class="teacher-margin">
+        @if (Model.currentCourse != null)
+        {
+            if (User.IsInRole("teacher"))
+            {
+                <div class="teacher-links">@Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })</div>
+            }
+
+            <div class="row">
+                @if (User.IsInRole("teacher"))
+                {
+                    <div class="teacher-links prump">@Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })</div>
+
+                }
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="assignment-list">
+                            <a class="btn btn-default" id="course-assignments" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                @if (Model.currentAssignment == null || Model.currentAssignment.ID == 0)
+                                {
+                                    <span>All Assignments</span>
+                                }
+                                else
+                                {
+                                    <span>@Model.currentAssignment.title</span>
+                                }
+                                <span class="caret "></span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                @if (Model.assignments != null)
+                                {
+                                    foreach (var assignment in Model.assignments)
+                                    {
+                                        if (User.IsInRole("student"))
+                                        {
+                                            <li>@Html.ActionLink(@assignment.title, "Index", "Student", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
+                                        }
+                                        else if (User.IsInRole("teacher"))
+                                        {
+                                            <li>@Html.ActionLink(@assignment.title, "Index", "Teacher", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+        
+
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-6">
         @if (Model.milestones != null && Model.currentMilestone != null)
         {
             //checks if the logged in user is a teacher or student
@@ -96,10 +106,26 @@
 
             using (Html.BeginForm("Index", role, new { assignID = Model.currentAssignment.ID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
             {
-                <div class="courselist">
-                    <table>
+                <div class="courselist table-custom">
+                    <table class="table table-striped table-hover" >
+                        <thead>
+                            <tr>                          
+                                @if(Model.currentAssignment.ID != 0 && Model.milestones.Count != 0)
+                                {
+                                    <th>Milestones in @Model.currentAssignment.title</th>
+                                }
+                                else if (Model.currentAssignment.ID == 0)
+                                {
+                                    <th>No assignment selected</th>
+                                }
+                                else
+                                {
+                                    <th>No milestones in this assignment</th>
+                                }
+                            </tr>
+                        </thead>
                         <tbody>
-                            @if (Model.milestones != null && Model.currentAssignment.ID != 0)
+                            @if (Model.milestones != null)
                             {
                                 foreach (var m in Model.milestones)
                                 {
@@ -111,7 +137,7 @@
                             else
                             {
                                 <tr>
-                                    <td>No assignment chosen</td>
+                                    <td>No milestones yet</td>
                                 </tr>
                             }
                         </tbody>
@@ -122,7 +148,7 @@
     </div>
 
 
-    <div class="col-md-5">
+    <div class="col-md-6">
         @if (User.IsInRole("student"))
         {
             using (Html.BeginForm("Index", "student", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID},FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
@@ -149,7 +175,7 @@
         <ul class="nav nav-tabs" role="tablist">
             @if (User.IsInRole("student"))
             {
-                <li><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">My Submissions</a></li>
+                <li><a href="#mysubmissions" class="text-muted" aria-controls="home" role="tab" data-toggle="tab">My Submissions</a></li>
             }
             <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">All Submissions</a></li>
             @if(User.IsInRole("teacher"))
