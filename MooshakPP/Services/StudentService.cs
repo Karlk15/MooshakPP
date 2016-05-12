@@ -15,15 +15,15 @@ namespace MooshakPP.Services
     public class StudentService
     {
         private IdentityManager manager = new IdentityManager();
-        private Models.ApplicationDbContext db;
+        //private Models.ApplicationDbContext db;
         private SubmissionTester st;
-        //private readonly Models.IAppDataContext db;
+        private readonly Models.IAppDataContext db;
 
         //Models.IAppDataContext context <----- should be a parameter for unit testing
-        public StudentService()
+        public StudentService(Models.IAppDataContext context)
         {
-            db = new Models.ApplicationDbContext();
-            //db = context ?? new Models.ApplicationDbContext();
+            //db = new Models.ApplicationDbContext();
+            db = context ?? new Models.ApplicationDbContext();
             st = new SubmissionTester();
         }
 
@@ -154,12 +154,12 @@ namespace MooshakPP.Services
             string workingFolder = userSubmission;
             // Save submission
             file.SaveAs(workingFolder + file.FileName);
-            
-            // Run tests on the given file using testCases
-            result testResult = TestSubmission(workingFolder, file.FileName, ref testCases);
 
+            // Run tests on the given file using testCases
             if (testCases.Count > 0)
             {
+                result testResult = TestSubmission(workingFolder, file.FileName, ref testCases);
+
                 Submission submission = new Submission();
                 submission.fileURL = userSubmission;
                 submission.milestoneID = mileID;
@@ -256,11 +256,11 @@ namespace MooshakPP.Services
             result testResult = result.none;
             // find out if program is C++ or C#
             if(fileName.EndsWith(".cpp"))
-            {
+            {   // Compile c++
                 testResult = st.CompileCPP(ref compiler, fileName);
             }
             else if(fileName.EndsWith(".cs"))
-            {
+            {   // Compile C#
                 testResult = st.CompileCS(ref compiler, fileName);
             }
             else
@@ -271,13 +271,17 @@ namespace MooshakPP.Services
             // Get .exe file path if it exists
             string exeFilePath = Directory.GetFiles(workingFolder, "*.exe").FirstOrDefault();
             // If compiler didn't throw an exception and it's .exe has been found
-            if (testResult == result.none && !string.IsNullOrEmpty(exeFilePath))
+            if (testResult != result.compError && !string.IsNullOrEmpty(exeFilePath))
             {
                 // Initialize executable process
                 ProcessStartInfo processInfoExe = new ProcessStartInfo(exeFilePath, "");
                 st.InitTester(ref processInfoExe);
                 // Run program on test cases
                 testResult = st.TestSubmission(ref processInfoExe, ref testCases);
+            }
+            else
+            {   // Compiler did not successfully create a .exe
+                return result.compError;
             }
             return testResult;
         }

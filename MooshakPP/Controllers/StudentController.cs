@@ -13,7 +13,7 @@ namespace MooshakPP.Controllers
     [Authorize(Roles = "student")]
     public class StudentController : BaseController
     {
-        private StudentService service = new StudentService();
+        private StudentService service = new StudentService(null);
 
         // GET: Student
         [HttpGet]

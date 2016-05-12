@@ -14,7 +14,7 @@ namespace MooshakPP.Controllers
     [Authorize(Roles = "teacher")]
     public class TeacherController : BaseController
     {
-        private TeacherService service = new TeacherService();
+        private TeacherService service = new TeacherService(null);
 
         [HttpGet]
         public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID)

@@ -43,6 +43,7 @@ namespace MooshakPP.Services
         }
 
         // Compile C# code
+        // Currently incompatible with System.Linq
         public result CompileCS(ref Process compiler, string csFileName)
         {
             try
@@ -79,9 +80,9 @@ namespace MooshakPP.Services
 
         public result TestSubmission(ref ProcessStartInfo processInfoExe, ref List<TestCase> testCases)
         {
-            //count passed tests
             try
             {
+                //count passed tests
                 int passCount = 0;
                 foreach (TestCase test in testCases)
                 {
