@@ -12,7 +12,7 @@ namespace MooshakPP.Controllers
     [Authorize(Roles = "student")]
     public class StudentController : BaseController
     {
-        private StudentService service = new StudentService();
+        private StudentService service = new StudentService(null);
 
         // GET: Student
         [HttpGet]
@@ -32,10 +32,19 @@ namespace MooshakPP.Controllers
 
 
         [HttpPost]
-        public ActionResult Submit(int? milestoneID)
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID, string action)
         {
             HttpPostedFileBase file = null;
             //if file submission is valid
+
+            if (milestoneID == null || milestoneID == 0)
+            {
+                ModelState.AddModelError("", "You need to pick a milestone!");
+                IndexViewModel model = new IndexViewModel();
+                model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+                return View(model);
+            }
+
             if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
             {
                 file = Request.Files[0];

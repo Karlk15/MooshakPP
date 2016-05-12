@@ -14,7 +14,7 @@ namespace MooshakPP.Controllers
     [Authorize(Roles = "teacher")]
     public class TeacherController : BaseController
     {
-        private TeacherService service = new TeacherService();
+        private TeacherService service = new TeacherService(null);
 
         [HttpGet]
         public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID)
@@ -190,7 +190,6 @@ namespace MooshakPP.Controllers
             }
             RecoverAssignmentsViewModel model = service.RecoverAssignments(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
             return View(model);
-            //return RedirectToAction("RecoverAssignment", new { courseid = courseID, assignmentid = assignmentID });
         }
 
         [HttpPost]
@@ -243,10 +242,32 @@ namespace MooshakPP.Controllers
         {
             Milestone newMilestone = new Milestone();
 
-            if (assignmentID == null || assignmentID == 0)
-                return RedirectToAction("Create");
+            bool hasError = false;
 
-            if (ModelState.IsValid)
+            if (model.currentMilestone.name == null || model.currentMilestone.name == "")
+            {
+                hasError = true;
+                ModelState.AddModelError("currentMilestone.name", "You need to enter a name");
+            }
+
+            if (model.currentMilestone.description == null || model.currentMilestone.description == "")
+            {
+                hasError = true;
+                ModelState.AddModelError("currentMilestone.description", "You need to enter a description");
+            }
+
+            if (model.testCaseZip == null)
+            {
+                hasError = true;
+                ModelState.AddModelError("testCaseZip", "You need to upload a zip file with test cases");
+            }
+
+            if (hasError == true)
+            {
+                CreateMilestoneViewModel hasErrorModel = service.AddMilestone((int)assignmentID, milestoneID);
+                return View(hasErrorModel);
+            }
+            else
             {
                    if(action == "create")
                    {
@@ -268,7 +289,7 @@ namespace MooshakPP.Controllers
 
                 return RedirectToAction("AddMilestones", new { assignmentid = assignmentID, milestoneid = newMilestone.ID });
             }
-            return View("Error");
+            //return View("Error");
         }
     }
 }

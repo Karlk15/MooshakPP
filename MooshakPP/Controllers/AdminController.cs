@@ -132,10 +132,9 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult ConnectUser(int? courseID, string[] users, string action)
         {
-            if(courseID == null || courseID == 0)
+            if(users== null)
             {
-                //###########################################################################      þarf að laga þetta error villubod
-                ModelState.AddModelError("", "You select a user.");
+                ModelState.AddModelError("", "Please select a user.");
                 AddConnectionsViewModel model = service.GetConnections(courseID);
                 return View(model);
             }
@@ -163,6 +162,7 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult CreateAdmin(CreateAdminViewModel model, string action, string userId)
         {
+
             if (action == "delete")
             {
                 if (!string.IsNullOrEmpty(userId))
@@ -175,6 +175,12 @@ namespace MooshakPP.Controllers
                     if (model.newAdmin.Email.IndexOf("@") != -1)
                     {
                         service.CreateUser(model.newAdmin.Email, "admin");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("newAdmin[i].Email", "Invalid email account: ");
+                        CreateAdminViewModel m = service.GetAdmins(userId);
+                        return View(m);
                     }
                 }
             }
