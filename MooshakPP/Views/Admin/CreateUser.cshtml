@@ -9,31 +9,35 @@
 
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+
 @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
+
     <div class="col-md-6">
         <h3>Create User</h3>
         <table>
             <thead>
                 <tr>
-                    <td>#</td>
-                    <td>Email:</td>
-                    <td id="teachercheckheader">Is a teacher:</td>
+                    <th>#</th>
+                    <th>Email:</th>
+                    <th id="teachercheckheader">Is a teacher:</th>
                 </tr>
             </thead>
             <tbody>
+                @Html.ValidationSummary("" ,new { @class = "text-danger" })
                 @for (int i = 0; i < Model.newUsers.Count; i++)
                 {
-                    @Html.ValidationMessageFor(m => m.newUsers[i].Email, "", new { @class = "text-danger" })
                     <tr>
                         <td>@Html.LabelFor(x => x.newUsers[i].Email, (i+1) + ":", new { @class = "control-label" })</td>
                         <td>@Html.TextBoxFor(x => x.newUsers[i].Email, new { @class = "form-control", @placeholder = "example@example.com"})</td>
                         <td class="teachercheck">@Html.CheckBoxFor(x => x.isTeacher[i])</td>
                     </tr>
+                    
                 }
             </tbody>
         </table>
+       
         <div class="form-group">
             <br /><input type="submit" class="btn btn-default" value="Create users" />
         </div>
@@ -50,7 +54,7 @@
             <div class="courselist">
                 <table>
                     <tbody>
-                        @Html.ValidationSummary()
+
 
                         @foreach (var user in Model.allUsers)
                         {

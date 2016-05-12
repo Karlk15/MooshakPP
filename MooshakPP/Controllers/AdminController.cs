@@ -35,7 +35,7 @@ namespace MooshakPP.Controllers
             
             if (action == "delete")
             {
-                if (courseID != null|| courseID != 0)
+                if (courseID != null && courseID != 0)
                 {
                     service.RemoveCourse((int)courseID); 
                 }
@@ -74,6 +74,7 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult CreateUser(CreateUserViewModel collection, string action, string userID)
         {
+            bool hasErrors = false;
             if (action == "delete")
             {
                 if (!string.IsNullOrEmpty(userID)) 
@@ -99,10 +100,19 @@ namespace MooshakPP.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError("newUsers[i].Email", "Invalid email account");
-                            return RedirectToAction("CreateUser", new { userid = userID });
+                            hasErrors = true;
+                            ModelState.AddModelError("newUsers[i].Email", "Invalid email account for input: " + (i+1));
+                            if (userID == null)
+                            {
+                                userID = service.GetFirstUser().Id;
+                            }
                         }
                     }
+                }
+                if(hasErrors == true)
+                { 
+                    CreateUserViewModel model = service.GetUserViewModel(10, userID);
+                    return View(model);
                 }
             }
 
@@ -112,7 +122,6 @@ namespace MooshakPP.Controllers
         [HttpGet]
         public ActionResult ConnectUser(int? courseID)
         {
-
             AddConnectionsViewModel model = service.GetConnections(courseID);
             return View(model);
         }
@@ -125,8 +134,10 @@ namespace MooshakPP.Controllers
         {
             if(courseID == null || courseID == 0)
             {
-                TempData["connError"] = "No course is selected";
-                return RedirectToAction("ConnectUser");
+                //###########################################################################      þarf að laga þetta error villubod
+                ModelState.AddModelError("", "You select a user.");
+                AddConnectionsViewModel model = service.GetConnections(courseID);
+                return View(model);
             }
 
             //string[] to List<string>
