@@ -79,7 +79,7 @@ namespace MooshakPP.Services
             processInfoExe.CreateNoWindow = false;
         }
 
-        public result TestSubmission(ref ProcessStartInfo processInfoExe, ref List<TestCase> testCases, string workingDir)
+        public result TestSubmission(ref ProcessStartInfo processInfoExe, ref List<TestCase> testCases, string workingDir, ref Submission submission)
         {
             try
             {
@@ -134,6 +134,7 @@ namespace MooshakPP.Services
                         }
                     }
                 }
+                submission.passCount = passCount;
                 // All tests passsed
                 if (passCount == testCases.Count)
                 {
