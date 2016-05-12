@@ -15,15 +15,15 @@ namespace MooshakPP.Services
     public class StudentService
     {
         private IdentityManager manager = new IdentityManager();
-        private Models.ApplicationDbContext db;
+        //private Models.ApplicationDbContext db;
         private SubmissionTester st;
-        //private readonly Models.IAppDataContext db;
+        private readonly Models.IAppDataContext db;
 
         //Models.IAppDataContext context <----- should be a parameter for unit testing
-        public StudentService()
+        public StudentService(Models.IAppDataContext context)
         {
-            db = new Models.ApplicationDbContext();
-            //db = context ?? new Models.ApplicationDbContext();
+            //db = new Models.ApplicationDbContext();
+            db = context ?? new Models.ApplicationDbContext();
             st = new SubmissionTester();
         }
 
@@ -279,7 +279,7 @@ namespace MooshakPP.Services
 
             result testResult = result.none;
             // find out if program is C++ or C#
-            if(fileName.EndsWith(".c++"))
+            if(fileName.EndsWith(".cpp"))
             {
                 testResult = st.CompileCPP(ref compiler, fileName);
             }
