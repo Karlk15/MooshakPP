@@ -142,11 +142,11 @@ namespace MooshakPP.Services
                 {
                     return result.wrongAnswer;
                 }
-            //}
-            //catch(Exception)
-            //{
-                //return result.runError;
-            //}
+            }
+            catch(Exception)
+            {
+                return result.runError;
+            }
 
         }
     }
