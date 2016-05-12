@@ -15,15 +15,15 @@ namespace MooshakPP.Services
     public class StudentService
     {
         private IdentityManager manager = new IdentityManager();
-        private Models.ApplicationDbContext db;
+        //private Models.ApplicationDbContext db;
         private SubmissionTester st;
-        //private readonly Models.IAppDataContext db;
+        private readonly Models.IAppDataContext db;
 
         //Models.IAppDataContext context <----- should be a parameter for unit testing
-        public StudentService()
+        public StudentService(Models.IAppDataContext context)
         {
-            db = new Models.ApplicationDbContext();
-            //db = context ?? new Models.ApplicationDbContext();
+            //db = new Models.ApplicationDbContext();
+            db = context ?? new Models.ApplicationDbContext();
             st = new SubmissionTester();
         }
 
@@ -217,30 +217,6 @@ namespace MooshakPP.Services
             return null;
         }
 
-        public int? GetFirstAssignment(int courseId)
-        {
-            List<Assignment> assignments = GetAssignments(courseId);
-            if (assignments.Count != 0)
-            {
-                return assignments[0].ID;
-            }
-            return null;
-        }
-
-        public int? GetFirstMilestone(int? assignmentId)
-        {
-            if (assignmentId != null)
-            {
-                List<Milestone> milestones = GetMilestones((int)assignmentId);
-                if (milestones.Count != 0)
-                {
-                    return milestones.FirstOrDefault().ID;
-
-                }
-            }
-            return null;
-        }
-
         public Course GetCourse(int courseID)
         {
             Course theCourse = GetCourseByID(courseID);
@@ -372,6 +348,7 @@ namespace MooshakPP.Services
         {
             List<Submission> submissions = (from s in db.Submissions
                                where s.userID == userId && s.milestoneID == milestoneId
+                               orderby s.ID descending
                                select s).ToList();
             return submissions;
         }
@@ -380,6 +357,7 @@ namespace MooshakPP.Services
         {
             List<Submission> submissions = (from s in db.Submissions
                                             where s.milestoneID == milestoneId
+                                            orderby s.ID descending
                                             select s).ToList();
             return submissions;
         }

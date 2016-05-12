@@ -24,10 +24,12 @@
         <div class="col-md-6">
             <div class="form-group">
                 @Html.EditorFor(m => m.currentMilestone.name, new { htmlattributes = new { @class = "form-control", placeholder = "Enter name for part" } })
+                @Html.ValidationMessageFor(m => m.currentMilestone.name, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
                 @Html.TextAreaFor(m => m.currentMilestone.description, new { @class = "form-control descriptionbox", placeholder = "Enter description for part", rows = "9" })
+                @Html.ValidationMessageFor(m => m.currentMilestone.description, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
@@ -35,6 +37,7 @@
                 <input id="fileupload" type="file" />-->
                 <label for="fileupload">Please upload a zip file with your testcases</label>
                 @Html.TextBoxFor(m => m.testCaseZip, new { type = "file", accept = "application/zip, application/x-zip, application/x-zip-compressed" } )
+                @Html.ValidationMessageFor(m => m.testCaseZip, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
