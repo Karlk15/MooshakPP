@@ -55,7 +55,7 @@ namespace MooshakPP.Controllers
                 service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { courseid = courseID, assignmentid = assignmentID, milestoneid = milestoneID });
         }
 
         [HttpGet]
