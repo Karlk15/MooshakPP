@@ -78,6 +78,34 @@ namespace MooshakPP.Services
             return recoverAssignments;
         }
 
+        public AllSubmissionsViewModel bestSubmissions(int? milestoneId)
+        {
+            AllSubmissionsViewModel bestSubmissions = new AllSubmissionsViewModel();
+            if (milestoneId != null && milestoneId != 0)
+            {
+                bestSubmissions.currentMilestone = GetMilestoneByID((int)milestoneId);
+                bestSubmissions.users = GetUsersInCourse(GetAssignmentByID(bestSubmissions.currentMilestone.assignmentID).courseID);
+                bestSubmissions.submissions = new List<Submission>();
+                    //GetSubmissionsForAssignment(bestSubmissions.currentMilestone.assignmentID);
+                bestSubmissions.submittedUser = new ApplicationUser();
+                /*if (tempBest != null && tempBest.Count != 0)
+                {
+                    
+                }
+                else
+                {
+                    
+                }*/
+            }
+            else
+            {
+                bestSubmissions.submissions = new List<Submission>();
+                bestSubmissions.submittedUser = new ApplicationUser();
+                bestSubmissions.users = new List<ApplicationUser>();
+            }
+            return bestSubmissions;
+        }
+
         public bool CreateAssignment(Assignment newAssignment)
         {
             if(newAssignment != null)
@@ -308,6 +336,26 @@ namespace MooshakPP.Services
                                                    where a.teacherID == teacherID && a.courseID == 0
                                                    select a).ToList();
             return deletedAssignments;
+        }
+
+        private List<ApplicationUser> GetUsersInCourse(int courseId)
+        {
+            List<ApplicationUser> users = (from u in db.UsersInCourses
+                                                  where u.courseID == courseId
+                                                  select u.user).ToList();
+            return users;
+        }
+        private List<Submission> GetSubmissionsForAssignment(int assignmentId)
+        {
+            List<Milestone> milestones = (from m in db.Milestones
+                                          where m.assignmentID == assignmentId
+                                          select m).ToList();
+            List<Submission> best = new List<Submission>();
+            foreach(Milestone m in milestones)
+            {
+                
+            }
+            return null;
         }
     }
 

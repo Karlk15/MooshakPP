@@ -80,8 +80,8 @@ namespace MooshakPP.Services
         public result TestSubmission(ref ProcessStartInfo processInfoExe, ref List<TestCase> testCases)
         {
             //count passed tests
-            try
-            {
+            //try
+            //{
                 int passCount = 0;
                 foreach (TestCase test in testCases)
                 {
@@ -157,11 +157,11 @@ namespace MooshakPP.Services
                 {   //Safeguard, should never happen
                     return result.runError;
                 }
-            }
-            catch(Exception)
-            {
-                return result.runError;
-            }
+            //}
+            //catch(Exception)
+            //{
+                //return result.runError;
+            //}
 
         }
     }
