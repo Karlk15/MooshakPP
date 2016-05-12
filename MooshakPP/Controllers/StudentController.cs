@@ -13,7 +13,7 @@ namespace MooshakPP.Controllers
     [Authorize(Roles = "student")]
     public class StudentController : BaseController
     {
-        private StudentService service = new StudentService();
+        private StudentService service = new StudentService(null);
 
         // GET: Student
         [HttpGet]
@@ -44,6 +44,10 @@ namespace MooshakPP.Controllers
                 //userID, mileID, HttpPostedFileBase
                 //username must be passed because User is tied to http
                 service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
+            }
+            else
+            {
+                ModelState.AddModelError("", "You need to upload a submission!");
             }
 
             return RedirectToAction("Index");
