@@ -368,6 +368,7 @@ namespace MooshakPP.Services
         {
             List<Submission> submissions = (from s in db.Submissions
                                where s.userID == userId && s.milestoneID == milestoneId
+                               orderby s.ID descending
                                select s).ToList();
             return submissions;
         }
@@ -376,6 +377,7 @@ namespace MooshakPP.Services
         {
             List<Submission> submissions = (from s in db.Submissions
                                             where s.milestoneID == milestoneId
+                                            orderby s.ID descending
                                             select s).ToList();
             return submissions;
         }
