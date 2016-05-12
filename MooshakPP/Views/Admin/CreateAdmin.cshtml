@@ -27,7 +27,7 @@
     <h5>Click a user to select</h5>
     @if (Model.currentlySelected != null)
     {
-        using (Html.BeginForm("CreateUser", "Admin", new { userid = Model.currentlySelected.Id }, FormMethod.Post, new { @id = "coursetableform" }))
+        using (Html.BeginForm("CreateAdmin", "Admin", new { userid = Model.currentlySelected.Id }, FormMethod.Post, new { @id = "coursetableform" }))
         {
             <div class="courselist">
                 <table>

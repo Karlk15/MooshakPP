@@ -32,6 +32,32 @@ namespace MooshakPP.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID, string action)
+        {
+            HttpPostedFileBase file = null;
+            //if file submission is valid
+
+            if (milestoneID == null || milestoneID == 0)
+            {
+                ModelState.AddModelError("", "You need to pick a milestone!");
+                IndexViewModel model = new IndexViewModel();
+                model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+                return View(model);
+            }
+
+            if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
+            {
+                file = Request.Files[0];
+
+                //userID, mileID, HttpPostedFileBase
+                //username must be passed because User is tied to http
+                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public ActionResult Create(int? courseID, int? assignmentID)
         {
@@ -190,23 +216,6 @@ namespace MooshakPP.Controllers
             }
             RecoverAssignmentsViewModel model = service.RecoverAssignments(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
             return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Submit(int? milestoneID)
-        {
-            HttpPostedFileBase file = null;
-            //if file submission is valid
-            if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
-            {
-                file = Request.Files[0];
-
-                //userID, mileID, HttpPostedFileBase
-                //username must be passed because User is tied to http
-                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
-            }
-
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
