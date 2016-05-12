@@ -22,6 +22,7 @@ namespace MooshakPP.Models.Entities
         public string userID{ get; set; }
         public int milestoneID { get; set; }
         public result status { get; set; }
+        public int passCount { get; set; }
         public string fileURL { get; set; }
     }
 }
