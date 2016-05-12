@@ -19,5 +19,10 @@ namespace MooshakPP.Models.ViewModels
         public Course currentCourse { get; set; }
         public Assignment currentAssignment { get; set; }
         public Milestone currentMilestone { get; set; }
+
+        //partial viewModels 
+        public SubmissionViewModel mySubmissions { get; set; }
+        public SubmissionViewModel allSubmissions { get; set; }
+        public AllSubmissionsViewModel bestSubmissions { get; set; }
     }
 }

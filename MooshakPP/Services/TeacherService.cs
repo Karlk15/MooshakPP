@@ -46,7 +46,7 @@ namespace MooshakPP.Services
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
             model.milestones = GetMilestones(assId);
-            if(currMilestoneId == null)
+            if(currMilestoneId == null || currMilestoneId == 0)
             {
                 model.currentMilestone = new Milestone();
                 model.currentMilestone.assignmentID = assId; 
@@ -95,16 +95,24 @@ namespace MooshakPP.Services
 
         public bool CreateMilestone(Milestone milestone, HttpPostedFileBase upload)
         {   //Only zip uploads are accepted
-            if (milestone != null && upload.FileName.EndsWith(".zip"))
+            if (upload != null)
             {
-                // Create milestone before test cases so you have an ID for the test cases
-                db.Milestones.Add(milestone);
-                db.SaveChanges();
+                if (milestone != null && upload.FileName.EndsWith(".zip"))
+                {
+                    // Create milestone before test cases so you have an ID for the test cases
+                    db.Milestones.Add(milestone);
+                    db.SaveChanges();
 
-                //Creates test cases and calls multiple functions
-                CreateTests(milestone.ID, upload);
+                    //Creates test cases and calls multiple functions
+                    CreateTests(milestone.ID, upload);
 
-                return true;
+                    return true;
+                }
+                else
+                {
+                    return false;
+
+                }
             }
             else
             {

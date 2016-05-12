@@ -13,12 +13,13 @@
                 @Html.ActionLink(@course.name, "ConnectUser", new { courseid = course.ID }, new { @class = "btn btn-default" })
                 }
         }
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-3">
+             <h2>@Model.currentCourse.name</h2>
         </div>
     </div>
-        <div class="row">
-            <div class="col-md-offset-2 col-md-3">
-                <h2>@Model.currentCourse.name</h2>
-            </div>
     @Html.ActionLink("Back to Homepage", "Index", "Admin", null, new { @class = "btn btn-primary backbutton" })
 </div><br />
 
@@ -98,7 +99,7 @@
                             if (item != null)
                             {
                                 <tr class="tr-on-hover checkbox">
-                                <td><input type="checkbox" name=users id="n @item.Id" value="@item.Id" /><label for="n @item.Id">@item.Email</label> </td>
+                                    <td><input type="checkbox" name=users id="n @item.Id" value="@item.Id" /><label for="n @item.Id">@item.Email</label> </td>
                                 </tr>
                             }
                         }
@@ -106,7 +107,11 @@
                 </table>
             </div>
             <hr />
-            <button name="action" value="add" class="btn btn-default add">Add users to @Model.currentCourse.name</button>
+            if (Model.currentCourse.ID != 0)
+            {
+                @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+                <button name="action" value="add" class="btn btn-default add">Add users to @Model.currentCourse.name</button>
+            }
         }
     </div>
 </div><br />

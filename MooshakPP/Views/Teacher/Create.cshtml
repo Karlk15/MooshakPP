@@ -81,7 +81,14 @@
                             foreach (var assign in Model.assignments)
                             {
                                 <tr>
-                                        <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { courseid = @assign.courseID, assignmentid = @assign.ID }, null)</td >
+                                    @if (assign.ID == Model.currentAssignment.ID)
+                                    {
+                                        <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { courseid = @assign.courseID, assignmentid = @assign.ID }, new { @class = "selected" })</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@Html.ActionLink(@assign.title, "Create", "Teacher", new { courseid = @assign.courseID, assignmentid = @assign.ID }, null)</td>
+                                    }               
                                 </tr>
                             }
                         }
@@ -100,6 +107,5 @@
 @section scripts
 {
     <script src="@Url.Content("~/Scripts/datepicker.js")"></script>
-    <script src="@Url.Content("~/Scripts/interactivelist.js")"></script>
     <script src="~/Scripts/ErrorWarning.js"></script>
 }

@@ -33,7 +33,7 @@ namespace MooshakPP.Controllers
 
 
         [HttpPost]
-        public ActionResult Submit()
+        public ActionResult Submit(int? milestoneID)
         {
             HttpPostedFileBase file = null;
             //if file submission is valid
@@ -41,8 +41,9 @@ namespace MooshakPP.Controllers
             {
                 file = Request.Files[0];
 
-                // PLACEHOLDER MILESTONE ID
-                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, 19, file);
+                //userID, mileID, HttpPostedFileBase
+                //username must be passed because User is tied to http
+                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
             }
 
             return RedirectToAction("Index");
