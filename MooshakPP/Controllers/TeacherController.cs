@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text.RegularExpressions;
 
 namespace MooshakPP.Controllers
 {
@@ -85,6 +86,7 @@ namespace MooshakPP.Controllers
         {
             Assignment model = new Assignment();
             bool hasErrors = false;
+            Regex dateFormat = new Regex(@"\d{2}/\d{2}/\d{4}");
 
             if (collection.currentAssignment.title == "" || collection.currentAssignment.title == null)
             {
@@ -92,16 +94,16 @@ namespace MooshakPP.Controllers
                 ModelState.AddModelError("currentAssignment.title", "You must give a title");
             }
 
-            if (collection.start == "" || collection.start == null)
+            if (collection.start == "" || collection.start == null || !dateFormat.IsMatch(collection.start))
             {
                 hasErrors = true;
-                ModelState.AddModelError("start", "You must give a start date");
+                ModelState.AddModelError("start", "You must give a (valid) start date");
             }
 
-            if (collection.due == "" || collection.due == null)
+            if (collection.due == "" || collection.due == null || !dateFormat.IsMatch(collection.due))
             {
                 hasErrors = true;
-                ModelState.AddModelError("due", "You must give a due date");
+                ModelState.AddModelError("due", "You must give a (valid) due date");
             }
 
             if (hasErrors == true)

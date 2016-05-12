@@ -75,7 +75,7 @@ namespace MooshakPP.Tests.Controllers
             int? milestoneID = 2;
 
             // Act:
-            //var result = (RedirectToRouteResult)controller.Submit(milestoneID);
+            //var result = (RedirectToRouteResult)controller.Index();
 
             // Assert:
             //Assert.AreEqual("Index", result.RouteValues["action"]);
@@ -90,7 +90,7 @@ namespace MooshakPP.Tests.Controllers
             int? milestoneID = null;
 
             // Act:
-            //var result = (RedirectToRouteResult)controller.Submit(milestoneID);
+            //var result = (RedirectToRouteResult)controller.Index(milestoneID);
 
             // Assert:
             //Assert.AreNotEqual("Index", result.RouteValues["action"]);

@@ -250,6 +250,10 @@
     <Compile Include="Migrations\201605100941584_AddedStartDateToAssignment.Designer.cs">
       <DependentUpon>201605100941584_AddedStartDateToAssignment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605122316493_UpdatedTheSubmissionsEntity.cs" />
+    <Compile Include="Migrations\201605122316493_UpdatedTheSubmissionsEntity.Designer.cs">
+      <DependentUpon>201605122316493_UpdatedTheSubmissionsEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entities\Assignment.cs" />
@@ -405,6 +409,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605100941584_AddedStartDateToAssignment.resx">
       <DependentUpon>201605100941584_AddedStartDateToAssignment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605122316493_UpdatedTheSubmissionsEntity.resx">
+      <DependentUpon>201605122316493_UpdatedTheSubmissionsEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
