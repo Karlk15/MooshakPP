@@ -12,7 +12,7 @@ namespace MooshakPP.Tests.Controllers
     [TestClass]
     public class AdminControllerTest
     {
-        #region Tests for Post ActionResult for ManageCourse
+        #region Tests Post ActionResult for ManageCourse
 
         [TestMethod]
         public void TestManageCoursePostActionDelete1()
@@ -65,9 +65,30 @@ namespace MooshakPP.Tests.Controllers
             Assert.AreEqual("ManageCourse", result.RouteValues["action"]);
         }
 
+        /// <summary>
+        /// This will knowingly fail because of the service funtion being called in the controller
+        /// It is enough to comment that out and not take in model in the return View() parameters
+        /// That will offer a fair test for the function
+        /// </summary>
+        [TestMethod]
+        public void TestManageCoursePostActionCreateCourseEmpty()
+        {
+            // Arrange:
+            var controller = new AdminController();
+            Course newCourse = new Course();
+            string action = "create";
+            int? courseID = 3;
+
+            // Act:
+            //var result = (RedirectToRouteResult)controller.ManageCourse(newCourse, courseID, action);
+            var result = controller.ManageCourse(newCourse, courseID, action) as ViewResult;
+
+            // Assert:
+            Assert.AreEqual("ManageCourse", result.ViewName);
+        }
         #endregion
 
-        #region Tests for Post ActionResult for ConnectUser
+        #region Tests Post ActionResult for ConnectUser
 
         [TestMethod]
         public void TestConnectUserCourseIdNull()

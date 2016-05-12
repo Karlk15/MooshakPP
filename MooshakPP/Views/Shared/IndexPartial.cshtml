@@ -29,12 +29,12 @@
 
 @if (Model.courses != null)
 {
-    
+
 <div class="col-md-6">
 
-    <h2>@Model.currentCourse.name</h2>
+            <h2>@Model.currentCourse.name</h2>
 
-</div>
+        </div>
 
     <div class="teacher-margin">
         @if (Model.currentCourse != null)
@@ -44,9 +44,9 @@
                 <div class="teacher-links">@Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })</div>
             }
 
-            <div class="row">
+<div class="row">
                 @if (User.IsInRole("teacher"))
-                {
+            {
                     <div class="teacher-links prump">@Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })</div>
 
                 }
@@ -56,38 +56,38 @@
                             <a class="btn btn-default" id="course-assignments" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
                                 @if (Model.currentAssignment == null || Model.currentAssignment.ID == 0)
                                 {
-                                    <span>All Assignments</span>
-                                }
-                                else
-                                {
+                <span>All Assignments</span>
+            }
+            else
+            {
                                     <span>@Model.currentAssignment.title</span>
-                                }
+            }
                                 <span class="caret "></span>
-                            </a>
+        </a>
 
-                            <ul class="dropdown-menu">
-                                @if (Model.assignments != null)
-                                {
-                                    foreach (var assignment in Model.assignments)
-                                    {
-                                        if (User.IsInRole("student"))
-                                        {
-                                            <li>@Html.ActionLink(@assignment.title, "Index", "Student", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
-                                        }
-                                        else if (User.IsInRole("teacher"))
-                                        {
-                                            <li>@Html.ActionLink(@assignment.title, "Index", "Teacher", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
-                                        }
-                                    }
-                                }
-                            </ul>
+        <ul class="dropdown-menu">
+            @if (Model.assignments != null)
+            {
+                foreach (var assignment in Model.assignments)
+                {
+                    if (User.IsInRole("student"))
+                    {
+                        <li>@Html.ActionLink(@assignment.title, "Index", "Student", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
+                    }
+                    else if (User.IsInRole("teacher"))
+                    {
+                        <li>@Html.ActionLink(@assignment.title, "Index", "Teacher", new { courseid = assignment.courseID, assignmentid = assignment.ID }, null)</li>
+                    }
+                }
+            }
+        </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        }
+}
     </div>
-        
+
 
 <div class="row">
     <div class="col-md-6">
@@ -151,11 +151,13 @@
     <div class="col-md-6">
         @if (User.IsInRole("student"))
         {
-            using (Html.BeginForm("Index", "student", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID},FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            using (Html.BeginForm("Index", "student", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
+
                 <input name="file" type="file" id="upld" />
-                <input type="submit" value="submit" disabled id="submit" class="btn btn-default test" />
+                <input type="submit" value="submit" disabled id="submit" />
                 @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+
             }
         }
         else if (User.IsInRole("teacher"))
@@ -163,7 +165,7 @@
             using (Html.BeginForm("Index", "teacher", new { courseid = Model.currentCourse.ID, assignmentid = Model.currentAssignment.ID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
                 <input name="file" type="file" />
-                <input type="submit" value="submit" id="submit" class="btn btn-default" />
+                <input type="submit" value="submit" disabled id="submit" class="btn btn-default" />
             }
         }
     </div>
@@ -175,20 +177,20 @@
         <ul class="nav nav-tabs" role="tablist">
             @if (User.IsInRole("student"))
             {
-                <li><a href="#mysubmissions" class="text-muted" aria-controls="home" role="tab" data-toggle="tab">My Submissions</a></li>
+                <li class="active"><a href="#mysubmissions" aria-controls="home" role="tab" data-toggle="tab">My Submissions</a></li>
             }
             <li><a href="#allsubmissions" aria-controls="profile" role="tab" data-toggle="tab">All Submissions</a></li>
-            @if(User.IsInRole("teacher"))
+            @if (User.IsInRole("teacher"))
             {
-                <li><a href="#bestsubmissions" aria-controls="profile" role="tab" data-toggle="tab">Best Submissions</a></li>
+                <li class="active"><a href="#bestsubmissions" aria-controls="profile" role="tab" data-toggle="tab">Best Submissions</a></li>
             }
-            <li class="active"><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
+            <li><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
         </ul>
 
         <div class="tab-content table">
             @if (User.IsInRole("student"))
             {
-                <div id="mysubmissions" class="tab-pane fade">
+                <div id="mysubmissions" class="tab-pane fade in active">
                     @if (Model.mySubmissions != null)
                     {
                         { Html.RenderPartial("SubmitPartial", Model.mySubmissions); }
@@ -197,7 +199,7 @@
             }
             @if (User.IsInRole("teacher"))
             {
-                <div id="bestsubmissions" class="tab-pane fade">
+                <div id="bestsubmissions" class="tab-pane fade in active">
                     <h3>Valdimir Putin is Overrated</h3>
                     @{ Html.RenderPartial("BestSubmissions", Model.bestSubmissions);}
                 </div>
@@ -208,7 +210,7 @@
                     { Html.RenderPartial("AllSubmissions", Model.allSubmissions);}
                 }
             </div>
-            <div id="description" class="tab-pane fade in active">
+            <div id="description" class="tab-pane fade">
                 @{ Html.RenderPartial("DescriptionPartial", Model);}
             </div>
         </div>

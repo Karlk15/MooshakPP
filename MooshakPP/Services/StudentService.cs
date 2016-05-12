@@ -140,8 +140,10 @@ namespace MooshakPP.Services
             // Run tests on the given file using testCases
             if (testCases.Count > 0)
             {
-                result testResult = TestSubmission(workingFolder, file.FileName, ref testCases);
                 Submission submission = new Submission();
+                // Pass submission by reference so that the passCount can be assigned by the tester
+                result testResult = TestSubmission(workingFolder, file.FileName, ref testCases, ref submission);
+
                 submission.fileURL = userSubmission;
                 submission.milestoneID = mileID;
                 submission.status = testResult;
@@ -227,7 +229,8 @@ namespace MooshakPP.Services
 
         }
 
-        protected result TestSubmission(string workingFolder, string fileName, ref List<TestCase> testCases)
+        // Run the entire testing process on a compiled program, pass submission to assign the passCount
+        protected result TestSubmission(string workingFolder, string fileName, ref List<TestCase> testCases, ref Submission submission)
         {
             // Create a new compiler process
             Process compiler = new Process();
@@ -258,7 +261,7 @@ namespace MooshakPP.Services
                 ProcessStartInfo processInfoExe = new ProcessStartInfo(exeFilePath, "");
                 st.InitTester(ref processInfoExe);
                 // Run program on test cases
-                testResult = st.TestSubmission(ref processInfoExe, ref testCases, workingFolder);
+                testResult = st.TestSubmission(ref processInfoExe, ref testCases, workingFolder, ref submission);
             }
             else
             {   // Compiler did not successfully create a .exe
