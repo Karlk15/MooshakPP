@@ -159,7 +159,6 @@ namespace MooshakPP.Services
             if (testCases.Count > 0)
             {
                 result testResult = TestSubmission(workingFolder, file.FileName, ref testCases);
-
                 Submission submission = new Submission();
                 submission.fileURL = userSubmission;
                 submission.milestoneID = mileID;
@@ -277,7 +276,7 @@ namespace MooshakPP.Services
                 ProcessStartInfo processInfoExe = new ProcessStartInfo(exeFilePath, "");
                 st.InitTester(ref processInfoExe);
                 // Run program on test cases
-                testResult = st.TestSubmission(ref processInfoExe, ref testCases);
+                testResult = st.TestSubmission(ref processInfoExe, ref testCases, workingFolder);
             }
             else
             {   // Compiler did not successfully create a .exe
