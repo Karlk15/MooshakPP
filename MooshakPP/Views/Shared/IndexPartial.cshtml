@@ -169,18 +169,19 @@
                     }
                 </div>
             }
+            @if (User.IsInRole("teacher"))
+            {
+                <div id="bestsubmissions" class="tab-pane fade">
+                    <h3>Valdimir Putin is Overrated</h3>
+                    @{ Html.RenderPartial("BestSubmissions", Model.bestSubmissions);}
+                </div>
+            }
             <div id="allsubmissions" class="tab-pane fade">
                 @if (Model.allSubmissions != null)
                 {
                     { Html.RenderPartial("AllSubmissions", Model.allSubmissions);}
                 }
             </div>
-            @if(User.IsInRole("teacher"))
-            {
-                <div id="bestsubmissions" class="tab-pane fade">
-                    <h3>Valdimir Putin is Overrated</h3>
-                </div>
-            }
             <div id="description" class="tab-pane fade in active">
                 @{ Html.RenderPartial("DescriptionPartial", Model);}
             </div>

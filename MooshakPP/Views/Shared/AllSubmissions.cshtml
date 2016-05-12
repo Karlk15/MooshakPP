@@ -60,7 +60,10 @@
                             {
                                 <td class="WrongAnswer">@m.status</td>
                             }
-                            <td>Details</td>
+                            @if ((int)m.status != 5)
+                            {
+                                <td>Details</td>
+                            }
                         </tr>
                         i++;
                     }

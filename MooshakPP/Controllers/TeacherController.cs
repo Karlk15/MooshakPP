@@ -26,7 +26,8 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
-                model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+            model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+            model.bestSubmissions = service.bestSubmissions((milestoneID));
 
             return View(model);
         }
@@ -192,9 +193,20 @@ namespace MooshakPP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Submit(FormCollection collection)
+        public ActionResult Submit(int? milestoneID)
         {
-            return View();
+            HttpPostedFileBase file = null;
+            //if file submission is valid
+            if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
+            {
+                file = Request.Files[0];
+
+                //userID, mileID, HttpPostedFileBase
+                //username must be passed because User is tied to http
+                service.CreateSubmission(User.Identity.GetUserId(), User.Identity.Name, (int)milestoneID, file);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
