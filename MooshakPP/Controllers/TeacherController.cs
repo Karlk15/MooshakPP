@@ -106,7 +106,7 @@ namespace MooshakPP.Controllers
                     emptyModel.currentAssignment = noAssignment;
                     emptyModel.currentCourse.ID = (int)courseID;
                     emptyModel.currentAssignment.ID = (int)assignmentID;
-                    
+
                     return View(emptyModel);
                 }
 
@@ -128,8 +128,7 @@ namespace MooshakPP.Controllers
 
                 //adding the new assignment to the database through the TeacherService
                 service.CreateAssignment(model);
-
-                    
+ 
                 return RedirectToAction("Create", new { courseid = courseID, assignmentid = model.ID});
             }
             else if(action == "edit")

@@ -10,7 +10,7 @@ namespace MooshakPP.Models.ViewModels
     {
         public List<Course> courses { get; set; }
         public List<Assignment> assignments { get; set; }
-        public Assignment newAssignment { get; set; }
+        //public Assignment newAssignment { get; set; }
 
         //currently used
         public Course currentCourse { get; set; }
