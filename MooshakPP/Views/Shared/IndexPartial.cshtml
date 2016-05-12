@@ -159,11 +159,10 @@
             <li class="active"><a href="#description" aria-controls="profile" role="tab" data-toggle="tab">Description</a></li>
         </ul>
 
-        <div class="tab-content">
+        <div class="tab-content table">
             @if (User.IsInRole("student"))
             {
                 <div id="mysubmissions" class="tab-pane fade">
-                    <h3>Krisi liktar eins og pikuprump</h3>
                     @if (Model.mySubmissions != null)
                     {
                         { Html.RenderPartial("SubmitPartial", Model.mySubmissions); }
@@ -171,7 +170,6 @@
                 </div>
             }
             <div id="allsubmissions" class="tab-pane fade">
-                <h3>DickButt</h3>
                 @if (Model.allSubmissions != null)
                 {
                     { Html.RenderPartial("AllSubmissions", Model.allSubmissions);}

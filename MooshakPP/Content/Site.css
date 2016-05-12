@@ -199,7 +199,7 @@ tr
 }
 
 #all-courses
- {
+{
     min-height: 250px;
     max-height: 250px;
     display: block;
@@ -224,4 +224,24 @@ tr
 {
     width: 70%;
     margin: auto;
+}
+
+
+.Accepted
+{
+   font-weight: bold;
+   color: #28f326 !important;
+}
+
+.WrongAnswer
+{
+   font-weight: bold;
+   color: #e21d1d !important;
+}
+
+.submission-table
+{
+    max-height: 300px;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
