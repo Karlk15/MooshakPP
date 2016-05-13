@@ -1,0 +1,94 @@
+﻿@model MooshakPP.Models.ViewModels.DetailsViewModel
+@{
+    ViewBag.Title = "View details";
+}
+
+<div class="row">
+    <h2 class="col-md-6">Details</h2>
+    @Html.ActionLink("Back", "Submit", "Student", null, new { @class = "btn btn-primary backbutton" })
+</div>
+
+@foreach (var test in Model.tests)
+{
+    <table>
+        <tbody>
+            @foreach(var input in test.input)
+            {
+                <tr>
+                    <td>@input</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    if (test.expectedOut == test.obtainedOut)
+    {
+        <p>Correct answer</p>
+    }
+    else
+    {
+        int i = 0;
+        <div class="row">
+            <div class="tablelist">
+                <div class="col-md-6">
+                    <table>
+                         <tbody>
+                             
+                             @foreach (var s in test.expectedOut)
+                             {
+                                 <tr>
+                                    @if (i < test.obtainedOut.Count)
+                                    {
+                                        if (test.obtainedOut[i] != test.expectedOut[i])
+                                        {
+                                            <td class="background-danger">test.obtainedOut[i]</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@s</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="background-danger"></td>
+                                    }
+                                 </tr>
+                                 i++;
+                             }
+                             
+                         </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="tablelist">
+                <div class="col-md-6">
+                    <table>
+                        <tbody>
+                            @if(i != 0)
+                            {
+                                i = 0;
+                            }
+                            @foreach (var s in test.expectedOut)
+                            {
+                                <tr>
+                                    @if (test.obtainedOut[i] != test.expectedOut[i])
+                                    {
+                                        <td class="background-danger">@s</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@s</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    }
+
+}

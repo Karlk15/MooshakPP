@@ -45,6 +45,7 @@ namespace MooshakPP.Services
                         if ( tempSubmissions != null && tempSubmissions.Count != 0)
                         {
                             newIndex.mySubmissions = mySubmissions(userId, (int)milestoneId);
+                            newIndex.mySubmissions.loggedInUser = manager.GetUserById(userId);
                         }
                         else
                         {
@@ -55,6 +56,7 @@ namespace MooshakPP.Services
                         if(tempAll != null && tempAll.Count != 0)
                         {
                             newIndex.allSubmissions = allSubmissions((int)milestoneId);
+                            newIndex.allSubmissions.loggedInUser = manager.GetUserById(userId);
                         }
                         else
                         {
@@ -81,7 +83,7 @@ namespace MooshakPP.Services
         }
 
         // Load the current submission, all of it's wrong outputs, expected outputs and inputs
-        public DetailsViewModel GetDetails(int submissionID, string userName)
+        public DetailsViewModel GetDetails(int submissionID)
         {
             DetailsViewModel details = new DetailsViewModel();
             details.submission = GetSubmissionByID(submissionID);
@@ -129,6 +131,7 @@ namespace MooshakPP.Services
             SubmissionViewModel mySubmissions = new SubmissionViewModel();
             mySubmissions.submissions = GetSubmissions(userId, milestoneId);
             mySubmissions.currentMilestone = GetMilestoneByID(milestoneId);
+            
             return mySubmissions;
         }
 
