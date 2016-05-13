@@ -24,37 +24,40 @@
                     <th>View Details</th>
                 </tr>
             </thead>
-            <tbody class="submission-table">
-               @if (Model.submissions.Count != 0)
-               {
-                    foreach (var m in Model.submissions)
+            X
+                <tbody>
+                    @if (Model.submissions.Count != 0)
                     {
-                       <tr>
-                           <td>@m.ID</td>
-                           <td>@User.Identity.Name</td>
-                           <td>@Model.currentMilestone.name</td>
-                           <td>C++</td>
+                        
+                        foreach (var m in Model.submissions)
+                        {
+                            <tr>
+                                <td>@m.ID</td>
+                                <td>@User.Identity.Name</td>
+                                <td>@Model.currentMilestone.name</td>
+                                <td>C++</td>
 
-                            @if ((int)m.status == 5 )
-                            {
-                               <td class ="Accepted" >@m.status</td>
-                            }
-                            else
-                            {
-                                <td class="WrongAnswer">@m.status</td>
-                            }
-                           @if ((int)m.status != 5)
-                           {
-                               <td>Details</td>
-                           }
-                           else
-                           {
-                            <td></td>
-                           }
-                       </tr>
-                   }
-               }
-            </tbody>
+                                @if ((int)m.status == 5)
+                                {
+                                    <td class="accepted">@m.status</td>
+                                }
+                                else
+                                {
+                                    <td class="wrongAnswer">@m.status</td>
+                                }
+                                @if ((int)m.status != 5)
+                                {
+                                    <td>Details</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            
         </table>
         if (Model.currentMilestone.ID == 0)
         {
