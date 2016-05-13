@@ -80,6 +80,50 @@ namespace MooshakPP.Services
             return newIndex;
         }
 
+        // Load the current submission, all of it's wrong outputs, expected outputs and inputs
+        public DetailsViewModel GetDetails(int submissionID, string userName)
+        {
+            DetailsViewModel details = new DetailsViewModel();
+            details.submission = GetSubmissionByID(submissionID);
+
+            // Get all testcases if. details.submission is still null, an exception will be thrown
+            List<TestCase> testcases = GetTestCasesByMilestoneID(details.submission.milestoneID);
+
+            // Get all wrong outputs and match them with their test cases
+            details.tests = new List<ComparisonViewModel>();
+            foreach (string file in Directory.GetFiles(details.submission.fileURL + "\\Wrong outputs\\", "*.txt"))
+            {
+                // Get the test case index from the output filename (ex: "2.txt")
+                int index = Convert.ToInt32(Path.GetFileNameWithoutExtension(file)) - 1;
+                ComparisonViewModel comp = new ComparisonViewModel();
+                using (StreamReader sr = new StreamReader(testcases[index].inputUrl))
+                {
+                    // Get input used in current test case
+                    comp.input = sr.ReadToEnd();
+                }
+                using (StreamReader sr = new StreamReader(testcases[index].outputUrl))
+                {
+                    comp.expectedOut = new List<string>();
+                    while (!sr.EndOfStream)
+                    {
+                        // Get expected output
+                        comp.expectedOut.Add(sr.ReadLine());
+                    }
+                }
+                using (StreamReader sr = new StreamReader(file))
+                {
+                    comp.obtainedOut = new List<string>();
+                    while (!sr.EndOfStream)
+                    {
+                        // Get obtained output
+                        comp.obtainedOut.Add(sr.ReadLine());
+                    }
+                }
+                details.tests.Add(comp);
+            }
+            return details;
+        }
+
         public SubmissionViewModel mySubmissions(string userId, int milestoneId)
         {
             SubmissionViewModel mySubmissions = new SubmissionViewModel();

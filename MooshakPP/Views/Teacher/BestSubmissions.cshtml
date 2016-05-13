@@ -4,60 +4,67 @@
 {
     if (Model.users.Count != 0)
     {
-        using (Html.BeginForm("Index", "Teacher", new { userid = Model.submittedUser.Id }, FormMethod.Post, new { @class = "interactiveList" }))
-        {
-            <table>
+        <div class="col-md-3 ">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>All users</th>
+                    </tr>
+                </thead>
                 <tbody>
                     @foreach (var user in Model.users)
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink(user.Email, "Index", "Teacher", new { userid = Model.submittedUser.Id, assignmentid = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID }, null)
+                                @Html.ActionLink(user.Email, "Index", "Teacher", new { userid = user.Id, assignmentid = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID }, null)
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-        }
+        </div>
     }
 
     if (Model.currentMilestone != null)
     {
         using (Html.BeginForm("Index", "Teacher", new { milestoneID = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
         {
-            <table class="table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Team</th>
-                        <th>Problem</th>
-                        <th>Language</th>
-                        <th>Result</th>
-                        <th>View Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.submissions.Count != 0)
-                    {
-                        int i = 0;
-                        foreach (var m in Model.submissions)
+            if (Model.submissions.Count != 0)
+            {
+                int i = 0;
+                <table class="table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>Problem</th>
+                            <th>Language</th>
+                            <th>Status</th>
+                            <th>Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var milestone in Model.milestones)
                         {
                             <tr>
-                                <td>@m.ID</td>
                                 <td>@Model.submittedUser.Email</td>
-                                <td>@Model.currentMilestone.name</td>
-                                <td>C++</td>
-                                <td>@m.status</td>
-                                <td>Details</td>
+                                <td>@Model.milestones[i].name</td>
+                                <td>@Model.milestones[i].language</td>
+                                
+                                @if ((int)Model.submissions[i].status == 5)
+                                {
+                                    <td class="accepted">@Model.submissions[i].status</td>
+                                }
+                                else
+                                {
+                                    <td class="wrongAnswer">@Model.submissions[i].status</td>
+                                }
+                                
+                                <td><a download href="<?= @Model.downloadPath[i] ?>">Download</a></td><td>
                             </tr>
                             i++;
                         }
-                    }
-                </tbody>
-            </table>
-            if (Model.currentMilestone.ID == 0)
-            {
-                <p>No milestone selected</p>
+                    </tbody>
+                </table>
             }
         }
     }
