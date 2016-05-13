@@ -81,14 +81,17 @@ namespace MooshakPP.Services
         }
 
         // Generate the path to a specific user submission
-        public DownloadModel GetDownloadModel(int milestoneID, string userID, string submissionName)
+        public DownloadModel GetDownloadModel(int? submissionID)
         {
             DownloadModel model = new DownloadModel();
-            string filePath = ConfigurationManager.AppSettings["SubmissionDir"];
-            filePath = GetMilestonePath(filePath, milestoneID);
-            filePath += "\\" + manager.GetUserById(userID).UserName;
-            filePath += "\\" + submissionName;
-            Milestone milestone = GetMilestoneByID(milestoneID);
+            if (submissionID == null)
+            {
+                throw new FileNotFoundException("Download attempt on null submission");
+            }
+
+            Submission submission = GetSubmissionByID((int)submissionID);
+            // Get the directory containing the submission
+            string filePath = submission.fileURL;
             // Find one file in the specified language
             model.filePath = Directory.GetFiles(filePath, "*.cs").FirstOrDefault();
             // Keep it's name sperately
