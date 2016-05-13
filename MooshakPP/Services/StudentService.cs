@@ -80,6 +80,44 @@ namespace MooshakPP.Services
             return newIndex;
         }
 
+        public DetailsViewModel GetDetails(int submissionID, string userName)
+        {
+            DetailsViewModel details = new DetailsViewModel();
+            details.submission = GetSubmissionByID(submissionID);
+
+            // Get all testcases
+            List<TestCase> testcases = GetTestCasesByMilestoneID(details.submission.milestoneID);
+
+            // Get all wrong outputs and match them with their test cases
+            foreach (string file in Directory.GetFiles(details.submission.fileURL + "\\Wrong output\\", "*.txt"))
+            {
+                ComparisonViewModel comp = new ComparisonViewModel();
+                using (StreamReader sr = new StreamReader(testcases[(int)file.First()].inputUrl))
+                {
+                    // Get input used in current test case
+                    comp.input = sr.ReadToEnd();
+                }
+                using (StreamReader sr = new StreamReader(testcases[(int)file.First()].outputUrl))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        // Get expected output
+                        comp.expectedOut.Add(sr.ReadLine());
+                    }
+                }
+                using (StreamReader sr = new StreamReader(file))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        // Get obtained output
+                        comp.obtainedOut.Add(sr.ReadLine());
+                    }
+                }
+                details.tests.Add(comp);
+            }
+            return details;
+        }
+
         public SubmissionViewModel mySubmissions(string userId, int milestoneId)
         {
             SubmissionViewModel mySubmissions = new SubmissionViewModel();
