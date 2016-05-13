@@ -21,6 +21,7 @@ namespace MooshakPP.Services
             manager = new IdentityManager();
         }
 
+        #region Public member functions
         public ManageCourseViewModel ManageCourse(int? courseId)
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
@@ -222,6 +223,10 @@ namespace MooshakPP.Services
             List<ApplicationUser> allUsers = GetAllUsers();
             return allUsers.FirstOrDefault();
         }
+
+        #endregion
+
+        #region Private member functions
 
         private List<Course> GetAllCourses()
         {
@@ -427,5 +432,7 @@ namespace MooshakPP.Services
             client.EnableSsl = true;
             client.Send(mail);
         }
+
+        #endregion
     }
 }

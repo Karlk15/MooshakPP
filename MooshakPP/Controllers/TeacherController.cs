@@ -181,7 +181,6 @@ namespace MooshakPP.Controllers
  
                 return RedirectToAction("Create", new { courseid = courseID, assignmentid = model.ID});
             }
-
             else if (action == "edit")
             {
                 if (assignmentID != null)
@@ -206,7 +205,6 @@ namespace MooshakPP.Controllers
                     return RedirectToAction("Create", new { courseid = courseID, assignmentid = assignmentID });
                 }
             }
-
             else if (action == "recover")
             {
                 service.RecoverAssignment((int)courseID, (int)assignmentID);

@@ -21,6 +21,7 @@ namespace MooshakPP.Services
             manager = new IdentityManager();
         }
 
+        #region Public member functions
         public CreateAssignmentViewModel AddAssignment(string userID, int courseID, int? assignmentID)
         {
             CreateAssignmentViewModel allAssignments = new CreateAssignmentViewModel();
@@ -251,7 +252,9 @@ namespace MooshakPP.Services
                 return false;
             }
         }
+        #endregion
 
+        #region Private member functions
         private void CreateTests(int milestoneID, HttpPostedFileBase upload)
         {
             // Save the zip file to the server
@@ -475,5 +478,7 @@ namespace MooshakPP.Services
             }
             return bestSubmissions;
         }
+
+        #endregion
     }
 }

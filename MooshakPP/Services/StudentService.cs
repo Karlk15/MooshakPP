@@ -24,6 +24,7 @@ namespace MooshakPP.Services
             st = new SubmissionTester();
         }
 
+        #region Public member functions
         public IndexViewModel Index(string userId, int? courseId, int? assignmentId, int? milestoneId)
         {
             IndexViewModel newIndex = new IndexViewModel();
@@ -321,7 +322,9 @@ namespace MooshakPP.Services
 
             return true;
         }
+        #endregion
 
+        #region Protected member functions
         // Run the entire testing process on a compiled program, pass submission to assign the passCount
         protected result TestSubmission(string workingFolder, string fileName, ref List<TestCase> testCases, ref Submission submission)
         {
@@ -440,5 +443,6 @@ namespace MooshakPP.Services
                               select s).FirstOrDefault();
             return submission;
         }
+        #endregion
     }
 }
