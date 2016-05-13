@@ -85,20 +85,24 @@ namespace MooshakPP.Services
             DetailsViewModel details = new DetailsViewModel();
             details.submission = GetSubmissionByID(submissionID);
 
-            // Get all testcases
+            // Get all testcases if details.submission is still null, an exception will be thrown
             List<TestCase> testcases = GetTestCasesByMilestoneID(details.submission.milestoneID);
 
             // Get all wrong outputs and match them with their test cases
-            foreach (string file in Directory.GetFiles(details.submission.fileURL + "\\Wrong output\\", "*.txt"))
+            details.tests = new List<ComparisonViewModel>();
+            foreach (string file in Directory.GetFiles(details.submission.fileURL + "\\Wrong outputs\\", "*.txt"))
             {
+                // Get the test case index from the output filename (ex: "2.txt")
+                int index = Convert.ToInt32(Path.GetFileNameWithoutExtension(file)) - 1;
                 ComparisonViewModel comp = new ComparisonViewModel();
-                using (StreamReader sr = new StreamReader(testcases[(int)file.First()].inputUrl))
+                using (StreamReader sr = new StreamReader(testcases[index].inputUrl))
                 {
                     // Get input used in current test case
                     comp.input = sr.ReadToEnd();
                 }
-                using (StreamReader sr = new StreamReader(testcases[(int)file.First()].outputUrl))
+                using (StreamReader sr = new StreamReader(testcases[index].outputUrl))
                 {
+                    comp.expectedOut = new List<string>();
                     while (!sr.EndOfStream)
                     {
                         // Get expected output
@@ -107,6 +111,7 @@ namespace MooshakPP.Services
                 }
                 using (StreamReader sr = new StreamReader(file))
                 {
+                    comp.obtainedOut = new List<string>();
                     while (!sr.EndOfStream)
                     {
                         // Get obtained output
