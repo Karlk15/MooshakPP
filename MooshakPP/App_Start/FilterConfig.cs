@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using MooshakPP.Handlers;
 
 namespace MooshakPP
 {
@@ -7,7 +8,7 @@ namespace MooshakPP
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new CustomHandlerAttribute());
         }
     }
 }
