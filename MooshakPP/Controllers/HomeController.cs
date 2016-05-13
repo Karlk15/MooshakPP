@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using MooshakPP.DAL;
 using MooshakPP.Models;
-using MooshakPP.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MooshakPP.Controllers
@@ -28,17 +23,14 @@ namespace MooshakPP.Controllers
             {
                 manager.CreateRole("admin");
             }
-
             if (!manager.RoleExists("student"))
             {
                 manager.CreateRole("student");
             }
-
             if (!manager.RoleExists("teacher"))
             {
                 manager.CreateRole("teacher");
             }
-
             if (!manager.UserExists("admin@admin.com"))
             {
                 ApplicationUser newAdmin = new ApplicationUser();
@@ -46,7 +38,6 @@ namespace MooshakPP.Controllers
                 newAdmin.Email = "admin@admin.com";
                 manager.CreateUser(newAdmin, "ArnarErBestur123");
             }
-
             if (!manager.UserExists("teacher@teacher.com"))
             {
                 ApplicationUser newUser = new ApplicationUser();
@@ -54,7 +45,6 @@ namespace MooshakPP.Controllers
                 newUser.Email = "teacher@teacher.com";
                 manager.CreateUser(newUser, "123456");
             }
-
             if (!manager.UserExists("kalli@faggot.com"))
             {
                 ApplicationUser newUser = new ApplicationUser();

@@ -123,6 +123,7 @@ namespace MooshakPP.Controllers
             {
                 return View("Error");
             }
+
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
@@ -204,6 +205,7 @@ namespace MooshakPP.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
+
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -225,6 +227,7 @@ namespace MooshakPP.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
+
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -310,12 +313,15 @@ namespace MooshakPP.Controllers
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
+
             if (userId == null)
             {
                 return View("Error");
             }
+
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
+
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
@@ -330,12 +336,12 @@ namespace MooshakPP.Controllers
             {
                 return View();
             }
-
             // Generate the token and send it
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 return View("Error");
             }
+
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
@@ -380,17 +386,19 @@ namespace MooshakPP.Controllers
             {
                 return RedirectToAction("Index", "Manage");
             }
-
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
                 }
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
+
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
@@ -434,7 +442,6 @@ namespace MooshakPP.Controllers
                     _userManager.Dispose();
                     _userManager = null;
                 }
-
                 if (_signInManager != null)
                 {
                     _signInManager.Dispose();
