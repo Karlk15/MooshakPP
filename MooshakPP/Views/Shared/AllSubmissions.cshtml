@@ -22,6 +22,7 @@
                     <th>Language</th>
                     <th>Result</th>
                     <th>View Details</th>
+                    <th>Download</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +68,21 @@
                             else
                             {
                                 <td></td>
+                            }
+                            @if (User.IsInRole("teacher"))
+                            {
+                                <td>@Html.ActionLink("Download", "Download", "Teacher", new { submissionid = m.ID }, null)</td>
+                            }
+                            else
+                            {
+                                if (Model.submittedUser[i].UserName == User.Identity.Name)
+                                {
+                                    <td>@Html.ActionLink("Download", "Download", "student", new { submissionid = m.ID }, null)</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                             }
                         </tr>
                         i++;

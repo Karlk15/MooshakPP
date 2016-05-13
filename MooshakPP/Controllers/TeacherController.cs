@@ -285,6 +285,11 @@ namespace MooshakPP.Controllers
                 hasError = true;
                 ModelState.AddModelError("currentMilestone.description", "You need to enter a description");
             }
+
+            
+
+            if (action == "create")
+            {
             if (model.testCaseZip == null)
             {
                 hasError = true;
@@ -295,10 +300,7 @@ namespace MooshakPP.Controllers
                 CreateMilestoneViewModel hasErrorModel = service.AddMilestone((int)assignmentID, milestoneID);
                 return View(hasErrorModel);
             }
-            else
-            {
-                   if (action == "create")
-                   {
+
                        newMilestone.assignmentID = (int)assignmentID;
                        newMilestone.name = model.currentMilestone.name;
                        newMilestone.description = model.currentMilestone.description;
@@ -307,6 +309,11 @@ namespace MooshakPP.Controllers
                    }
                    else if (action == "edit")
                    {
+                    if (hasError == true)
+                    {
+                        CreateMilestoneViewModel hasErrorModel = service.AddMilestone((int)assignmentID, milestoneID);
+                        return View(hasErrorModel);
+                    }
                         newMilestone.ID = (int)milestoneID;
                         newMilestone.assignmentID = (int)assignmentID;
                         newMilestone.description = model.currentMilestone.description;
@@ -316,7 +323,15 @@ namespace MooshakPP.Controllers
                    }
 
                 return RedirectToAction("AddMilestones", new { assignmentid = assignmentID, milestoneid = newMilestone.ID });
+            
             }
+
+        [HttpGet]
+        public ActionResult Download(int? submissionId)
+        {
+            DownloadModel model = service.GetDownloadModel(submissionId);
+
+            return File(model.filePath, model.mimetype, model.filename);
         }
     }
 }
