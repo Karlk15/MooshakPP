@@ -80,12 +80,13 @@ namespace MooshakPP.Services
             return newIndex;
         }
 
+        // Load the current submission, all of it's wrong outputs, expected outputs and inputs
         public DetailsViewModel GetDetails(int submissionID, string userName)
         {
             DetailsViewModel details = new DetailsViewModel();
             details.submission = GetSubmissionByID(submissionID);
 
-            // Get all testcases if details.submission is still null, an exception will be thrown
+            // Get all testcases if. details.submission is still null, an exception will be thrown
             List<TestCase> testcases = GetTestCasesByMilestoneID(details.submission.milestoneID);
 
             // Get all wrong outputs and match them with their test cases
