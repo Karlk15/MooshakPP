@@ -36,7 +36,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    @foreach(var milestone in Model.milestones)
+                    {
+                        <tr>
+                            <td>@Model.submittedUser.Email</td>
+                            <td>@Model.currentMilestone.name</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         }
