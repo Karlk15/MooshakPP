@@ -73,5 +73,14 @@ namespace MooshakPP.Controllers
             DescriptionViewModel model = new DescriptionViewModel();
             return View();
         }
+
+        [HttpGet]
+        public ActionResult Download()
+        {
+            // PLACEHOLDER ER BARA TIL Á TÖLVUNNI SEM BJÓ HANN TIL
+            DownloadModel model = service.GetDownloadModel(101);
+            
+            return File(model.filePath, model.mimetype, model.filename);
+        }
     }
 }
