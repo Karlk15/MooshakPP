@@ -30,7 +30,7 @@
 @if (Model.courses != null)
 {
 
-<div class="col-md-6">
+<div class="col-md-7">
 
             <h2>@Model.currentCourse.name</h2>
 
@@ -39,16 +39,7 @@
     <div class="teacher-margin">
         @if (Model.currentCourse != null)
         {
-            if (User.IsInRole("teacher"))
-            {
-                <div class="teacher-links recover-button">@Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })</div>
-            }
-
             <div class="row">
-                @if (User.IsInRole("teacher"))
-                {
-                    <div class="teacher-links assignment-button">@Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })</div>
-                }
                 <div class="row">
                     <div class="col-md-6">
                         <div class="assignment-list">
@@ -145,31 +136,46 @@
             }
         }
     </div>
-
-
-    <div class="col-md-6 submit-button">
-        @if (User.IsInRole("student"))
+    <div class="col-md-6">
+        @if (Model.currentCourse != null)
         {
-            using (Html.BeginForm("Index", "student", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+
+            if (User.IsInRole("teacher"))
             {
 
-                <input name="file" type="file" id="upld" />
-                <input type="submit" value="submit" disabled id="submit" />
-                @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
-
+                <div class="teacher-links assignment-button">@Html.ActionLink("Manage assignments", "Create", "Teacher", new { courseid = Model.currentCourse.ID }, new { @class = "btn btn-default" })</div>
             }
-        }
-        else if (User.IsInRole("teacher"))
-        {
-            using (Html.BeginForm("Index", "teacher", new { courseid = Model.currentCourse.ID, assignmentid = Model.currentAssignment.ID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+      
+            if (User.IsInRole("teacher"))
             {
-                <input name="file" type="file" />
-                <input type="submit" value="submit" disabled id="submit" class="btn btn-default" />
+                <div class="teacher-links recover-button">@Html.ActionLink("Recover deleted assignments", "RecoverAssignment", "Teacher", null, new { @class = "btn btn-default" })</div>
             }
         }
     </div>
+        <div class="col-md-6 submit-button">
 
-</div>
+            @if (User.IsInRole("student"))
+            {
+                using (Html.BeginForm("Index", "student", new { courseID = Model.currentCourse.ID, assignmentID = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                {
+
+                    <input name="file" type="file" id="upld" />
+                    <input type="submit" value="submit" disabled id="submit" />
+                    @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+
+                }
+            }
+            else if (User.IsInRole("teacher"))
+            {
+                using (Html.BeginForm("Index", "teacher", new { courseid = Model.currentCourse.ID, assignmentid = Model.currentAssignment.ID, milestoneid = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                {
+                    <input name="file" type="file" />
+                    <input type="submit" value="submit" disabled id="submit" class="btn btn-default" />
+                }
+            }
+        </div>
+
+    </div>
 
 <div class="row">
     <div class="col-lg-10">
