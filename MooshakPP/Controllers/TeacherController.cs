@@ -192,14 +192,14 @@ namespace MooshakPP.Controllers
                     //adding a default time to the start date of the assignment and parsing the right format to avoid errors
                     string tempDueDate = collection.due;
                     tempDueDate = tempDueDate + " 23:59:59";
-                    //model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                    model.dueDate = Convert.ToDateTime(tempDueDate);
+                    model.dueDate = DateTime.ParseExact(tempDueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    //model.dueDate = Convert.ToDateTime(tempDueDate);
 
                     //adding a default time to the start date of the assignment and parsing the right format to avoid errors
                     string tempStartDate = collection.start;
                     tempStartDate = tempStartDate + " 00:01:00";
-                    //model.startDate = DateTime.ParseExact(tempStartDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                    model.startDate = Convert.ToDateTime(tempStartDate);
+                    model.startDate = DateTime.ParseExact(tempStartDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    //model.startDate = Convert.ToDateTime(tempStartDate);
 
                     service.EditAssignment(model);
 

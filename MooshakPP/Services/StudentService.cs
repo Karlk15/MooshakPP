@@ -34,41 +34,50 @@ namespace MooshakPP.Services
             {
                 newIndex.courses = GetCourses(userId);
                 newIndex.assignments = GetAssignments((int)courseId);
+
                 if (assignmentId != null && assignmentId != 0)
                 {
                     newIndex.milestones = GetMilestones((int)assignmentId);
                     newIndex.currentAssignment = GetAssignmentByID((int)assignmentId);
+
                     if (milestoneId != null && milestoneId != 0)
                     {
                         newIndex.currentMilestone = GetMilestoneByID((int)milestoneId);
                         List<Submission> tempSubmissions = GetSubmissions(userId, (int)milestoneId);
+
                         if ( tempSubmissions != null && tempSubmissions.Count != 0)
                         {
                             newIndex.mySubmissions = mySubmissions(userId, (int)milestoneId);
                             newIndex.mySubmissions.loggedInUser = manager.GetUserById(userId);
                         }
+
                         else
                         {
                             newIndex.mySubmissions = new SubmissionViewModel();
                             newIndex.mySubmissions.submissions = new List<Submission>();
                         }
+
                         List<Submission> tempAll = GetAllSubmissions((int)milestoneId);
-                        if(tempAll != null && tempAll.Count != 0)
+
+                        if (tempAll != null && tempAll.Count != 0)
                         {
                             newIndex.allSubmissions = allSubmissions((int)milestoneId);
                             newIndex.allSubmissions.loggedInUser = manager.GetUserById(userId);
                         }
+
                         else
                         {
                             newIndex.allSubmissions = new SubmissionViewModel();
                             newIndex.allSubmissions.submissions = new List<Submission>();
                         }
                     }
+
                     else
                     {
                         newIndex.currentMilestone = new Milestone();
                     }
                 }
+
                 else
                 {
                     newIndex.currentAssignment = new Assignment();
@@ -79,6 +88,7 @@ namespace MooshakPP.Services
                 
                 newIndex.currentCourse = GetCourseByID((int)courseId);
             }
+
             return newIndex;
         }
 
@@ -127,16 +137,19 @@ namespace MooshakPP.Services
 
             // Get all wrong outputs and match them with their test cases
             details.tests = new List<ComparisonViewModel>();
+
             foreach (string file in Directory.GetFiles(details.submission.fileURL + "\\Wrong outputs\\", "*.txt"))
             {
                 // Get the test case index from the output filename (ex: "2.txt")
                 int index = Convert.ToInt32(Path.GetFileNameWithoutExtension(file)) - 1;
                 ComparisonViewModel comp = new ComparisonViewModel();
+
                 using (StreamReader sr = new StreamReader(testcases[index].inputUrl))
                 {
                     // Get input used in current test case
                     comp.input = sr.ReadToEnd();
                 }
+
                 using (StreamReader sr = new StreamReader(testcases[index].outputUrl))
                 {
                     comp.expectedOut = new List<string>();
@@ -146,6 +159,7 @@ namespace MooshakPP.Services
                         comp.expectedOut.Add(sr.ReadLine());
                     }
                 }
+
                 using (StreamReader sr = new StreamReader(file))
                 {
                     comp.obtainedOut = new List<string>();
@@ -157,6 +171,7 @@ namespace MooshakPP.Services
                 }
                 details.tests.Add(comp);
             }
+
             return details;
         }
 
@@ -205,6 +220,7 @@ namespace MooshakPP.Services
             //Get working directory information
             string userSubmission = GetMilestonePath(submissionDir, mileID) + userName + "\\Submission ";
             //Find an unused submission number
+
             int i = 1;
             while (Directory.Exists(userSubmission + i))
             {
@@ -233,6 +249,7 @@ namespace MooshakPP.Services
                 //save submission
                 db.Submissions.Add(submission);
                 db.SaveChanges();
+
                 return testResult;
             }
 
@@ -267,17 +284,19 @@ namespace MooshakPP.Services
 
             // Make the path absolute
             caseDir = HttpContext.Current.Server.MapPath(caseDir);
-            return caseDir;
 
+            return caseDir;
         }
 
         public int? GetFirstCourse(string userId)
         {
             List<Course> courses = GetCourses(userId);
+
             if (courses.Count != 0)
             {
                 return courses[0].ID;
             }
+
             return null;
         }
 
@@ -306,8 +325,8 @@ namespace MooshakPP.Services
                     }
                 }
             }
-            return true;
 
+            return true;
         }
 
         // Run the entire testing process on a compiled program, pass submission to assign the passCount
@@ -336,6 +355,7 @@ namespace MooshakPP.Services
             // Get .exe file path if it exists
             string exeFilePath = Directory.GetFiles(workingFolder, "*.exe").FirstOrDefault();
             // If compiler didn't throw an exception and it's .exe has been found
+
             if (testResult != result.compError && !string.IsNullOrEmpty(exeFilePath))
             {
                 // Initialize executable process
@@ -348,6 +368,7 @@ namespace MooshakPP.Services
             {   // Compiler did not successfully create a .exe
                 return result.compError;
             }
+
             return testResult;
         }
 
