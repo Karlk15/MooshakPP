@@ -58,8 +58,15 @@
                                 {
                                     <td class="wrongAnswer">@Model.submissions[i].status</td>
                                 }
-                                
-                                <td><a download href="<?= @Model.downloadPath[i] ?>">Download</a></td><td>
+                                @if(Model.submissions[i].status != 0)
+                                {
+                                    <td><a download href="~\\">Download</a></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
                             </tr>
                             i++;
                         }

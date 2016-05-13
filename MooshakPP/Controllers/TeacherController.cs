@@ -313,12 +313,12 @@ namespace MooshakPP.Controllers
                    }
                    else if(action == "edit")
                    {
-                       newMilestone.ID = (int)milestoneID;
-                       newMilestone.assignmentID = (int)assignmentID;
-                       newMilestone.description = model.currentMilestone.description;
-                       newMilestone.name = model.currentMilestone.name;
-
-                       service.EditMilestone(newMilestone, model.testCaseZip);
+                        newMilestone.ID = (int)milestoneID;
+                        newMilestone.assignmentID = (int)assignmentID;
+                        newMilestone.description = model.currentMilestone.description;
+                        newMilestone.name = model.currentMilestone.name;
+ 
+                        service.EditMilestone(newMilestone, model.testCaseZip);
                    }
 
                 return RedirectToAction("AddMilestones", new { assignmentid = assignmentID, milestoneid = newMilestone.ID });
