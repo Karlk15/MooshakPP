@@ -210,6 +210,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\HandlerAttribute.cs" />
     <Compile Include="Migrations\201605051329454_Initial.cs" />
     <Compile Include="Migrations\201605051329454_Initial.Designer.cs">
       <DependentUpon>201605051329454_Initial.cs</DependentUpon>
@@ -275,6 +276,7 @@
     <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Models\ViewModels\DetailsViewModel.cs" />
+    <Compile Include="Models\ViewModels\DownloadModel.cs" />
     <Compile Include="Models\ViewModels\IndexViewModel.cs" />
     <Compile Include="Models\ViewModels\ManageCourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
@@ -287,6 +289,7 @@
     <Compile Include="Services\SubmissionTester.cs" />
     <Compile Include="Services\TeacherService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -371,6 +374,8 @@
     <Content Include="Views\Admin\CreateAdmin.cshtml" />
     <Content Include="Views\Shared\AllSubmissions.cshtml" />
     <Content Include="Views\Teacher\BestSubmissions.cshtml" />
+    <Content Include="Views\Shared\DetailsPartial.cshtml" />
+    <Content Include="Views\Student\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -287,3 +287,8 @@ tr
 {
     padding-bottom:15px;
 }
+
+.background-danger
+{
+    background-color: #e21d1d;
+}
