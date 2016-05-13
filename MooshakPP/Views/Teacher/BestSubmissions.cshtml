@@ -45,7 +45,6 @@
                     <tbody>
                         @foreach (var milestone in Model.milestones)
                         {
-
                             <tr>
                                 <td>@Model.submittedUser.Email</td>
                                 <td>@Model.milestones[i].name</td>
@@ -60,7 +59,7 @@
                                     <td class="wrongAnswer">@Model.submissions[i].status</td>
                                 }
                                 
-                                <td>Download</td>
+                                <td><a download href="<?= @Model.downloadPath[i] ?>">Download</a></td><td>
                             </tr>
                             i++;
                         }

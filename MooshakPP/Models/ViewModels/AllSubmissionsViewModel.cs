@@ -14,5 +14,6 @@ namespace MooshakPP.Models.ViewModels
 
         public Milestone currentMilestone { get; set; }
         public ApplicationUser submittedUser { get; set; }
+        public List<string> downloadPath { get; set; }
     }
 }
