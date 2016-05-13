@@ -14,10 +14,9 @@ namespace MooshakPP.Services
     {
         private ApplicationDbContext db;
         private IdentityManager manager;
-        //private readonly IAppDataContext db;
+
         public TeacherService(IAppDataContext context) : base(context)
         {
-            //db = context ?? new ApplicationDbContext();
             db = new ApplicationDbContext();
             manager = new IdentityManager();
         }
@@ -52,11 +51,11 @@ namespace MooshakPP.Services
                 model.currentMilestone = new Milestone();
                 model.currentMilestone.assignmentID = assId; 
             }
-
             else
             {
                 model.currentMilestone = GetMilestoneByID((int)currMilestoneId);
             }
+
             model.currentAssignment = GetAssignmentByID(assId);
             
             return model;
@@ -73,7 +72,6 @@ namespace MooshakPP.Services
             {
                 recoverAssignments.currentSelected = GetAssignmentByID((int)currentAssignmentID);
             }
-
             else
             {
                 recoverAssignments.currentSelected = new Assignment();
@@ -99,19 +97,16 @@ namespace MooshakPP.Services
                 {
                     bestSubmissions.submittedUser = new ApplicationUser();
                 }
-
                 if (userId != null && userId != "")
                 {
                     int[] fileNumbers = new int[bestSubmissions.milestones.Count];
                     bestSubmissions.submissions = GetBestSubmissions(bestSubmissions.submittedUser, bestSubmissions.milestones, fileNumbers);
                 }
-
                 else
                 {
                     bestSubmissions.submissions = new List<Submission>();
                 }
             }
-
             else
             {
                 bestSubmissions.submissions = new List<Submission>();
@@ -134,11 +129,11 @@ namespace MooshakPP.Services
             {
                 return false;
             }
-
         }
 
         public bool CreateMilestone(Milestone milestone, HttpPostedFileBase upload)
-        {   //Only zip uploads are accepted
+        {   
+            //Only zip uploads are accepted
             if (upload != null)
             {
                 if (milestone != null && upload.FileName.EndsWith(".zip"))
@@ -386,17 +381,21 @@ namespace MooshakPP.Services
             List<Milestone> milestones = (from m in db.Milestones
                                           where m.assignmentID == assignmentId
                                           select m).ToList();
+
             List<Submission> best = new List<Submission>();
+
             foreach(Milestone m in milestones)
             {
                 
             }
+
             return null;
         }
 
         private List<Submission> GetBestSubmissions(ApplicationUser user, List<Milestone> milestones, int[] fileNumbers)
         {
             List<Submission> bestSubmissions = new List<Submission>();
+
             int i = 0;
             foreach (Milestone milestone in milestones)
             {
@@ -408,6 +407,7 @@ namespace MooshakPP.Services
                 Submission highestScoring = null;
                 Submission newestCompError = null;
                 Submission wrongAnswer = null;
+
                 foreach (Submission submission in usersSubmissions)
                 {
                     // Check for accepted

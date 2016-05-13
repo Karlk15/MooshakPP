@@ -12,22 +12,18 @@ namespace MooshakPP.Services
 {
     public class AdminService
     {
-        //private ApplicationDbContext db;
         private static IdentityManager manager;
         private readonly IAppDataContext db;
 
         public AdminService(IAppDataContext context)
         {
-            //db = new ApplicationDbContext();
             db = context ?? new ApplicationDbContext();
-             
             manager = new IdentityManager();
         }
 
         public ManageCourseViewModel ManageCourse(int? courseId)
         {
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
-         
             allCourses.courses = new List<Course>(GetAllCourses());
 
             if (courseId == null)
@@ -47,6 +43,7 @@ namespace MooshakPP.Services
             newUserView.allUsers = GetAllExceptAdmin();
             newUserView.newUsers = new List<ApplicationUser>();
             newUserView.currentUser = GetUserByID(currentUserId);
+
             for (int i = 0; i < number && i >= 0; i++)
             {
                 newUserView.newUsers.Add(new ApplicationUser());
@@ -58,8 +55,8 @@ namespace MooshakPP.Services
         public AddConnectionsViewModel GetConnections(int? courseID)
         {
             AddConnectionsViewModel connections = new AddConnectionsViewModel();
-
             connections.courses = new List<Course>(GetAllCourses());
+
             if (courseID == null || courseID == 0)
             {
                 connections.notConnectedTeachers = new List<ApplicationUser>(GetNotConnectedTeachers(0));
@@ -123,7 +120,6 @@ namespace MooshakPP.Services
                 db.SaveChanges();
                 return true;
             }
-
             else
             {
                 return false;
@@ -148,6 +144,7 @@ namespace MooshakPP.Services
                     if (role == "teacher" || role == "student" || role == "admin")
                     {
                         var teacher = manager.GetUser(nUser.UserName);
+
                         if (!manager.UserIsInRole(teacher.Id, role))
                         {
                             manager.AddUserToRole(teacher.Id, role);
@@ -180,6 +177,7 @@ namespace MooshakPP.Services
         public void RemoveUser(string userID)
         {
             ApplicationUser user = GetUserByID(userID);
+
             if (user != null)
                 RemoveUser(user);
         }
@@ -196,8 +194,7 @@ namespace MooshakPP.Services
                     db.UsersInCourses.Add(entry);
                     db.SaveChanges();
                 }
-            }
-            
+            } 
         }
 
         public void RemoveConnections(int courseID, List<string> userIDs)
@@ -211,7 +208,6 @@ namespace MooshakPP.Services
                     db.UsersInCourses.Remove(connection);
                     db.SaveChanges();
                 }
-                
             }
         }
 
@@ -312,7 +308,7 @@ namespace MooshakPP.Services
                 if (!connectedStudents.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
                 {
                     if (manager.UserIsInRole(user.Id, "student"))
-                {
+                    {
                         notConnectedStudents.Add(user);
                     }
                 }
@@ -387,8 +383,7 @@ namespace MooshakPP.Services
             else
             {
                 for (int i = 0; i < selectedUserCourses.Count(); i++)
-                {
-                    
+                {  
                     if (selectedUserCourses[i] != null)
                     {
                         db.UsersInCourses.Remove(selectedUserCourses[i]);

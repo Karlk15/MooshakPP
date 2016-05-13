@@ -5,9 +5,7 @@ namespace MooshakPP.Models.Entities
     public class UsersInCourse
     {
         public int ID { get; set; }
-
         public string userID { get; set; }
-    
         public int courseID { get; set; }
 
         [ForeignKey("userID")]
