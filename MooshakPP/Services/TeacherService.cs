@@ -87,15 +87,25 @@ namespace MooshakPP.Services
             {
                 bestSubmissions.currentMilestone = GetMilestoneByID((int)milestoneId);
                 bestSubmissions.milestones = GetMilestones(bestSubmissions.currentMilestone.assignmentID);
-                bestSubmissions.users = GetUsersInCourse(GetAssignmentByID(bestSubmissions.currentMilestone.assignmentID).courseID);
+                Assignment tempAssignment = GetAssignmentByID(bestSubmissions.currentMilestone.assignmentID);
+                bestSubmissions.users = GetUsersInCourse(tempAssignment.courseID);
                 bestSubmissions.submittedUser = manager.GetUserById(userId);
+                bestSubmissions.downloadPath = new List<string>();
                 if (bestSubmissions.submittedUser == null)
                 {
                     bestSubmissions.submittedUser = new ApplicationUser();
                 }
                 if(userId != null && userId != "")
                 {
-                    bestSubmissions.submissions = GetBestSubmissions(bestSubmissions.submittedUser, bestSubmissions.milestones);
+                    int[] fileNumbers = new int[bestSubmissions.milestones.Count];
+                    bestSubmissions.submissions = GetBestSubmissions(bestSubmissions.submittedUser, bestSubmissions.milestones, fileNumbers);
+                    int i = 0;
+                    foreach(var mile in bestSubmissions.milestones)
+                    {
+                        bestSubmissions.downloadPath.Add("C:\\Users\\ArnarFreyr\\Source\\Repos\\MooshakPP\\MooshakPP" + GetCourseByID(tempAssignment.courseID).name + "\\"
+                                               + tempAssignment.title + "\\" + mile.name + "\\" + bestSubmissions.submittedUser.UserName + "\\Submission " + fileNumbers[i]);
+                        i++;
+                    }
                 }
                 else
                 {
@@ -364,24 +374,27 @@ namespace MooshakPP.Services
 
         }
 
-        private List<Submission> GetBestSubmissions(ApplicationUser user, List<Milestone> milestones)
+        private List<Submission> GetBestSubmissions(ApplicationUser user, List<Milestone> milestones, int[] fileNumbers)
         {
             List<Submission> bestSubmissions = new List<Submission>();
+            int i = 0;
             foreach(Milestone milestone in milestones)
             {
                 // Get current users submissions
                 List<Submission> usersSubmissions = GetSubmissions(user.Id, milestone.ID);
                 // Rate submissions and find highest one
-
+                int fileCount = usersSubmissions.Count();
                 int highScore = 0;
                 Submission highestScoring = null;
                 Submission newestCompError = null;
+                Submission wrongAnswer = null;
                 foreach (Submission submission in usersSubmissions)
                 {
                     // Check for accepted
                     if (submission.status == result.Accepted)
                     {
                         bestSubmissions.Add(submission);
+                        fileNumbers[i] = fileCount;
                         break;
                     }
                     // Count wrong answers and runErrors
@@ -390,12 +403,26 @@ namespace MooshakPP.Services
                         // filter highestScore
                         highScore = submission.passCount;
                         highestScoring = submission;
+                        fileNumbers[i] = fileCount;
+                        fileCount -= 1;
                     }
                     // Can only happen once
-                    else if (newestCompError != null && submission.status == result.compError)
+                    else if (newestCompError == null && submission.status == result.compError)
                     {
                         // Catch first compError
                         newestCompError = submission;
+                        fileNumbers[i] = fileCount;
+                        fileCount -= 1;
+                    }
+                    else if (wrongAnswer == null && newestCompError == null)
+                    {
+                        wrongAnswer = submission;
+                        fileNumbers[i] = fileCount;
+                        fileCount--;
+                    }
+                    else
+                    {
+                        fileCount -= 1;
                     }
                 }
                 if (highScore > 0)
@@ -406,6 +433,10 @@ namespace MooshakPP.Services
                 {
                     bestSubmissions.Add(newestCompError);
                 }
+                else if(wrongAnswer != null)
+                {
+                    bestSubmissions.Add(wrongAnswer);
+                }
                 else
                 {
                     // Can only happen user has no submissions
@@ -414,7 +445,7 @@ namespace MooshakPP.Services
                     tempSub.status = result.none;
                     bestSubmissions.Add(tempSub);
                 }
-
+                i++;
             }
             return bestSubmissions;
         }
