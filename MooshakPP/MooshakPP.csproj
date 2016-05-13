@@ -210,6 +210,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\HandlerAttribute.cs" />
     <Compile Include="Migrations\201605051329454_Initial.cs" />
     <Compile Include="Migrations\201605051329454_Initial.Designer.cs">
       <DependentUpon>201605051329454_Initial.cs</DependentUpon>
@@ -288,6 +289,7 @@
     <Compile Include="Services\SubmissionTester.cs" />
     <Compile Include="Services\TeacherService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
