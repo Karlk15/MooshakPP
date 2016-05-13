@@ -41,7 +41,6 @@ namespace MooshakPP.Controllers
                 model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
                 return View(model);
             }
-
             if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
             {
                 file = Request.Files[0];
