@@ -123,7 +123,6 @@ namespace MooshakPP.Services
                         {   // Test passed
                             passCount++;
                         }
-
                         else
                         {   // Save all wrong outputs
                             string outputDir = workingDir + "\\Wrong outputs\\";
@@ -138,18 +137,15 @@ namespace MooshakPP.Services
                 {
                     return result.Accepted;
                 }
-
                 else
                 {
                     return result.wrongAnswer;
                 }
             }
-
             catch(Exception)
             {
                 return result.runError;
             }
-
         }
     }
 }

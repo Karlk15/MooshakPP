@@ -15,14 +15,11 @@ namespace MooshakPP.Services
     public class StudentService
     {
         private IdentityManager manager = new IdentityManager();
-        //private Models.ApplicationDbContext db;
         private SubmissionTester st;
         private readonly Models.IAppDataContext db;
 
-        //Models.IAppDataContext context <----- should be a parameter for unit testing
         public StudentService(Models.IAppDataContext context)
         {
-            //db = new Models.ApplicationDbContext();
             db = context ?? new Models.ApplicationDbContext();
             st = new SubmissionTester();
         }
@@ -30,6 +27,7 @@ namespace MooshakPP.Services
         public IndexViewModel Index(string userId, int? courseId, int? assignmentId, int? milestoneId)
         {
             IndexViewModel newIndex = new IndexViewModel();
+
             if (courseId != null)
             {
                 newIndex.courses = GetCourses(userId);
@@ -50,7 +48,6 @@ namespace MooshakPP.Services
                             newIndex.mySubmissions = mySubmissions(userId, (int)milestoneId);
                             newIndex.mySubmissions.loggedInUser = manager.GetUserById(userId);
                         }
-
                         else
                         {
                             newIndex.mySubmissions = new SubmissionViewModel();
@@ -64,20 +61,17 @@ namespace MooshakPP.Services
                             newIndex.allSubmissions = allSubmissions((int)milestoneId);
                             newIndex.allSubmissions.loggedInUser = manager.GetUserById(userId);
                         }
-
                         else
                         {
                             newIndex.allSubmissions = new SubmissionViewModel();
                             newIndex.allSubmissions.submissions = new List<Submission>();
                         }
                     }
-
                     else
                     {
                         newIndex.currentMilestone = new Milestone();
                     }
                 }
-
                 else
                 {
                     newIndex.currentAssignment = new Assignment();
@@ -112,7 +106,6 @@ namespace MooshakPP.Services
             {
                 model.filePath = Directory.GetFiles(filePath, "*.cs").FirstOrDefault();
             }
-
             // No legal submission found
             if (string.IsNullOrEmpty(model.filePath))
             {
@@ -123,6 +116,7 @@ namespace MooshakPP.Services
             model.filename = Path.GetFileName(model.filePath);
             // file encoding
             model.mimetype = "text/x-c";
+
             return model;
         }
 
@@ -149,7 +143,6 @@ namespace MooshakPP.Services
                     // Get input used in current test case
                     comp.input = sr.ReadToEnd();
                 }
-
                 using (StreamReader sr = new StreamReader(testcases[index].outputUrl))
                 {
                     comp.expectedOut = new List<string>();
@@ -159,7 +152,6 @@ namespace MooshakPP.Services
                         comp.expectedOut.Add(sr.ReadLine());
                     }
                 }
-
                 using (StreamReader sr = new StreamReader(file))
                 {
                     comp.obtainedOut = new List<string>();
@@ -190,6 +182,7 @@ namespace MooshakPP.Services
             mySubmissions.submissions = GetAllSubmissions(milestoneId);
             mySubmissions.currentMilestone = GetMilestoneByID(milestoneId);
             mySubmissions.submittedUser = new List<Models.ApplicationUser>();
+
             foreach (Submission s in mySubmissions.submissions)
             {
                 mySubmissions.submittedUser.Add(manager.GetUser(manager.GetUserById(s.userID).Email));
