@@ -11,6 +11,7 @@ namespace MooshakPP.Services
 {
     public class SubmissionTester
     {
+        #region Public member functions
         public void InitCompiler(ref Process compiler, string workingFolder)
         {
             compiler.StartInfo.FileName = "cmd.exe";
@@ -154,5 +155,7 @@ namespace MooshakPP.Services
                 return result.runError;
             }
         }
+
+        #endregion
     }
 }

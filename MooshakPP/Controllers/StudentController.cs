@@ -74,11 +74,10 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Download()
+        public ActionResult Download(int? submissionId)
         {
-            // PLACEHOLDER ER BARA TIL Á TÖLVUNNI SEM BJÓ HANN TIL
-            DownloadModel model = service.GetDownloadModel(101);
-            
+            DownloadModel model = service.GetDownloadModel(submissionId);
+
             return File(model.filePath, model.mimetype, model.filename);
         }
     }

@@ -1,6 +1,6 @@
 ﻿@model MooshakPP.Models.ViewModels.SubmissionViewModel
 
-@if (Model.currentMilestone != null)
+@if (Model.currentMilestone != null && Model.currentMilestone.ID != 0)
 {
     string role;
     if (User.IsInRole("teacher"))
@@ -13,70 +13,104 @@
     }
     using (Html.BeginForm("Index", role, new { milestoneID = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
     {
-        <table class="table-striped table-hover submission-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Team</th>
-                    <th>Problem</th>
-                    <th>Language</th>
-                    <th>Result</th>
-                    <th>View Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.submissions.Count != 0)
-                {
-                    int i = 0;
-                    foreach (var m in Model.submissions)
+        <div class="submission-table">
+            <table class="table-striped table-hover submission-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Team</th>
+                        <th>Problem</th>
+                        <th>Language</th>
+                        <th>Result</th>
+                        <th>View Details</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.submissions.Count != 0)
                     {
-                        <tr>
-                            <td>@m.ID</td>
+                        int i = 0;
+                        foreach (var m in Model.submissions)
+                        {
+                            <tr>
+                                <td>@m.ID</td>
 
-                            @if (User.IsInRole("student"))
+                                @if (User.IsInRole("student"))
                             {
                                 if (Model.submittedUser[i].Email == User.Identity.Name)
                                 {
-                                    <td>@User.Identity.Name</td>
+                                        <td>@User.Identity.Name</td>
+                                    }
+                                    else
+                                    {
+                                        <td>???</td>
+                                    }
                                 }
                                 else
                                 {
-                                    <td>???</td>
+                                    <td>@Model.submittedUser[i].Email</td>
                                 }
-                            }
-                            else
-                            {
-                                <td>@Model.submittedUser[i].Email</td>
-                            }
 
 
-                            <td>@Model.currentMilestone.name</td>
-                            <td>C++</td>
-                            @if ((int)m.status == 5)
+                                <td>@Model.currentMilestone.name</td>
+                                <td>C++</td>
+                                @if ((int)m.status == 5)
                             {
-                                <td class="accepted">@m.status</td>
-                            }
-                            else
+                                    <td class="accepted">@m.status</td>
+                                }
+                                else
+                                {
+                                    <td class="wrongAnswer">@m.status</td>
+                                }
+                                @if (User.IsInRole("teacher"))
                             {
-                                <td class="wrongAnswer">@m.status</td>
-                            }
-                            @if ((int)m.status == 4 && Model.submittedUser[i].Email == User.Identity.Name)
+                                if ((int)m.status == 4 && Model.submittedUser[i].Email == User.Identity.Name)
+                                {
+                                        <td>@Html.ActionLink("Details", "ViewDetails", "Teacher", new { submissionid = m.ID }, null)</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                                else
+                                {
+                                    if ((int)m.status == 4 && Model.submittedUser[i].Email == User.Identity.Name)
+                                    {
+                                        <td>@Html.ActionLink("Details", "ViewDetails", "Student", new { submissionid = m.ID }, null)</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                                @if (User.IsInRole("teacher"))
                             {
-                                <td>@Html.ActionLink("Details", "ViewDetails", "Student", new { submissionid = m.ID }, null)</td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
-                        </tr>
-                        i++;
+                                    <td>@Html.ActionLink("Download", "Download", "Teacher", new { submissionid = m.ID }, null)</td>
+                                }
+                                else
+                                {
+                                    if (Model.submittedUser[i].UserName == User.Identity.Name)
+                                    {
+                                        <td>@Html.ActionLink("Download", "Download", "student", new { submissionid = m.ID }, null)</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                            i++;
+                        }
                     }
-                }
-            </tbody>
-        </table>
-        if (Model.currentMilestone.ID == 0)
-        {
-            <p>No milestone selected</p>
-        }
+                </tbody>
+            </table>
+            
+        </div>
+
     }
+}
+else
+{
+    <p>No milestone selected</p>
 }

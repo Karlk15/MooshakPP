@@ -22,6 +22,7 @@
                     <th>Language</th>
                     <th>Result</th>
                     <th>View Details</th>
+                    <th>Download</th>
                 </tr>
             </thead>
                 <tbody>
@@ -52,6 +53,7 @@
                                 {
                                     <td></td>
                                 }
+                                <td>@Html.ActionLink("Download", "Download", "student", new { submissionid = m.ID }, null)</td>
                             </tr>
                         }
                     }
