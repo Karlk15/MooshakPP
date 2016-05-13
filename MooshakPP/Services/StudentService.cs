@@ -90,10 +90,23 @@ namespace MooshakPP.Services
             }
 
             Submission submission = GetSubmissionByID((int)submissionID);
+            Milestone milestone = GetMilestoneByID(submission.milestoneID);
             // Get the directory containing the submission
             string filePath = submission.fileURL;
-            // Find one file in the specified language
-            model.filePath = Directory.GetFiles(filePath, "*.cs").FirstOrDefault();
+
+            // Find one .cpp or .cs file
+            model.filePath = Directory.GetFiles(filePath, "*.cpp").FirstOrDefault();
+            if (string.IsNullOrEmpty(model.filePath))
+            {
+                model.filePath = Directory.GetFiles(filePath, "*.cs").FirstOrDefault();
+            }
+
+            // No legal submission found
+            if (string.IsNullOrEmpty(model.filePath))
+            {
+                throw new FileNotFoundException("Submission not found");
+            }
+
             // Keep it's name sperately
             model.filename = Path.GetFileName(model.filePath);
             // file encoding
