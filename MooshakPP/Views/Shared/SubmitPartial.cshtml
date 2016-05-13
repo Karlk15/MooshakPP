@@ -22,6 +22,7 @@
                     <th>Language</th>
                     <th>Result</th>
                     <th>View Details</th>
+                    <th>Download</th>
                 </tr>
             </thead>
                 <tbody>
@@ -44,7 +45,7 @@
                                 {
                                     <td class="wrongAnswer">@m.status</td>
                                 }
-                                @if ((int)m.status != 5)
+                                @if ((int)m.status == 4)
                                 {
                                     <td>@Html.ActionLink("Details", "ViewDetails", "Student" ,new { submissionid = m.ID}, null)</td>
                                 }
@@ -52,6 +53,7 @@
                                 {
                                     <td></td>
                                 }
+                                <td>@Html.ActionLink("Download", "Download", "student", new { submissionid = m.ID }, null)</td>
                             </tr>
                         }
                     }

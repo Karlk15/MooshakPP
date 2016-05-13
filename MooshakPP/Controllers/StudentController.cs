@@ -41,7 +41,6 @@ namespace MooshakPP.Controllers
                 model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
                 return View(model);
             }
-
             if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
             {
                 file = Request.Files[0];
@@ -75,11 +74,10 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Download()
+        public ActionResult Download(int? submissionId)
         {
-            // PLACEHOLDER ER BARA TIL Á TÖLVUNNI SEM BJÓ HANN TIL
-            DownloadModel model = service.GetDownloadModel(101);
-            
+            DownloadModel model = service.GetDownloadModel(submissionId);
+
             return File(model.filePath, model.mimetype, model.filename);
         }
     }

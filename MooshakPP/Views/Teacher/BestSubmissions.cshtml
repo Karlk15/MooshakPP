@@ -16,7 +16,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink(user.Email, "Index", "Teacher", new { userid = user.Id, assignmentid = Model.currentMilestone.assignmentID, milestoneid = Model.currentMilestone.ID }, null)
+                                @Html.ActionLink(user.Email, "Index", "Teacher", new { userid = user.Id, assignmentid = Model.currentAssignment.ID}, null)
                             </td>
                         </tr>
                     }
@@ -25,55 +25,58 @@
         </div>
     }
 
-    if (Model.currentMilestone != null)
+    if (Model.currentAssignment != null)
     {
-        using (Html.BeginForm("Index", "Teacher", new { milestoneID = Model.currentMilestone.ID }, FormMethod.Post, new { @class = "interactiveList" }))
+        
+        if (Model.submissions.Count != 0)
         {
-            if (Model.submissions.Count != 0)
-            {
-                int i = 0;
-                <table class="table-striped table-hover">
-                    <thead>
+            int i = 0;
+            <table class="table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Problem</th>
+                        <th>Language</th>
+                        <th>Status</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var milestone in Model.milestones)
+                    {
                         <tr>
-                            <th>Team</th>
-                            <th>Problem</th>
-                            <th>Language</th>
-                            <th>Status</th>
-                            <th>Download</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var milestone in Model.milestones)
-                        {
-                            <tr>
-                                <td>@Model.submittedUser.Email</td>
-                                <td>@Model.milestones[i].name</td>
-                                <td>@Model.milestones[i].language</td>
+                            <td>@Model.submittedUser.Email</td>
+                            <td>@Model.milestones[i].name</td>
+                            <td>@Model.milestones[i].language</td>
                                 
-                                @if ((int)Model.submissions[i].status == 5)
-                                {
-                                    <td class="accepted">@Model.submissions[i].status</td>
-                                }
-                                else
-                                {
-                                    <td class="wrongAnswer">@Model.submissions[i].status</td>
-                                }
-                                @if(Model.submissions[i].status != 0)
-                                {
-                                    <td><a download href="~\\">Download</a></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
+                            @if ((int)Model.submissions[i].status == 5)
+                            {
+                                <td class="accepted">@Model.submissions[i].status</td>
+                            }
+                            else
+                            {
+                                <td class="wrongAnswer">@Model.submissions[i].status</td>
+                            }
+                            @if(Model.submissions[i].status != 0)
+                            {
+                                <td>@Html.ActionLink("Download", "Download","Teacher" , new { submissionid = Model.submissions[i].ID}, null)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
 
-                            </tr>
-                            i++;
-                        }
-                    </tbody>
-                </table>
-            }
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
         }
+        else
+        {
+            <h3>No user selected</h3>
+        }
+
     }
 
 }

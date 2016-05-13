@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using MooshakPP.DAL;
 using MooshakPP.Models;
-using MooshakPP.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MooshakPP.Controllers
@@ -28,38 +23,26 @@ namespace MooshakPP.Controllers
             {
                 manager.CreateRole("admin");
             }
-
             if (!manager.RoleExists("student"))
             {
                 manager.CreateRole("student");
             }
-
             if (!manager.RoleExists("teacher"))
             {
                 manager.CreateRole("teacher");
             }
-
             if (!manager.UserExists("admin@admin.com"))
             {
                 ApplicationUser newAdmin = new ApplicationUser();
                 newAdmin.UserName = "admin@admin.com";
                 newAdmin.Email = "admin@admin.com";
-                manager.CreateUser(newAdmin, "ArnarErBestur123");
+                manager.CreateUser(newAdmin, "Admin-123");
             }
-
             if (!manager.UserExists("teacher@teacher.com"))
             {
                 ApplicationUser newUser = new ApplicationUser();
                 newUser.UserName = "teacher@teacher.com";
                 newUser.Email = "teacher@teacher.com";
-                manager.CreateUser(newUser, "123456");
-            }
-
-            if (!manager.UserExists("kalli@faggot.com"))
-            {
-                ApplicationUser newUser = new ApplicationUser();
-                newUser.UserName = "kalli@faggot.com";
-                newUser.Email = "kalli@faggot.com";
                 manager.CreateUser(newUser, "123456");
             }
 
@@ -75,13 +58,6 @@ namespace MooshakPP.Controllers
             if (!manager.UserIsInRole(teacher.Id, "teacher"))
             {
                 manager.AddUserToRole(teacher.Id, "teacher");
-            }
-
-            var student = manager.GetUser("kalli@faggot.com");
-
-            if (!manager.UserIsInRole(student.Id, "student"))
-            {
-                manager.AddUserToRole(student.Id, "student");
             }
 
         }
