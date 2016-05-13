@@ -1,7 +1,6 @@
 ﻿using MooshakPP.Models.Entities;
 using System.Collections.Generic;
 
-
 namespace MooshakPP.Models.ViewModels
 {
     public class DetailsViewModel

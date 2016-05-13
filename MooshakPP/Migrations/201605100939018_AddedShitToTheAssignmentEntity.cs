@@ -1,8 +1,7 @@
 namespace MooshakPP.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AddedShitToTheAssignmentEntity : DbMigration
     {
         public override void Up()

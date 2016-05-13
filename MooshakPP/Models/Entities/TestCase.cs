@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
-
-namespace MooshakPP.Models.Entities
+﻿namespace MooshakPP.Models.Entities
 {
     public class TestCase
     {
@@ -12,6 +6,5 @@ namespace MooshakPP.Models.Entities
         public int milestoneID { get; set; }
         public string inputUrl { get; set; }
         public string outputUrl { get; set; }
-
     }
 }

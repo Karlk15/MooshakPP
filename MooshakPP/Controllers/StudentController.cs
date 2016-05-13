@@ -1,7 +1,4 @@
 ﻿using MooshakPP.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MooshakPP.Models.ViewModels;
@@ -58,10 +55,9 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewDetails()
+        public ActionResult ViewDetails(int? submissionId)
         {
-            // Submission ID placeholder // Username placeholder
-            DetailsViewModel model = service.GetDetails(101, "kristofer15@ru.is");
+            DetailsViewModel model = service.GetDetails((int)submissionId);
             return View(model);
         }
 
@@ -76,6 +72,15 @@ namespace MooshakPP.Controllers
         {
             DescriptionViewModel model = new DescriptionViewModel();
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult Download()
+        {
+            // PLACEHOLDER ER BARA TIL Á TÖLVUNNI SEM BJÓ HANN TIL
+            DownloadModel model = service.GetDownloadModel(101);
+            
+            return File(model.filePath, model.mimetype, model.filename);
         }
     }
 }

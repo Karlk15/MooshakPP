@@ -1,10 +1,8 @@
 ﻿using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using MooshakPP.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MooshakPP.Controllers
@@ -24,6 +22,7 @@ namespace MooshakPP.Controllers
         public ActionResult ManageCourse(int? courseID)
         {
             ManageCourseViewModel model = service.ManageCourse(courseID);
+
             return View(model);
         }
 
@@ -39,6 +38,7 @@ namespace MooshakPP.Controllers
                 {
                     service.RemoveCourse((int)courseID); 
                 }
+
                 return RedirectToAction("ManageCourse");
             }
 
@@ -50,6 +50,7 @@ namespace MooshakPP.Controllers
             {
                 ModelState.AddModelError("newCourse.name", "You must enter a title");
                 ManageCourseViewModel model = service.ManageCourse(courseID);
+
                 return View(model);
             }
 
@@ -62,11 +63,13 @@ namespace MooshakPP.Controllers
         public ActionResult CreateUser(string userID)
         {
             // 10 is how many new users can be entered
-            if(userID == null)
+            if (userID == null)
             {
                 userID = service.GetFirstUser().Id;
             }
+
             CreateUserViewModel model = service.GetUserViewModel(10, userID);
+
             return View(model);
         }
 
@@ -85,9 +88,9 @@ namespace MooshakPP.Controllers
                 {
                     if (!string.IsNullOrEmpty(collection.newUsers[i].Email))
                     {
-                        if(collection.newUsers[i].Email.IndexOf("@") != -1)
+                        if (collection.newUsers[i].Email.IndexOf("@") != -1)
                         {
-                            if(collection.isTeacher[i])
+                            if (collection.isTeacher[i])
                             {
                                 service.CreateUser(collection.newUsers[i].Email, "teacher");
                             }
@@ -97,10 +100,12 @@ namespace MooshakPP.Controllers
                             }
 
                         }
+
                         else
                         {
                             hasErrors = true;
                             ModelState.AddModelError("newUsers[i].Email", "Invalid email account for input: " + (i+1));
+
                             if (userID == null)
                             {
                                 userID = service.GetFirstUser().Id;
@@ -108,9 +113,11 @@ namespace MooshakPP.Controllers
                         }
                     }
                 }
-                if(hasErrors == true)
+
+                if (hasErrors == true)
                 { 
                     CreateUserViewModel model = service.GetUserViewModel(10, userID);
+
                     return View(model);
                 }
             }
@@ -122,6 +129,7 @@ namespace MooshakPP.Controllers
         public ActionResult ConnectUser(int? courseID)
         {
             AddConnectionsViewModel model = service.GetConnections(courseID);
+
             return View(model);
         }
 
@@ -131,10 +139,11 @@ namespace MooshakPP.Controllers
         [HttpPost]
         public ActionResult ConnectUser(int? courseID, string[] users, string action)
         {
-            if(users== null)
+            if (users== null)
             {
                 ModelState.AddModelError("", "Please select a user.");
                 AddConnectionsViewModel model = service.GetConnections(courseID);
+
                 return View(model);
             }
 
@@ -148,6 +157,7 @@ namespace MooshakPP.Controllers
             {
                 service.RemoveConnections((int)courseID, userIDs);
             }
+
             return RedirectToAction("ConnectUser", new { courseid = courseID });
         }
 
@@ -155,6 +165,7 @@ namespace MooshakPP.Controllers
         public ActionResult CreateAdmin(string adminId)
         {
             CreateAdminViewModel model = service.GetAdmins(adminId);
+
             return View(model);
         }
 
@@ -175,14 +186,17 @@ namespace MooshakPP.Controllers
                     {
                         service.CreateUser(model.newAdmin.Email, "admin");
                     }
+
                     else
                     {
                         ModelState.AddModelError("newAdmin[i].Email", "Invalid email account: ");
                         CreateAdminViewModel m = service.GetAdmins(userId);
+
                         return View(m);
                     }
                 }
             }
+
             return RedirectToAction("CreateAdmin");
         }
     }

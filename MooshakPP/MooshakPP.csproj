@@ -275,6 +275,7 @@
     <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Models\ViewModels\DetailsViewModel.cs" />
+    <Compile Include="Models\ViewModels\DownloadModel.cs" />
     <Compile Include="Models\ViewModels\IndexViewModel.cs" />
     <Compile Include="Models\ViewModels\ManageCourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
@@ -371,6 +372,8 @@
     <Content Include="Views\Admin\CreateAdmin.cshtml" />
     <Content Include="Views\Shared\AllSubmissions.cshtml" />
     <Content Include="Views\Teacher\BestSubmissions.cshtml" />
+    <Content Include="Views\Shared\DetailsPartial.cshtml" />
+    <Content Include="Views\Student\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

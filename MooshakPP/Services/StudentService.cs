@@ -45,6 +45,7 @@ namespace MooshakPP.Services
                         if ( tempSubmissions != null && tempSubmissions.Count != 0)
                         {
                             newIndex.mySubmissions = mySubmissions(userId, (int)milestoneId);
+                            newIndex.mySubmissions.loggedInUser = manager.GetUserById(userId);
                         }
                         else
                         {
@@ -55,6 +56,7 @@ namespace MooshakPP.Services
                         if(tempAll != null && tempAll.Count != 0)
                         {
                             newIndex.allSubmissions = allSubmissions((int)milestoneId);
+                            newIndex.allSubmissions.loggedInUser = manager.GetUserById(userId);
                         }
                         else
                         {
@@ -80,8 +82,42 @@ namespace MooshakPP.Services
             return newIndex;
         }
 
+        // Generate the path to a specific user submission
+        public DownloadModel GetDownloadModel(int? submissionID)
+        {
+            DownloadModel model = new DownloadModel();
+            if (submissionID == null)
+            {
+                throw new FileNotFoundException("Download attempt on null submission");
+            }
+
+            Submission submission = GetSubmissionByID((int)submissionID);
+            Milestone milestone = GetMilestoneByID(submission.milestoneID);
+            // Get the directory containing the submission
+            string filePath = submission.fileURL;
+
+            // Find one .cpp or .cs file
+            model.filePath = Directory.GetFiles(filePath, "*.cpp").FirstOrDefault();
+            if (string.IsNullOrEmpty(model.filePath))
+            {
+                model.filePath = Directory.GetFiles(filePath, "*.cs").FirstOrDefault();
+            }
+
+            // No legal submission found
+            if (string.IsNullOrEmpty(model.filePath))
+            {
+                throw new FileNotFoundException("Submission not found");
+            }
+
+            // Keep it's name sperately
+            model.filename = Path.GetFileName(model.filePath);
+            // file encoding
+            model.mimetype = "text/x-c";
+            return model;
+        }
+
         // Load the current submission, all of it's wrong outputs, expected outputs and inputs
-        public DetailsViewModel GetDetails(int submissionID, string userName)
+        public DetailsViewModel GetDetails(int submissionID)
         {
             DetailsViewModel details = new DetailsViewModel();
             details.submission = GetSubmissionByID(submissionID);
@@ -129,6 +165,7 @@ namespace MooshakPP.Services
             SubmissionViewModel mySubmissions = new SubmissionViewModel();
             mySubmissions.submissions = GetSubmissions(userId, milestoneId);
             mySubmissions.currentMilestone = GetMilestoneByID(milestoneId);
+            
             return mySubmissions;
         }
 

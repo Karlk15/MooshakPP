@@ -46,7 +46,7 @@
                                 }
                                 @if ((int)m.status != 5)
                                 {
-                                    <td>Details</td>
+                                    <td>@Html.ActionLink("Details", "ViewDetails", "Student" ,new { submissionid = m.ID}, null)</td>
                                 }
                                 else
                                 {
