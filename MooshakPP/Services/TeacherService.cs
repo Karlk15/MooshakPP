@@ -9,17 +9,20 @@ using System.Web;
 using System.IO;
 using System.IO.Compression;
 using System.Configuration;
+using MooshakPP.DAL;
 
 namespace MooshakPP.Services
 {
     public class TeacherService : StudentService
     {
         private ApplicationDbContext db;
+        private IdentityManager manager;
         //private readonly IAppDataContext db;
         public TeacherService(IAppDataContext context) : base(context)
         {
             //db = context ?? new ApplicationDbContext();
             db = new ApplicationDbContext();
+            manager = new IdentityManager();
         }
 
         public CreateAssignmentViewModel AddAssignment(string userID, int courseID, int? assignmentID)
@@ -77,24 +80,27 @@ namespace MooshakPP.Services
             return recoverAssignments;
         }
 
-        public AllSubmissionsViewModel bestSubmissions(int? milestoneId)
+        public AllSubmissionsViewModel bestSubmissions(int? milestoneId, string userId)
         {
             AllSubmissionsViewModel bestSubmissions = new AllSubmissionsViewModel();
             if (milestoneId != null && milestoneId != 0)
             {
                 bestSubmissions.currentMilestone = GetMilestoneByID((int)milestoneId);
+                bestSubmissions.milestones = GetMilestones(bestSubmissions.currentMilestone.assignmentID);
                 bestSubmissions.users = GetUsersInCourse(GetAssignmentByID(bestSubmissions.currentMilestone.assignmentID).courseID);
-                bestSubmissions.submissions = new List<Submission>();
-                    //GetSubmissionsForAssignment(bestSubmissions.currentMilestone.assignmentID);
-                bestSubmissions.submittedUser = new ApplicationUser();
-                /*if (tempBest != null && tempBest.Count != 0)
+                bestSubmissions.submittedUser = manager.GetUserById(userId);
+                if (bestSubmissions.submittedUser == null)
                 {
-                    
+                    bestSubmissions.submittedUser = new ApplicationUser();
+                }
+                if(userId != null && userId != "")
+                {
+                    bestSubmissions.submissions = GetBestSubmissions(bestSubmissions.submittedUser, bestSubmissions.milestones);
                 }
                 else
                 {
-                    
-                }*/
+                    bestSubmissions.submissions = new List<Submission>();
+                }
             }
             else
             {
@@ -355,8 +361,62 @@ namespace MooshakPP.Services
                 
             }
             return null;
+
+        }
+
+        private List<Submission> GetBestSubmissions(ApplicationUser user, List<Milestone> milestones)
+        {
+            List<Submission> bestSubmissions = new List<Submission>();
+            foreach(Milestone milestone in milestones)
+            {
+                // Get current users submissions
+                List<Submission> usersSubmissions = GetSubmissions(user.Id, milestone.ID);
+                // Rate submissions and find highest one
+
+                int highScore = 0;
+                Submission highestScoring = null;
+                Submission newestCompError = null;
+                foreach (Submission submission in usersSubmissions)
+                {
+                    // Check for accepted
+                    if (submission.status == result.Accepted)
+                    {
+                        bestSubmissions.Add(submission);
+                        break;
+                    }
+                    // Count wrong answers and runErrors
+                    if (submission.passCount > highScore)
+                    {
+                        // filter highestScore
+                        highScore = submission.passCount;
+                        highestScoring = submission;
+                    }
+                    // Can only happen once
+                    else if (newestCompError != null && submission.status == result.compError)
+                    {
+                        // Catch first compError
+                        newestCompError = submission;
+                    }
+                }
+                if (highScore > 0)
+                {
+                    bestSubmissions.Add(highestScoring);
+                }
+                else if (newestCompError != null)
+                {
+                    bestSubmissions.Add(newestCompError);
+                }
+                else
+                {
+                    // Can only happen user has no submissions
+                    // Placeholder for missing submissions
+                    Submission tempSub = new Submission();
+                    tempSub.status = result.none;
+                    bestSubmissions.Add(tempSub);
+                }
+
+            }
+            return bestSubmissions;
         }
     }
-
-
 }

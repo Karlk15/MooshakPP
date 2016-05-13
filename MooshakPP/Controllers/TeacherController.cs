@@ -17,7 +17,7 @@ namespace MooshakPP.Controllers
         private TeacherService service = new TeacherService(null);
 
         [HttpGet]
-        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID)
+        public ActionResult Index(string userId, int? courseID, int? assignmentID, int? milestoneID)
         {
             IndexViewModel model = new IndexViewModel();
 
@@ -27,7 +27,7 @@ namespace MooshakPP.Controllers
             }
 
             model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
-            model.bestSubmissions = service.bestSubmissions((milestoneID));
+            model.bestSubmissions = service.bestSubmissions(milestoneID, userId);
 
             return View(model);
         }
