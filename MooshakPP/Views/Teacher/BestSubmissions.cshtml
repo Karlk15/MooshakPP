@@ -59,7 +59,7 @@
                             }
                             @if(Model.submissions[i].status != 0)
                             {
-                                <td><a download href="~\\">Download</a></td>
+                                <td>@Html.ActionLink("Download", "Download","Teacher" , new { submissionid = Model.submissions[i].ID}, null)</td>
                             }
                             else
                             {

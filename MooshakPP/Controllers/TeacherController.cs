@@ -293,40 +293,53 @@ namespace MooshakPP.Controllers
                 ModelState.AddModelError("currentMilestone.description", "You need to enter a description");
             }
 
-            if (model.testCaseZip == null)
-            {
-                hasError = true;
-                ModelState.AddModelError("testCaseZip", "You need to upload a zip file with test cases");
-            }
+            
 
-            if (hasError == true)
+            if (action == "create")
             {
-                CreateMilestoneViewModel hasErrorModel = service.AddMilestone((int)assignmentID, milestoneID);
-                return View(hasErrorModel);
-            }
+                if (model.testCaseZip == null)
+                {
+                    hasError = true;
+                    ModelState.AddModelError("testCaseZip", "You need to upload a zip file with test cases");
+                }
 
-            else
-            {
-                   if (action == "create")
-                   {
-                       newMilestone.assignmentID = (int)assignmentID;
-                       newMilestone.name = model.currentMilestone.name;
-                       newMilestone.description = model.currentMilestone.description;
+                if (hasError == true)
+                {
+                    CreateMilestoneViewModel hasErrorModel = service.AddMilestone((int)assignmentID, milestoneID);
+                    return View(hasErrorModel);
+                }
 
-                       service.CreateMilestone(newMilestone, model.testCaseZip);
-                   }
-                   else if (action == "edit")
-                   {
-                        newMilestone.ID = (int)milestoneID;
-                        newMilestone.assignmentID = (int)assignmentID;
-                        newMilestone.description = model.currentMilestone.description;
-                        newMilestone.name = model.currentMilestone.name;
+                    newMilestone.assignmentID = (int)assignmentID;
+                    newMilestone.name = model.currentMilestone.name;
+                    newMilestone.description = model.currentMilestone.description;
+
+                service.CreateMilestone(newMilestone, model.testCaseZip);
+                }
+                else if (action == "edit")
+                {
+                    if (hasError == true)
+                    {
+                        CreateMilestoneViewModel hasErrorModel = service.AddMilestone((int)assignmentID, milestoneID);
+                        return View(hasErrorModel);
+                    }
+                    newMilestone.ID = (int)milestoneID;
+                    newMilestone.assignmentID = (int)assignmentID;
+                    newMilestone.description = model.currentMilestone.description;
+                    newMilestone.name = model.currentMilestone.name;
  
-                        service.EditMilestone(newMilestone, model.testCaseZip);
-                   }
+                    service.EditMilestone(newMilestone, model.testCaseZip);
+                }
 
-                return RedirectToAction("AddMilestones", new { assignmentid = assignmentID, milestoneid = newMilestone.ID });
-            }
+            return RedirectToAction("AddMilestones", new { assignmentid = assignmentID, milestoneid = newMilestone.ID });
+            
+        }
+
+        [HttpGet]
+        public ActionResult Download(int? submissionId)
+        {
+            DownloadModel model = service.GetDownloadModel(submissionId);
+
+            return File(model.filePath, model.mimetype, model.filename);
         }
     }
 }
