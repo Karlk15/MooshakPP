@@ -141,7 +141,11 @@ namespace MooshakPP.Services
                 using (StreamReader sr = new StreamReader(testcases[index].inputUrl))
                 {
                     // Get input used in current test case
-                    comp.input = sr.ReadToEnd();
+                    comp.input = new List<string>();
+                    while (!sr.EndOfStream)
+                    {
+                        comp.input.Add(sr.ReadLine());
+                    }
                 }
                 using (StreamReader sr = new StreamReader(testcases[index].outputUrl))
                 {
