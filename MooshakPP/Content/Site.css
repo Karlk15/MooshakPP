@@ -290,5 +290,18 @@ tr
 
 .background-danger
 {
-    background-color: #e21d1d;
+    background-color: #ff5454 ;
+}
+
+.background-expected
+{
+    background-color: #3de33b;
+}
+
+.details-table
+{
+    max-height: 550px;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
