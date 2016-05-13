@@ -95,7 +95,6 @@ namespace MooshakPP.Controllers
                 }
                 message = ManageMessageId.RemoveLoginSuccess;
             }
-
             else
             {
                 message = ManageMessageId.Error;

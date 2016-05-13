@@ -60,9 +60,9 @@
                             {
                                 <td class="wrongAnswer">@m.status</td>
                             }
-                            @if ((int)m.status != 5)
+                            @if ((int)m.status == 4 && Model.submittedUser[i].Email == User.Identity.Name)
                             {
-                                <td>Details</td>
+                                <td>@Html.ActionLink("Details", "ViewDetails", "Student", new { submissionid = m.ID }, null)</td>
                             }
                             else
                             {
