@@ -89,11 +89,14 @@ namespace MooshakPP.Services
                 foreach (TestCase test in testCases)
                 {
                     testCount++;
-                    string input;
+                    List<string> input = new List<string>;
                     // Load test case input file
                     using (StreamReader sr = new StreamReader(test.inputUrl))
                     {
-                        input = sr.ReadToEnd();
+                        while(!sr.EndOfStream)
+                        {
+                            input.Add(sr.ReadLine());
+                        }
                     }
                     string output = "";
                     // Create a new process with a limited lifespan
@@ -101,7 +104,11 @@ namespace MooshakPP.Services
                     {
                         processExe.StartInfo = processInfoExe;
                         processExe.Start();
-                        processExe.StandardInput.WriteLine(input);
+                        
+                        foreach (string line in input)
+                        {
+                            processExe.StandardInput.WriteLine(line);
+                        }
 
                         // Read the program output
                         while (!processExe.StandardOutput.EndOfStream)
