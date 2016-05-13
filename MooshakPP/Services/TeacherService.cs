@@ -83,15 +83,15 @@ namespace MooshakPP.Services
             return recoverAssignments;
         }
 
-        public AllSubmissionsViewModel bestSubmissions(int? milestoneId, string userId)
+        public AllSubmissionsViewModel bestSubmissions(int? assignmentId, string userId)
         {
             AllSubmissionsViewModel bestSubmissions = new AllSubmissionsViewModel();
-            if (milestoneId != null && milestoneId != 0)
+            if (assignmentId != null && assignmentId != 0)
             {
-                bestSubmissions.currentMilestone = GetMilestoneByID((int)milestoneId);
-                bestSubmissions.milestones = GetMilestones(bestSubmissions.currentMilestone.assignmentID);
-                Assignment tempAssignment = GetAssignmentByID(bestSubmissions.currentMilestone.assignmentID);
-                bestSubmissions.users = GetUsersInCourse(tempAssignment.courseID);
+                
+                bestSubmissions.milestones = GetMilestones((int)assignmentId);
+                bestSubmissions.currentAssignment = GetAssignmentByID((int)assignmentId);
+                bestSubmissions.users = GetUsersInCourse(bestSubmissions.currentAssignment.courseID);
                 bestSubmissions.submittedUser = manager.GetUserById(userId);
                 bestSubmissions.downloadPath = new List<string>();
 
@@ -104,13 +104,6 @@ namespace MooshakPP.Services
                 {
                     int[] fileNumbers = new int[bestSubmissions.milestones.Count];
                     bestSubmissions.submissions = GetBestSubmissions(bestSubmissions.submittedUser, bestSubmissions.milestones, fileNumbers);
-                    int i = 0;
-                    foreach (var mile in bestSubmissions.milestones)
-                    {
-                        bestSubmissions.downloadPath.Add("~\\" + GetCourseByID(tempAssignment.courseID).name + "\\"
-                        + tempAssignment.title + "\\" + mile.name + "\\" + bestSubmissions.submittedUser.UserName + "\\Submission " + fileNumbers[i]);
-                        i++;
-                    }
                 }
 
                 else
