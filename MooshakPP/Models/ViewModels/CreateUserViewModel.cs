@@ -1,8 +1,4 @@
-﻿using MooshakPP.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace MooshakPP.Models.ViewModels
 {
@@ -11,7 +7,6 @@ namespace MooshakPP.Models.ViewModels
         public List<ApplicationUser> allUsers { get; set; }
         public List<ApplicationUser> newUsers { get; set; }
         public bool[] isTeacher { get; set; }
-
         public ApplicationUser currentUser { get; set; }
     }
 }

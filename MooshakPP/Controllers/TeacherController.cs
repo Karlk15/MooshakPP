@@ -3,9 +3,7 @@ using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using MooshakPP.Services;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text.RegularExpressions;
@@ -63,13 +61,13 @@ namespace MooshakPP.Controllers
         public ActionResult Create(int? courseID, int? assignmentID)
         {
 
-            if(courseID == null)
+            if (courseID == null)
             {
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             }
 
             CreateAssignmentViewModel model = service.AddAssignment(User.Identity.GetUserId(), (int)courseID, assignmentID);
-            if(assignmentID == null)
+            if (assignmentID == null)
             {
                 Assignment noAssignment = new Assignment();
                 noAssignment.title = "";
@@ -77,8 +75,8 @@ namespace MooshakPP.Controllers
                 noAssignment.courseID = (int)courseID;
                 model.currentAssignment = noAssignment;
             }
+
             return View(model);
-        
         }
 
         [HttpPost]
@@ -96,7 +94,6 @@ namespace MooshakPP.Controllers
                 }
 
                 return RedirectToAction("Create");
-
             }
 
             //the regex format is necessary as TryParse accepts datetime input that is in the wrong format
@@ -104,7 +101,6 @@ namespace MooshakPP.Controllers
 
             
             DateTime tempStart;
-            
             DateTime tempDue;
 
             if (collection.currentAssignment.title == "" || collection.currentAssignment.title == null)
@@ -161,6 +157,7 @@ namespace MooshakPP.Controllers
 
                 return View(emptyModel);
             }
+
             if (action == "create")
             {
                 model.courseID = (int)courseID;
@@ -184,9 +181,10 @@ namespace MooshakPP.Controllers
  
                 return RedirectToAction("Create", new { courseid = courseID, assignmentid = model.ID});
             }
-            else if(action == "edit")
+
+            else if (action == "edit")
             {
-                if(assignmentID != null)
+                if (assignmentID != null)
                 {
                     model.courseID = (int)courseID;
                     model.ID = (int)assignmentID;
@@ -208,13 +206,14 @@ namespace MooshakPP.Controllers
                     return RedirectToAction("Create", new { courseid = courseID, assignmentid = assignmentID });
                 }
             }
-            else if(action == "recover")
+
+            else if (action == "recover")
             {
                 service.RecoverAssignment((int)courseID, (int)assignmentID);
                 return RedirectToAction("Create", new { courseid = courseID, assignmentid = assignmentID });
             }
-            return View("Error");
 
+            return View("Error");
         }
 
         [HttpGet]
@@ -224,6 +223,7 @@ namespace MooshakPP.Controllers
                 courseID = service.GetFirstCourse(User.Identity.GetUserId());
             
             RecoverAssignmentsViewModel recover = service.RecoverAssignments(User.Identity.GetUserId(),(int)courseID ,assignmentID);
+
             return View(recover);
         }
 
@@ -239,7 +239,9 @@ namespace MooshakPP.Controllers
             {
                 ModelState.AddModelError("", "No assignment selected!");
             }
+
             RecoverAssignmentsViewModel model = service.RecoverAssignments(User.Identity.GetUserId(), (int)courseID, (int)assignmentID);
+
             return View(model);
         }
 
@@ -268,6 +270,7 @@ namespace MooshakPP.Controllers
                 return RedirectToAction("Create");
 
             CreateMilestoneViewModel model = service.AddMilestone((int)assignmentID, milestoneID);
+
             return View(model);
         }
 
@@ -301,9 +304,10 @@ namespace MooshakPP.Controllers
                 CreateMilestoneViewModel hasErrorModel = service.AddMilestone((int)assignmentID, milestoneID);
                 return View(hasErrorModel);
             }
+
             else
             {
-                   if(action == "create")
+                   if (action == "create")
                    {
                        newMilestone.assignmentID = (int)assignmentID;
                        newMilestone.name = model.currentMilestone.name;
@@ -311,19 +315,18 @@ namespace MooshakPP.Controllers
 
                        service.CreateMilestone(newMilestone, model.testCaseZip);
                    }
-                   else if(action == "edit")
+                   else if (action == "edit")
                    {
-                       newMilestone.ID = (int)milestoneID;
-                       newMilestone.assignmentID = (int)assignmentID;
-                       newMilestone.description = model.currentMilestone.description;
-                       newMilestone.name = model.currentMilestone.name;
-
-                       service.EditMilestone(newMilestone, model.testCaseZip);
+                        newMilestone.ID = (int)milestoneID;
+                        newMilestone.assignmentID = (int)assignmentID;
+                        newMilestone.description = model.currentMilestone.description;
+                        newMilestone.name = model.currentMilestone.name;
+ 
+                        service.EditMilestone(newMilestone, model.testCaseZip);
                    }
 
                 return RedirectToAction("AddMilestones", new { assignmentid = assignmentID, milestoneid = newMilestone.ID });
             }
-            //return View("Error");
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNet.Identity;
+using System.Configuration;
 using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Configuration;
 using System.Web;
 using System.IO;
 using System.IO.Compression;
-using System.Configuration;
 using MooshakPP.DAL;
 
 namespace MooshakPP.Services
@@ -103,9 +102,7 @@ namespace MooshakPP.Services
                     int i = 0;
                     foreach(var mile in bestSubmissions.milestones)
                     {
-                        Directory.GetFiles("asdasd", "*.zip").First();
-                        
-                        bestSubmissions.downloadPath.Add("C:\\Users\\ArnarFreyr\\Source\\Repos\\MooshakPP\\MooshakPP" + GetCourseByID(tempAssignment.courseID).name + "\\"
+                        bestSubmissions.downloadPath.Add("~\\" + GetCourseByID(tempAssignment.courseID).name + "\\"
                                                + tempAssignment.title + "\\" + mile.name + "\\" + bestSubmissions.submittedUser.UserName + "\\Submission " + fileNumbers[i]);
                         i++;
                     }
@@ -187,6 +184,25 @@ namespace MooshakPP.Services
                 updateMilestone(milestone);
                 if(upload != null)
                 {
+                    string zipDir = ConfigurationManager.AppSettings["ZippedTestCases"];
+                    string unZipDir = ConfigurationManager.AppSettings["TestCases"];
+                    string zipPath = GetMilestonePath(zipDir, milestone.ID);
+                    string unZipPath = GetMilestonePath(unZipDir, milestone.ID);
+                    DirectoryInfo zip = new DirectoryInfo(zipPath);
+                    foreach(FileInfo file in zip.GetFiles())
+                    {
+                        file.Delete();
+                    }
+                    DirectoryInfo unZip = new DirectoryInfo(unZipPath);
+                    foreach(DirectoryInfo dir in unZip.GetDirectories())
+                    {
+                        foreach(FileInfo file in dir.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        dir.Delete();
+                    }
+                    CreateTests(milestone.ID, upload);
 
                 }
                 return true;
