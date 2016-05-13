@@ -12,6 +12,12 @@ namespace MooshakPP.Tests.Controllers
     [TestClass]
     public class AdminControllerTest
     {
+
+        /// <summary>
+        /// These will knowingly fail because of the service funtions being called in the controller
+        /// It is enough to comment that out and not take in model in the return View() parameters
+        /// That will offer a fair test for the functions
+        /// </summary>
         #region Tests Post ActionResult for ManageCourse
 
         [TestMethod]
@@ -65,11 +71,6 @@ namespace MooshakPP.Tests.Controllers
             Assert.AreEqual("ManageCourse", result.RouteValues["action"]);
         }
 
-        /// <summary>
-        /// This will knowingly fail because of the service funtion being called in the controller
-        /// It is enough to comment that out and not take in model in the return View() parameters
-        /// That will offer a fair test for the function
-        /// </summary>
         [TestMethod]
         public void TestManageCoursePostActionCreateCourseEmpty()
         {
@@ -78,9 +79,9 @@ namespace MooshakPP.Tests.Controllers
             Course newCourse = new Course();
             string action = "create";
             int? courseID = 3;
+            newCourse.name = null;
 
             // Act:
-            //var result = (RedirectToRouteResult)controller.ManageCourse(newCourse, courseID, action);
             var result = controller.ManageCourse(newCourse, courseID, action) as ViewResult;
 
             // Assert:
@@ -88,6 +89,11 @@ namespace MooshakPP.Tests.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// These will knowingly fail because of the service funtions being called in the controller
+        /// It is enough to comment that out and not take in model in the return View() parameters
+        /// That will offer a fair test for the functions
+        /// </summary>
         #region Tests Post ActionResult for ConnectUser
 
         [TestMethod]
@@ -136,10 +142,10 @@ namespace MooshakPP.Tests.Controllers
             int? courseID = 1;
 
             // Act:
-            var result = (RedirectToRouteResult)controller.ConnectUser(courseID, userIDs, action);
+            var result = controller.ConnectUser(courseID, userIDs, action) as ViewResult;
 
             // Assert:
-            Assert.AreEqual("ConnectUser", result.RouteValues["action"]);
+            Assert.AreEqual("ConnectUser", result.ViewName);
         }
 
         #endregion

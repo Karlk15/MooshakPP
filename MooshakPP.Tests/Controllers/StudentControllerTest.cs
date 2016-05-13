@@ -66,49 +66,63 @@ namespace MooshakPP.Tests.Controllers
 
         #endregion
 
-        #region Tests Post ActionResult for Submit
+        /// <summary>
+        /// The next 3 tests will knowingly fail because of the service funtion being called in the controller
+        /// It is enough to comment that out and not take in model in the return View() parameters
+        /// That will offer a fair test for the functions
+        /// </summary>
+        #region Tests Post ActionResult for Index
         [TestMethod]
-        public void TestSubmitMilestoneIdTwo()
+        public void TestIndexMilestoneIdTwo()
         {
             // Arrange:
             var controller = new StudentController();
+            int? courseID = 1;
             int? milestoneID = 2;
+            int? assignmentID = 3;
+            string action = "aritrary";
 
             // Act:
-            //var result = (RedirectToRouteResult)controller.Index();
+            var result = (RedirectToRouteResult)controller.Index(courseID,assignmentID,milestoneID,action);
 
             // Assert:
-            //Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
 
         }
 
         [TestMethod]
-        public void TestSubmitMilestoneIdNull()
+        public void TestIndexMilestoneIdNull()
         {
             // Arrange:
             var controller = new StudentController();
+            int? courseID = 1;
             int? milestoneID = null;
+            int? assignmentID = 3;
+            string action = "aritrary";
 
             // Act:
-            //var result = (RedirectToRouteResult)controller.Index(milestoneID);
+            var result = controller.Index(courseID, assignmentID, milestoneID, action) as ViewResult;
 
             // Assert:
-            //Assert.AreNotEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Index", result.ViewName);
 
         }
 
         [TestMethod]
-        public void TestSubmitMilestoneIdNotInDb()
+        public void TestIndexMilestoneIdNotInDb()
         {
             // Arrange:
             var controller = new StudentController();
-            int? milestoneID = 100;
+            int? courseID = 1;
+            int? milestoneID = 1000;
+            int? assignmentID = 3;
+            string action = "aritrary";
 
             // Act:
-            //var result = (RedirectToRouteResult)controller.Submit(milestoneID);
+            var result = controller.Index(courseID, assignmentID, milestoneID, action) as ViewResult;
 
             // Assert:
-            //Assert.AreNotEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Index", result.ViewName);
 
         }
         #endregion

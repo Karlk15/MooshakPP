@@ -55,10 +55,9 @@ namespace MooshakPP.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewDetails()
+        public ActionResult ViewDetails(int? submissionId)
         {
-            // Submission ID placeholder // Username placeholder
-            DetailsViewModel model = service.GetDetails(101, "kristofer15@ru.is");
+            DetailsViewModel model = service.GetDetails((int)submissionId);
             return View(model);
         }
 
