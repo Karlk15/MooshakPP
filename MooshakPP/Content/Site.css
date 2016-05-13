@@ -144,16 +144,15 @@ tr .form-control
     margin: 3px;
 }
 
-.plusbutton 
-{
-    padding: 30px 37px;
-    font-size: 60px;
-}
-
 .col-md-10 .courselist 
 {
     padding-top: 10px;
     padding-bottom: 8px;
+}
+
+.assignment-list
+{
+    padding: 5px;
 }
 
 .row .col-md-5 
@@ -235,13 +234,13 @@ tr
 }
 
 
-.Accepted
+.accepted
 {
    font-weight: bold;
    color: #28f326 !important;
 }
 
-.WrongAnswer
+.wrongAnswer
 {
    font-weight: bold;
    color: #e21d1d !important;
@@ -249,8 +248,42 @@ tr
 
 .submission-table
 {
+    display: block;
     max-height: 300px;
     overflow-y:auto;
     overflow-x:hidden;
 }
 
+.table-custom 
+{
+    min-height: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.teacher-links 
+{
+    margin:4px;
+}
+
+.teacher-margin
+{
+    margin-top:40px;
+}
+
+.assignment-button
+{
+    float:right;
+    padding-right:388px;
+}
+
+.submit-button
+{
+    padding-top: 75px;
+}
+
+.index-space
+{
+    padding-bottom:15px;
+}
