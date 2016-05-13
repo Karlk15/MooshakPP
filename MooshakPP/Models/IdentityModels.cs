@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MooshakPP.Models.Entities;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Collections.Generic;
 
 namespace MooshakPP.Models
 {
@@ -35,12 +33,6 @@ namespace MooshakPP.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IAppDataContext
     {
-        /*public DbSet<Assignment> Assignments { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Milestone> Milestones { get; set; }
-        public DbSet<Submission> Submissions { get; set; }
-        public DbSet<TestCase> Testcases { get; set; }
-        public DbSet<UsersInCourse> UsersInCourses { get; set; }*/
 
         public IDbSet<Assignment> Assignments { get; set; }
         public IDbSet<Course> Courses { get; set; }

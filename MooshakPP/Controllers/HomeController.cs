@@ -65,7 +65,7 @@ namespace MooshakPP.Controllers
 
             var admin = manager.GetUser("admin@admin.com");
 
-            if(!manager.UserIsInRole(admin.Id, "admin"))
+            if (!manager.UserIsInRole(admin.Id, "admin"))
             {
                 manager.AddUserToRole(admin.Id, "admin");
             }
