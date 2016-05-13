@@ -14,7 +14,7 @@ namespace MooshakPP.Services
     {
         private ApplicationDbContext db;
         private IdentityManager manager;
-        //private readonly IAppDataContext db;
+
         public TeacherService(IAppDataContext context) : base(context)
         {
             db = new ApplicationDbContext();
@@ -139,7 +139,8 @@ namespace MooshakPP.Services
         }
 
         public bool CreateMilestone(Milestone milestone, HttpPostedFileBase upload)
-        {   //Only zip uploads are accepted
+        {   
+            //Only zip uploads are accepted
             if (upload != null)
             {
                 if (milestone != null && upload.FileName.EndsWith(".zip"))
