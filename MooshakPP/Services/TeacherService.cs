@@ -5,6 +5,7 @@ using MooshakPP.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Configuration;
 using System.Web;
 using System.IO;
 using System.IO.Compression;
@@ -102,6 +103,8 @@ namespace MooshakPP.Services
                     int i = 0;
                     foreach(var mile in bestSubmissions.milestones)
                     {
+                        Directory.GetFiles("asdasd", "*.zip").First();
+                        
                         bestSubmissions.downloadPath.Add("C:\\Users\\ArnarFreyr\\Source\\Repos\\MooshakPP\\MooshakPP" + GetCourseByID(tempAssignment.courseID).name + "\\"
                                                + tempAssignment.title + "\\" + mile.name + "\\" + bestSubmissions.submittedUser.UserName + "\\Submission " + fileNumbers[i]);
                         i++;

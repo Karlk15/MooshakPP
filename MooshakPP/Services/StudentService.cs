@@ -80,6 +80,24 @@ namespace MooshakPP.Services
             return newIndex;
         }
 
+        // Generate the path to a specific user submission
+        public DownloadModel GetDownloadModel(int milestoneID, string userID, string submissionName)
+        {
+            DownloadModel model = new DownloadModel();
+            string filePath = ConfigurationManager.AppSettings["SubmissionDir"];
+            filePath = GetMilestonePath(filePath, milestoneID);
+            filePath += "\\" + manager.GetUserById(userID).UserName;
+            filePath += "\\" + submissionName;
+            Milestone milestone = GetMilestoneByID(milestoneID);
+            // Find one file in the specified language
+            model.filePath = Directory.GetFiles(filePath, "*.cs").FirstOrDefault();
+            // Keep it's name sperately
+            model.filename = Path.GetFileName(model.filePath);
+            // file encoding
+            model.mimetype = "text/x-c";
+            return model;
+        }
+
         // Load the current submission, all of it's wrong outputs, expected outputs and inputs
         public DetailsViewModel GetDetails(int submissionID, string userName)
         {

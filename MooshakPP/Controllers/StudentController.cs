@@ -77,5 +77,13 @@ namespace MooshakPP.Controllers
             DescriptionViewModel model = new DescriptionViewModel();
             return View();
         }
+
+        [HttpGet]
+        public ActionResult Download()
+        {
+            DownloadModel model = service.GetDownloadModel(36, "4ebe72ce-da1a-4918-8350-d75bc059c948", "Submission 1");
+            
+            return File(model.filePath, model.mimetype, model.filename);
+        }
     }
 }
