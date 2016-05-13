@@ -18,7 +18,7 @@ namespace MooshakPP.Controllers
         private TeacherService service = new TeacherService(null);
 
         [HttpGet]
-        public ActionResult Index(int? courseID, int? assignmentID, int? milestoneID)
+        public ActionResult Index(string userId, int? courseID, int? assignmentID, int? milestoneID)
         {
             IndexViewModel model = new IndexViewModel();
 
@@ -28,7 +28,7 @@ namespace MooshakPP.Controllers
             }
 
             model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
-            model.bestSubmissions = service.bestSubmissions((milestoneID));
+            model.bestSubmissions = service.bestSubmissions(milestoneID, userId);
 
             return View(model);
         }
@@ -88,22 +88,58 @@ namespace MooshakPP.Controllers
             bool hasErrors = false;
             Regex dateFormat = new Regex(@"\d{2}/\d{2}/\d{4}");
 
+            if (action == "delete")
+            {
+                if (assignmentID != null)
+                {
+                    service.RemoveAssignment((int)assignmentID);
+                }
+
+                return RedirectToAction("Create");
+
+            }
+
+            //the regex format is necessary as TryParse accepts datetime input that is in the wrong format
+            // like 04/04, which we dont want. This enforces the user to enter the correct datetime format.
+
+            
+            DateTime tempStart;
+            
+            DateTime tempDue;
+
             if (collection.currentAssignment.title == "" || collection.currentAssignment.title == null)
             {
                 hasErrors = true;
                 ModelState.AddModelError("currentAssignment.title", "You must give a title");
             }
-
-            if (collection.start == "" || collection.start == null || !dateFormat.IsMatch(collection.start))
+            System.DateTime result;
+            if (collection.start == "" || collection.start == null || !DateTime.TryParseExact(collection.start, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out result) || !dateFormat.IsMatch(collection.start))
             {
                 hasErrors = true;
                 ModelState.AddModelError("start", "You must give a (valid) start date");
             }
 
-            if (collection.due == "" || collection.due == null || !dateFormat.IsMatch(collection.due))
+            if (collection.due == "" || collection.due == null || !DateTime.TryParseExact(collection.due, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out result) || !dateFormat.IsMatch(collection.due))
             {
                 hasErrors = true;
                 ModelState.AddModelError("due", "You must give a (valid) due date");
+            }
+
+            if (hasErrors == false)
+            {
+                string startDate = collection.start;
+                startDate = startDate + " 23:59:59";
+                tempStart = DateTime.ParseExact(startDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                string dueDate = collection.due;
+                dueDate = dueDate + " 23:59:59";
+                tempDue = DateTime.ParseExact(dueDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                if (tempDue <= tempStart)
+                {
+                    hasErrors = true;
+                    ModelState.AddModelError("due", "The due date must be after the start date");
+                }
             }
 
             if (hasErrors == true)
@@ -125,18 +161,7 @@ namespace MooshakPP.Controllers
 
                 return View(emptyModel);
             }
-
-            if (action == "delete")
-            {
-                if (assignmentID != null)
-                {
-                    service.RemoveAssignment((int)assignmentID);
-                }
-
-                return RedirectToAction("Create");
-
-            }
-            else if (action == "create")
+            if (action == "create")
             {
                 model.courseID = (int)courseID;
 

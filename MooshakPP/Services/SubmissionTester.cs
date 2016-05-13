@@ -116,10 +116,7 @@ namespace MooshakPP.Services
                     using (StreamReader sr = new StreamReader(test.outputUrl))
                     {
                         string expected = "";
-                        while (!sr.EndOfStream)
-                        {
-                            expected = sr.ReadToEnd();
-                        }
+                        expected = sr.ReadToEnd();
 
                         // Compare expected and obtained output
                         if (expected == output)
@@ -130,7 +127,7 @@ namespace MooshakPP.Services
                         {   // Save all wrong outputs
                             string outputDir = workingDir + "\\Wrong outputs\\";
                             Directory.CreateDirectory(outputDir);
-                            File.WriteAllText(outputDir + "test " + testCount + " output.txt", output);
+                            File.WriteAllText(outputDir + testCount + ".txt", output);
                         }
                     }
                 }

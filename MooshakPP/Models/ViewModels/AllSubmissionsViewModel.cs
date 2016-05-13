@@ -10,6 +10,7 @@ namespace MooshakPP.Models.ViewModels
     {
         public List<ApplicationUser> users { get; set; }
         public List<Submission> submissions { get; set; }
+        public List<Milestone> milestones { get; set; }
 
         public Milestone currentMilestone { get; set; }
         public ApplicationUser submittedUser { get; set; }
