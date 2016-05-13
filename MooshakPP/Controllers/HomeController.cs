@@ -36,20 +36,13 @@ namespace MooshakPP.Controllers
                 ApplicationUser newAdmin = new ApplicationUser();
                 newAdmin.UserName = "admin@admin.com";
                 newAdmin.Email = "admin@admin.com";
-                manager.CreateUser(newAdmin, "ArnarErBestur123");
+                manager.CreateUser(newAdmin, "Admin-123");
             }
             if (!manager.UserExists("teacher@teacher.com"))
             {
                 ApplicationUser newUser = new ApplicationUser();
                 newUser.UserName = "teacher@teacher.com";
                 newUser.Email = "teacher@teacher.com";
-                manager.CreateUser(newUser, "123456");
-            }
-            if (!manager.UserExists("kalli@faggot.com"))
-            {
-                ApplicationUser newUser = new ApplicationUser();
-                newUser.UserName = "kalli@faggot.com";
-                newUser.Email = "kalli@faggot.com";
                 manager.CreateUser(newUser, "123456");
             }
 
@@ -65,13 +58,6 @@ namespace MooshakPP.Controllers
             if (!manager.UserIsInRole(teacher.Id, "teacher"))
             {
                 manager.AddUserToRole(teacher.Id, "teacher");
-            }
-
-            var student = manager.GetUser("kalli@faggot.com");
-
-            if (!manager.UserIsInRole(student.Id, "student"))
-            {
-                manager.AddUserToRole(student.Id, "student");
             }
 
         }
