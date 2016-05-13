@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
-using System.Configuration;
+﻿using System.Configuration;
 using MooshakPP.Models;
 using MooshakPP.Models.Entities;
 using MooshakPP.Models.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
-using System.IO.Compression;
 using MooshakPP.DAL;
 
 namespace MooshakPP.Services
@@ -31,7 +28,8 @@ namespace MooshakPP.Services
             allAssignments.courses = GetCourses(userID);
             allAssignments.assignments = new List<Assignment>(GetAssignments(courseID));
             allAssignments.currentCourse = GetCourseByID(courseID);
-            if(assignmentID != null && assignmentID != 0)
+
+            if (assignmentID != null && assignmentID != 0)
             {
                 allAssignments.currentAssignment = GetAssignmentByID((int)assignmentID);
                 string startDate = allAssignments.currentAssignment.startDate.ToString();
@@ -48,11 +46,13 @@ namespace MooshakPP.Services
         {
             CreateMilestoneViewModel model = new CreateMilestoneViewModel();
             model.milestones = GetMilestones(assId);
-            if(currMilestoneId == null || currMilestoneId == 0)
+
+            if (currMilestoneId == null || currMilestoneId == 0)
             {
                 model.currentMilestone = new Milestone();
                 model.currentMilestone.assignmentID = assId; 
             }
+
             else
             {
                 model.currentMilestone = GetMilestoneByID((int)currMilestoneId);
@@ -68,15 +68,18 @@ namespace MooshakPP.Services
             recoverAssignments.deletedAssignments = GetDeletedAssignments(teacherID);
             recoverAssignments.courses = GetCourses(teacherID);
             recoverAssignments.currentCourse = GetCourseByID(courseID);
+
             if (currentAssignmentID != null && currentAssignmentID != 0)
             {
                 recoverAssignments.currentSelected = GetAssignmentByID((int)currentAssignmentID);
             }
+
             else
             {
                 recoverAssignments.currentSelected = new Assignment();
                 recoverAssignments.currentSelected.ID = 0;
             }
+
             return recoverAssignments;
         }
 
@@ -91,39 +94,44 @@ namespace MooshakPP.Services
                 bestSubmissions.users = GetUsersInCourse(tempAssignment.courseID);
                 bestSubmissions.submittedUser = manager.GetUserById(userId);
                 bestSubmissions.downloadPath = new List<string>();
+
                 if (bestSubmissions.submittedUser == null)
                 {
                     bestSubmissions.submittedUser = new ApplicationUser();
                 }
-                if(userId != null && userId != "")
+
+                if (userId != null && userId != "")
                 {
                     int[] fileNumbers = new int[bestSubmissions.milestones.Count];
                     bestSubmissions.submissions = GetBestSubmissions(bestSubmissions.submittedUser, bestSubmissions.milestones, fileNumbers);
                     int i = 0;
-                    foreach(var mile in bestSubmissions.milestones)
+                    foreach (var mile in bestSubmissions.milestones)
                     {
                         bestSubmissions.downloadPath.Add("~\\" + GetCourseByID(tempAssignment.courseID).name + "\\"
-                                               + tempAssignment.title + "\\" + mile.name + "\\" + bestSubmissions.submittedUser.UserName + "\\Submission " + fileNumbers[i]);
+                        + tempAssignment.title + "\\" + mile.name + "\\" + bestSubmissions.submittedUser.UserName + "\\Submission " + fileNumbers[i]);
                         i++;
                     }
                 }
+
                 else
                 {
                     bestSubmissions.submissions = new List<Submission>();
                 }
             }
+
             else
             {
                 bestSubmissions.submissions = new List<Submission>();
                 bestSubmissions.submittedUser = new ApplicationUser();
                 bestSubmissions.users = new List<ApplicationUser>();
             }
+
             return bestSubmissions;
         }
 
         public bool CreateAssignment(Assignment newAssignment)
         {
-            if(newAssignment != null)
+            if (newAssignment != null)
             {
                 db.Assignments.Add(newAssignment);
                 db.SaveChanges();
@@ -166,6 +174,7 @@ namespace MooshakPP.Services
         public bool EditAssignment(Assignment assignmentToEdit)
         {
             Assignment assignment = GetAssignmentByID(assignmentToEdit.ID);
+
             if (assignment != null)
             {
                 updateAssignment(assignmentToEdit);
@@ -179,24 +188,24 @@ namespace MooshakPP.Services
 
         public bool EditMilestone(Milestone milestone, HttpPostedFileBase upload)
         {
-            if(milestone != null)
+            if (milestone != null)
             {
                 updateMilestone(milestone);
-                if(upload != null)
+                if (upload != null)
                 {
                     string zipDir = ConfigurationManager.AppSettings["ZippedTestCases"];
                     string unZipDir = ConfigurationManager.AppSettings["TestCases"];
                     string zipPath = GetMilestonePath(zipDir, milestone.ID);
                     string unZipPath = GetMilestonePath(unZipDir, milestone.ID);
                     DirectoryInfo zip = new DirectoryInfo(zipPath);
-                    foreach(FileInfo file in zip.GetFiles())
+                    foreach (FileInfo file in zip.GetFiles())
                     {
                         file.Delete();
                     }
                     DirectoryInfo unZip = new DirectoryInfo(unZipPath);
-                    foreach(DirectoryInfo dir in unZip.GetDirectories())
+                    foreach (DirectoryInfo dir in unZip.GetDirectories())
                     {
-                        foreach(FileInfo file in dir.GetFiles())
+                        foreach (FileInfo file in dir.GetFiles())
                         {
                             file.Delete();
                         }
@@ -235,7 +244,7 @@ namespace MooshakPP.Services
         public bool RecoverAssignment(int courseID, int assignmentID)
         {
             Assignment assignment = GetAssignmentByID(assignmentID);
-            if(assignment != null)
+            if (assignment != null)
             {
                 Assignment toRecover = assignment;
                 toRecover.isDeleted = true;
@@ -390,14 +399,13 @@ namespace MooshakPP.Services
                 
             }
             return null;
-
         }
 
         private List<Submission> GetBestSubmissions(ApplicationUser user, List<Milestone> milestones, int[] fileNumbers)
         {
             List<Submission> bestSubmissions = new List<Submission>();
             int i = 0;
-            foreach(Milestone milestone in milestones)
+            foreach (Milestone milestone in milestones)
             {
                 // Get current users submissions
                 List<Submission> usersSubmissions = GetSubmissions(user.Id, milestone.ID);

@@ -6,7 +6,6 @@ using MooshakPP.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Security;
 
 namespace MooshakPP.Services
@@ -30,7 +29,8 @@ namespace MooshakPP.Services
             ManageCourseViewModel allCourses = new ManageCourseViewModel();
          
             allCourses.courses = new List<Course>(GetAllCourses());
-            if(courseId == null)
+
+            if (courseId == null)
             {
                 allCourses.currentCourse = new Course();
             }
@@ -70,6 +70,7 @@ namespace MooshakPP.Services
                 connections.currentCourse.name = "No course selected";
                 return connections;
             }
+
             connections.connectedTeachers = new List<ApplicationUser>(GetConnectedTeachers((int)courseID));
             connections.connectedStudents = new List<ApplicationUser>(GetConnectedStudents((int)courseID));
             connections.notConnectedTeachers = new List<ApplicationUser>(GetNotConnectedTeachers((int)courseID));
@@ -83,7 +84,8 @@ namespace MooshakPP.Services
         {
             CreateAdminViewModel model = new CreateAdminViewModel();
             model.allAdmins = GetAllAdmins();
-            if(!string.IsNullOrEmpty(adminId))
+
+            if (!string.IsNullOrEmpty(adminId))
             {
                 model.currentlySelected = GetUserByID(adminId);
             }
@@ -91,6 +93,7 @@ namespace MooshakPP.Services
             {
                 model.currentlySelected = manager.GetUser("admin@admin.com");
             }
+
             return model;
         }
 
@@ -120,6 +123,7 @@ namespace MooshakPP.Services
                 db.SaveChanges();
                 return true;
             }
+
             else
             {
                 return false;
@@ -137,6 +141,7 @@ namespace MooshakPP.Services
                 string password = Membership.GeneratePassword(8, 0);
                 nUser.UserName = name;
                 bool wasCreated = manager.CreateUser(nUser, password);
+
                 if (wasCreated)
                 {
                     SendUserEmail(name, password);
@@ -151,6 +156,7 @@ namespace MooshakPP.Services
                     else
                     {
                         var student = manager.GetUser(nUser.UserName);
+
                         if (!manager.UserIsInRole(student.Id, "student"))
                         {
                             manager.AddUserToRole(student.Id, "student");
@@ -168,8 +174,6 @@ namespace MooshakPP.Services
             {
                 return false;
             }
-
-
         }
 
         // hashed IDs are strings
@@ -177,14 +181,14 @@ namespace MooshakPP.Services
         {
             ApplicationUser user = GetUserByID(userID);
             if (user != null)
-                RemoveUser(user);   //FIX ME
+                RemoveUser(user);
         }
 
         public void AddConnections(int courseID, List<string> userIDs)
         {
             foreach (string ID in userIDs)
             {
-                if(!IsConnected(courseID, ID) && courseID != 0)
+                if (!IsConnected(courseID, ID) && courseID != 0)
                 {
                     UsersInCourse entry = new UsersInCourse();
                     entry.courseID = courseID;
@@ -201,7 +205,8 @@ namespace MooshakPP.Services
             foreach (string ID in userIDs)
             {
                 UsersInCourse connection = GetConnectionByID(courseID, ID);
-                if(connection != null)
+
+                if (connection != null)
                 {
                     db.UsersInCourses.Remove(connection);
                     db.SaveChanges();
@@ -226,6 +231,7 @@ namespace MooshakPP.Services
         {
             var courses = (from course in db.Courses
                            select course).ToList();
+
             return courses;
         }
 
@@ -245,13 +251,15 @@ namespace MooshakPP.Services
                                   select users.user).ToList();
 
             List<ApplicationUser> connectedTeachers = new List<ApplicationUser>();
+
             foreach(ApplicationUser user in connectedUsers)
             {
-                if(manager.UserIsInRole(user.Id, "teacher"))
+                if (manager.UserIsInRole(user.Id, "teacher"))
                 {
                     connectedTeachers.Add(user);
                 }
             }
+
             return connectedTeachers;
         }
 
@@ -262,6 +270,7 @@ namespace MooshakPP.Services
                                   select users.user).ToList();
 
             List<ApplicationUser> connectedStudents = new List<ApplicationUser>();
+
             foreach (ApplicationUser user in connectedUsers)
             {
                 if (manager.UserIsInRole(user.Id, "student"))
@@ -280,14 +289,15 @@ namespace MooshakPP.Services
 
             foreach (ApplicationUser user in allUsers)
             {
-                if(!connectedTeachers.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
+                if (!connectedTeachers.Exists(x => x.Email == user.Email) && !manager.UserIsInRole(user.Id, "admin"))
                 {
-                    if(manager.UserIsInRole(user.Id, "teacher"))
+                    if (manager.UserIsInRole(user.Id, "teacher"))
                     {
                         notConnectedTeachers.Add(user);
                     }
                 }
             }
+
             return notConnectedTeachers;
         }
 
@@ -319,11 +329,11 @@ namespace MooshakPP.Services
         private List<ApplicationUser> GetAllExceptAdmin()
         {
             List<ApplicationUser> ex = manager.GetAllUsers();
-
             List<ApplicationUser> all = new List<ApplicationUser>();
-            foreach(ApplicationUser user in ex)
+
+            foreach (ApplicationUser user in ex)
             {
-                if(!manager.UserIsInRole(user.Id, "admin"))
+                if (!manager.UserIsInRole(user.Id, "admin"))
                 {
                     all.Add(user);
                 }
@@ -344,8 +354,10 @@ namespace MooshakPP.Services
             var getConnected = (from user in db.UsersInCourses
                                 where user.userID == userID && user.courseID == courseID
                                 select user).FirstOrDefault();
+
             if (getConnected != null)
                 return true;
+
             else
                 return false;
         }
@@ -355,6 +367,7 @@ namespace MooshakPP.Services
             UsersInCourse connection = (from u in db.UsersInCourses
                                     where u.courseID == courseID && u.userID == userID
                                     select u).FirstOrDefault();
+
             return connection;
         }
 
@@ -365,17 +378,18 @@ namespace MooshakPP.Services
                                                        select con).ToList();
             
             manager.ClearUserRoles(userToRemove.Id);
-            if(selectedUserCourses.Count == 0)
+
+            if (selectedUserCourses.Count == 0)
             {
                 manager.RemoveUser(userToRemove);
                 return true;
             }
             else
             {
-                for(int i = 0; i < selectedUserCourses.Count(); i++)
+                for (int i = 0; i < selectedUserCourses.Count(); i++)
                 {
                     
-                    if(selectedUserCourses[i] != null)
+                    if (selectedUserCourses[i] != null)
                     {
                         db.UsersInCourses.Remove(selectedUserCourses[i]);
                         db.SaveChanges();
@@ -389,15 +403,16 @@ namespace MooshakPP.Services
         private List<ApplicationUser> GetAllAdmins()
         {
             List<ApplicationUser> allUsers = GetAllUsers();
-
             List<ApplicationUser> allAdmins = new List<ApplicationUser>();
-            foreach(ApplicationUser user in allUsers)
+
+            foreach (ApplicationUser user in allUsers)
             {
-                if(manager.UserIsInRole(user.Id, "admin"))
+                if (manager.UserIsInRole(user.Id, "admin"))
                 {
                     allAdmins.Add(user);
                 }
-        }
+            }
+
             return allAdmins;
         }
 
