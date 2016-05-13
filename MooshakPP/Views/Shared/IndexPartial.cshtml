@@ -205,7 +205,6 @@
             @if (User.IsInRole("teacher"))
             {
                 <div id="bestsubmissions" class="tab-pane fade in active">
-                    <h3>Valdimir Putin is Overrated</h3>
                     @{ Html.RenderPartial("BestSubmissions", Model.bestSubmissions);}
                 </div>
             }
