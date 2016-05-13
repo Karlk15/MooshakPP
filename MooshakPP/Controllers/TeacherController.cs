@@ -26,7 +26,7 @@ namespace MooshakPP.Controllers
             }
 
             model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
-            model.bestSubmissions = service.bestSubmissions(milestoneID, userId);
+            model.bestSubmissions = service.bestSubmissions(assignmentID, userId);
 
             return View(model);
         }
