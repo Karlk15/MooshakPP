@@ -89,7 +89,7 @@ namespace MooshakPP.Services
                 foreach (TestCase test in testCases)
                 {
                     testCount++;
-                    List<string> input = new List<string>;
+                    List<string> input = new List<string>();
                     // Load test case input file
                     using (StreamReader sr = new StreamReader(test.inputUrl))
                     {
