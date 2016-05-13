@@ -42,6 +42,7 @@ namespace MooshakPP.Controllers
                 ModelState.AddModelError("", "You need to pick a milestone!");
                 IndexViewModel model = new IndexViewModel();
                 model = service.Index(User.Identity.GetUserId(), courseID, assignmentID, milestoneID);
+                model.bestSubmissions = service.bestSubmissions(assignmentID, "");
                 return View(model);
             }
             if (Request.Files.Count >= 0 && Request.Files[0].FileName != "")
