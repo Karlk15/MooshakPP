@@ -35,11 +35,10 @@
             <div class="form-group">
                 <!--<label for="fileupload">Input.zip</label>
                 <input id="fileupload" type="file" />-->
-                <label for="fileupload">Please upload a zip file with your testcases</label>
+                <label for="fileupload">Please upload a zip file with your testcases<button type="button" class="btn btn-default glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="Upload a Zip file containing any number of directories, each containing one input.txt and output.txt"></button></label>
                 @Html.TextBoxFor(m => m.testCaseZip, new { type = "file", accept = "application/zip, application/x-zip, application/x-zip-compressed" } )
                 @Html.ValidationMessageFor(m => m.testCaseZip, "", new { @class = "text-danger" })
             </div>
-
             <div class="form-group">
                 @if (Model.currentMilestone.ID == 0)
                 {
@@ -51,7 +50,6 @@
                     @Html.ActionLink("New Milestone", "AddMilestones", "Teacher", new { assignmentid = Model.currentAssignment.ID }, new { @class = "btn btn-default" })
                 }
             </div>
-
         </div>
     }
  
@@ -89,3 +87,8 @@
     }
 </div>
 
+
+@section scripts
+{
+    <script src="~/Scripts/tooltilsubmit.js"></script>
+}
